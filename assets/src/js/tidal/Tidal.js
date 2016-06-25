@@ -34,16 +34,16 @@ function Tidal() {
 
 Tidal.prototype.login = function(username, password) {
 
-  var loginRequest = new APIRequest(
+  var request = new APIRequest(
     APIRequest.url.login, {  
       username: username,
       password: password
   });
 
-  loginRequest.onError.addListener(this, this.onLoginError);
-  loginRequest.onResponse.addListener(this, this.onLoginResponse);
+  request.onError.addListener(this, this.onLoginError);
+  request.onResponse.addListener(this, this.onLoginResponse);
 
-  loginRequest.post();
+  request.post();
 }
 
 
