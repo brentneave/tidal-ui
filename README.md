@@ -1,5 +1,5 @@
 # tidal-ui
-An unofficial Tidal client.
+An unofficial Tidal client in Javascript.
 
 ##Get started:
 ```
