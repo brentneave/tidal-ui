@@ -7,7 +7,7 @@ module.exports = function(grunt) {
           style:'compressed'
         },
         files: {
-          'assets/dist/css/screen.css' : 'scss/screen.scss'
+          'assets/dist/css/screen.css' : 'assets/src/scss/screen.scss'
         }
       }
     },
@@ -25,7 +25,7 @@ module.exports = function(grunt) {
             debug: true
           }
         },
-        src: ['js/site.js'],
+        src: ['assets/src/js/site.js'],
         dest: 'assets/dist/js/site.js'
       }
     },
