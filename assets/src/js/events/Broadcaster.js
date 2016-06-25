@@ -1,7 +1,7 @@
 function Broadcaster(source)
 {
   // private vars
-  var _source = source;
+  var _source = source,
       _listeners = [];
 
   // privileged methods
