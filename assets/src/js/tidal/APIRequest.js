@@ -4,10 +4,13 @@ var request = require('request'),
 
 // static properties
 
-Object.defineProperty(APIRequest, 'url', {
+Object.defineProperty(APIRequest, 'baseURL', {
+  get: function() { return 'https://api.tidalhifi.com/v1'; }
+});
+
+Object.defineProperty(APIRequest, 'URL', {
   get: function() {
     return {
-      base: 'https://api.tidalhifi.com/v1',
       login: '/login/username'
     }
   }
@@ -24,9 +27,10 @@ Object.defineProperty(APIRequest, 'header', {
 // constructor
 
 function APIRequest(url, form) {
+  
   var _onResponse = new Broadcaster(this),
       _onError = new Broadcaster(this),
-      _url = APIRequest.url.base + url,
+      _url = APIRequest.baseURL + url,
       _form = form;
 
   Object.defineProperty(this, 'onResponse', {
@@ -58,7 +62,10 @@ APIRequest.prototype.post = function() {
     headers: APIRequest.header,
     form: this.form
   }, function(error, response, body) {
-    console.log('callback');
+    console.log('callback:');
+    console.log('\t' + error);
+    console.log('\t' + response);
+    console.log('\t' + body);
     if(error) {
       that.onError.broadcast({
         error: error,
@@ -66,7 +73,14 @@ APIRequest.prototype.post = function() {
         body: body
       });
     }
-    if (!error && response.statusCode == 200) {
+    else if (response.statusCode == 400 || 401 || 403 || 404) {
+      that.onError.broadcast({
+        error: error,
+        response: response, 
+        body: body
+      });
+    }
+    else if (!error && response.statusCode == 200) {
       that.onResponse.broadcast({
         error: error,
         response: response, 

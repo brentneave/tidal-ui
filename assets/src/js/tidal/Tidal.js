@@ -35,7 +35,7 @@ function Tidal() {
 Tidal.prototype.login = function(username, password) {
 
   var request = new APIRequest(
-    APIRequest.url.login, {  
+    APIRequest.URL.login, {  
       username: username,
       password: password
   });
