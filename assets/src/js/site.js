@@ -12,6 +12,8 @@ var listener = {
     console.log('\t' + tidal.session.id);
     console.log('\t' + tidal.session.user.id);
     console.log('\t' + tidal.session.countryCode);
+
+    tidal.getUserDetails(tidal.session.user);
   }
 }
 

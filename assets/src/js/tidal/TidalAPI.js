@@ -27,7 +27,7 @@ Object.defineProperty(TidalAPI, 'token', {
   get: function() { return '_KM2HixcUBZtmktH'; }
 });
 
-Object.defineProperty(TidalAPI, 'header', {
+Object.defineProperty(TidalAPI, 'tokenHeader', {
   get: function() { return { 'X-Tidal-Token': TidalAPI.token }; }
 });
 
@@ -75,6 +75,14 @@ function TidalAPI() {
     get: function() { return _session != null; }
   });
 
+  Object.defineProperty(this, 'sessionHeader', {
+    get: function() { 
+      return this.session 
+        ? { 'X-Tidal-SessionId': this.session.id }
+        : null;
+    }
+  });
+
 }
 
 /**
@@ -88,16 +96,55 @@ TidalAPI.prototype.login = function(username, password) {
 
   var request = new APIRequest(
     TidalAPI.URL.login,
-    TidalAPI.header, {
+    TidalAPI.tokenHeader, {
       username: username,
       password: password
-  });
+    }, APIRequest.method.post);
 
   request.onError.addListener(this, this.handleLoginError);
   request.onResponse.addListener(this, this.handleLoginResponse);
 
-  request.post();
+  request.send();
 }
 
+// user ------------------------------------------------------------//
+
+TidalAPI.prototype.getUserDetails = function(user) {
+
+  if(!(user instanceof User)) {
+    throw new Error();
+  }
+
+  var request = new APIRequest(
+    TidalAPI.URL.user + '/' + user.id,
+    this.sessionHeader, {
+      countryCode: this.session.countryCode
+    }, APIRequest.method.get);
+
+  var requestHandler = {
+    onError: function(e) {
+      throw new Error('Could not load user details');
+    },
+    onResponse: function(e) {
+      var body = e.body;
+      user.username     = body.username;
+      user.firstName    = body.firstName;
+      user.lastName     = body.lastName;
+      user.email        = body.email;
+      user.created      = body.created;
+      user.picture      = body.picture;
+      user.newsletter   = body.newsletter;
+      user.gender       = body.gender;
+      user.dateOfBirth  = body.dateOfBirth;
+      user.facebookUid  = body.facebookUid;
+      console.log(user);
+    }
+  }
+
+  request.onError.addListener(requestHandler, requestHandler.onError);
+  request.onResponse.addListener(requestHandler, requestHandler.onResponse);
+
+  request.send();
+}
 
 module.exports = TidalAPI;
