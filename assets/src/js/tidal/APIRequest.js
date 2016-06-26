@@ -4,16 +4,29 @@ var request = require('request'),
 
 // static properties
 
+Object.defineProperty(APIRequest, 'method', {
+  get: function() {
+    return {
+      get: 'get',
+      post: 'post'
+    }
+  }
+})
 
 // constructor
 
-function APIRequest(url, header, form) {
+function APIRequest(url, header, form, method) {
   
+  if (method != APIRequest.method.get && method != APIRequest.method.post) {
+    throw new Error('Provide a valid method')
+  }
+
   var _onResponse = new Broadcaster(this),
       _onError = new Broadcaster(this),
       _header = header,
       _url = url,
-      _form = form;
+      _form = form,
+      _method = method;
 
   Object.defineProperty(this, 'onResponse', {
     get: function() { return _onResponse; }
@@ -35,21 +48,18 @@ function APIRequest(url, header, form) {
     get: function() { return _form; }
   });
 
+  Object.defineProperty(this, 'method', {
+    get: function() { return _method; }
+  });
+
 }
 
 // public methods
 
-APIRequest.prototype.post = function() {
+APIRequest.prototype.send = function() {
 
-  var that = this;
-
-  request.post({
-    url : this.url,
-    headers: this.header,
-    form: this.form
-  }, 
-
-  function(error, response, body) {
+  var that = this; 
+  var callback = function(error, response, body) {
     
     body = JSON.parse(body);
 
@@ -79,9 +89,23 @@ APIRequest.prototype.post = function() {
         body: body
       });
     }
+  };
 
-  });
+  if(this.method === APIRequest.method.get) {
+    request.get({
+      url : this.url,
+      headers: this.header,
+      qs: this.form
+    }, callback);
+  }
+
+  else if(this.method === APIRequest.method.post) {
+    request.post({
+      url : this.url,
+      headers: this.header,
+      form: this.form
+    }, callback);
+  }
 }
-
 
 module.exports = APIRequest;
