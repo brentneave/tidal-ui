@@ -45,6 +45,7 @@ APIRequest.prototype.post = function() {
 
   request.post({
     url : this.url,
+    headers: this.header,
     form: this.form
   }, 
 
