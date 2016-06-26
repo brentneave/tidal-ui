@@ -1,8 +1,8 @@
 var FLAC = require('flac.js'),
     AV = require('av'),
     SoundQuality = require('./tidal/SoundQuality'),
-    Tidal = require('./tidal/Tidal');
+    TidalAPI = require('./tidal/TidalAPI');
 
-var tidal = new Tidal();
+var tidal = new TidalAPI();
 console.log('ready');
 tidal.login('','');
