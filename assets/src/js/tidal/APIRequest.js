@@ -57,13 +57,18 @@ APIRequest.prototype.post = function() {
         body: body
       });
     }
-    else if (response.statusCode == 400 || 401 || 403 || 404) {
+
+    else if (response.statusCode == 400 
+          || response.statusCode == 401
+          || response.statusCode == 403 
+          || response.statusCode == 404) {
       that.onError.broadcast({
         error: error,
         response: response, 
         body: body
       });
     }
+
     else if (!error && response.statusCode == 200) {
       that.onResponse.broadcast({
         error: error,
@@ -71,6 +76,7 @@ APIRequest.prototype.post = function() {
         body: body
       });
     }
+    
   });
 }
 
