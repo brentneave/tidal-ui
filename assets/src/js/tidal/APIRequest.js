@@ -4,33 +4,15 @@ var request = require('request'),
 
 // static properties
 
-Object.defineProperty(APIRequest, 'baseURL', {
-  get: function() { return 'https://api.tidalhifi.com/v1'; }
-});
-
-Object.defineProperty(APIRequest, 'URL', {
-  get: function() {
-    return {
-      login: '/login/username'
-    }
-  }
-});
-
-Object.defineProperty(APIRequest, 'token', {
-  get: function() { return '_KM2HixcUBZtmktH'; }
-});
-
-Object.defineProperty(APIRequest, 'header', {
-  get: function() { return { 'X-Tidal-Token': APIRequest.token }; }
-});
 
 // constructor
 
-function APIRequest(url, form) {
+function APIRequest(url, header, form) {
   
   var _onResponse = new Broadcaster(this),
       _onError = new Broadcaster(this),
-      _url = APIRequest.baseURL + url,
+      _header = header,
+      _url = url,
       _form = form;
 
   Object.defineProperty(this, 'onResponse', {
@@ -39,6 +21,10 @@ function APIRequest(url, form) {
 
   Object.defineProperty(this, 'onError', {
     get: function() { return _onError; }
+  });
+
+  Object.defineProperty(this, 'header', {
+    get: function() { return _header; }
   });
 
   Object.defineProperty(this, 'url', {
@@ -54,18 +40,16 @@ function APIRequest(url, form) {
 // public methods
 
 APIRequest.prototype.post = function() {
+
   var that = this;
 
-  console.log('APIRequest.post: ' + this.url + ', ' + this.form);
   request.post({
     url : this.url,
-    headers: APIRequest.header,
     form: this.form
-  }, function(error, response, body) {
-    console.log('callback:');
-    console.log('\t' + error);
-    console.log('\t' + response);
-    console.log('\t' + body);
+  }, 
+
+  function(error, response, body) {
+    
     if(error) {
       that.onError.broadcast({
         error: error,
