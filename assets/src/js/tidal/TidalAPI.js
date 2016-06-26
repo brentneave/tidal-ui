@@ -1,5 +1,13 @@
 var SoundQuality = require('./SoundQuality.js'),
-    APIRequest = require('./APIRequest');
+    APIRequest = require('./APIRequest'),
+    User = require('./User'),
+    Session = require('./session'),
+    Broadcaster = require('../events/Broadcaster');
+
+
+/**
+ * STATIC PROPERTIES
+ */
 
 
 Object.defineProperty(TidalAPI, 'baseURL', {
@@ -9,7 +17,8 @@ Object.defineProperty(TidalAPI, 'baseURL', {
 Object.defineProperty(TidalAPI, 'URL', {
   get: function() {
     return {
-      login: TidalAPI.baseURL + '/login/username'
+      login: TidalAPI.baseURL + '/login/username',
+      user:  TidalAPI.baseURL + '/users',
     };
   }
 });
@@ -23,7 +32,48 @@ Object.defineProperty(TidalAPI, 'header', {
 });
 
 
+/**
+ * CONSTRUCTOR
+ */
+
+
 function TidalAPI() {
+  var _session = null,
+      _onLogin = new Broadcaster(this),
+      _onLoginError = new Broadcaster(this);
+
+  // privileged event handlers
+
+  this.handleLoginResponse = function(e) {
+    _session = new Session(
+      e.body.sessionId,
+      new User(e.body.userId),
+      e.body.countryCode
+    );
+    _onLogin.broadcast({tidalAPI: this, session: this.session});
+  }
+
+  this.handleLoginError = function(e) {
+    _onLoginError.broadcast({tidalAPI: this});
+  }
+
+  // privileged getter/setters
+
+  Object.defineProperty(this, 'session', {
+    get: function() { return _session; }
+  });
+
+  Object.defineProperty(this, 'onLogin', {
+    get: function() { return _onLogin; }
+  });
+
+  Object.defineProperty(this, 'onLoginError', {
+    get: function() { return _onLoginError; }
+  });
+
+  Object.defineProperty(this, 'loggedIn', {
+    get: function() { return _session != null; }
+  });
 
 }
 
@@ -43,22 +93,11 @@ TidalAPI.prototype.login = function(username, password) {
       password: password
   });
 
-  request.onError.addListener(this, this.onLoginError);
-  request.onResponse.addListener(this, this.onLoginResponse);
+  request.onError.addListener(this, this.handleLoginError);
+  request.onResponse.addListener(this, this.handleLoginResponse);
 
   request.post();
 }
 
-TidalAPI.prototype.onLoginResponse = function(e) {
-  console.log('Logged in:');
-  console.log(e);
-}
-
-TidalAPI.prototype.onLoginError = function(e) {
-  console.log('Log in error:');
-  console.log(e);
-}
-
-// album -----------------------------------------------------------//
 
 module.exports = TidalAPI;

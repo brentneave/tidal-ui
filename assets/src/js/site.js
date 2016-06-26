@@ -5,4 +5,16 @@ var FLAC = require('flac.js'),
 
 var tidal = new TidalAPI();
 console.log('ready');
-tidal.login('','');
+
+var listener = {
+  onLogin : function() {
+    console.log('Logged in:')
+    console.log('\t' + tidal.session.id);
+    console.log('\t' + tidal.session.user.id);
+    console.log('\t' + tidal.session.countryCode);
+  }
+}
+
+tidal.onLogin.addListener(listener, listener.onLogin);
+
+tidal.login('brent@brentneave.com','losslesslystreamthatshit');

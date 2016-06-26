@@ -51,6 +51,8 @@ APIRequest.prototype.post = function() {
 
   function(error, response, body) {
     
+    body = JSON.parse(body);
+
     if(error) {
       that.onError.broadcast({
         error: error,
@@ -77,7 +79,7 @@ APIRequest.prototype.post = function() {
         body: body
       });
     }
-    
+
   });
 }
 
