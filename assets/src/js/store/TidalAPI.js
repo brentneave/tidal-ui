@@ -1,8 +1,9 @@
-var SoundQuality = require('./SoundQuality.js'),
-    APIRequest = require('./APIRequest'),
+var SoundQuality = require('./SoundQuality'),
+    APIRequest = require('../api/APIRequest'),
     User = require('./User'),
-    Session = require('./session'),
-    Broadcaster = require('../events/Broadcaster');
+    Session = require('./Session'),
+    Broadcaster = require('../events/Broadcaster'),
+    LoginAction = require('../dispatch/actions/LoginAction');
 
 
 /**
@@ -50,7 +51,9 @@ function TidalAPI() {
       new User(e.body.userId),
       e.body.countryCode
     );
-    _onLogin.broadcast({tidalAPI: this, session: this.session});
+
+    StoreDispatcher.login.dispatchAction(new LoginAction(_session));
+    // _onLogin.broadcast({tidalAPI: this, session: this.session});
   }
 
   this.handleLoginError = function(e) {
