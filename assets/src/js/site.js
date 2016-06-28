@@ -1,7 +1,8 @@
 var FLAC = require('flac.js'),
     AV = require('av'),
-    SoundQuality = require('./tidal/SoundQuality'),
-    TidalAPI = require('./tidal/TidalAPI');
+    TidalCredentials = require('./TidalCredentials')
+    SoundQuality = require('./store/SoundQuality'),
+    TidalAPI = require('./store/TidalAPI');
 
 var tidal = new TidalAPI();
 console.log('ready');
@@ -19,4 +20,4 @@ var listener = {
 
 tidal.onLogin.addListener(listener, listener.onLogin);
 
-tidal.login('brent@brentneave.com','losslesslystreamthatshit');
+tidal.login(TidalCredentials.username, TidalCredentials.password);
