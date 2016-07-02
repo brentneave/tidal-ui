@@ -21,8 +21,8 @@ function APIRequest(url, header, form, method) {
     throw new Error('Provide a valid method')
   }
 
-  var _onResponse = new Broadcaster(this),
-      _onError = new Broadcaster(this),
+  var _onResponse = new Broadcaster(),
+      _onError = new Broadcaster(),
       _header = header,
       _url = url,
       _form = form,

@@ -1,4 +1,4 @@
-var Session = require('../../store/Session'),
+var Session = require('../../model/Session'),
     Action = require('../Action');
 
 function LoginAction(session) {

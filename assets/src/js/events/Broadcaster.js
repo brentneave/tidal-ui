@@ -1,8 +1,7 @@
-function Broadcaster(source)
+function Broadcaster()
 {
   // private vars
-  var _source = source,
-      _listeners = [];
+  var _listeners = [];
 
   // privileged methods
 
@@ -62,10 +61,6 @@ function Broadcaster(source)
 
     return this;
   }
-
-  Object.defineProperty(this, 'source', {
-    get: function() { return _source; }
-  })
 
   Object.defineProperty(this, 'listeners', {
     get: function() { return _listeners.splice(0); }
