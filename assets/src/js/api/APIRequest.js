@@ -6,17 +6,17 @@ var request = require('request'),
 
 Object.defineProperty(APIRequest, 'method', {
   get: function() {
-    return {
+    return Object.freeze({
       get: 'get',
       post: 'post'
-    }
+    });
   }
 })
 
 // constructor
 
 function APIRequest(url, header, form, method) {
-  
+
   if (method != APIRequest.method.get && method != APIRequest.method.post) {
     throw new Error('Provide a valid method')
   }
@@ -58,26 +58,26 @@ function APIRequest(url, header, form, method) {
 
 APIRequest.prototype.send = function() {
 
-  var that = this; 
+  var that = this;
   var callback = function(error, response, body) {
-    
+
     body = JSON.parse(body);
 
     if(error) {
       that.onError.broadcast({
         error: error,
-        response: response, 
+        response: response,
         body: body
       });
     }
 
-    else if (response.statusCode == 400 
+    else if (response.statusCode == 400
           || response.statusCode == 401
-          || response.statusCode == 403 
+          || response.statusCode == 403
           || response.statusCode == 404) {
       that.onError.broadcast({
         error: error,
-        response: response, 
+        response: response,
         body: body
       });
     }
@@ -85,7 +85,7 @@ APIRequest.prototype.send = function() {
     else if (!error && response.statusCode == 200) {
       that.onResponse.broadcast({
         error: error,
-        response: response, 
+        response: response,
         body: body
       });
     }
