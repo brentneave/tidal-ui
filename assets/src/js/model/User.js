@@ -17,79 +17,79 @@ function User (id) {
       _facebookUid;
 
   Object.defineProperty(this, 'id', {
-    get: function() { 
-      return _id; 
+    get: function() {
+      return _id;
     }
   });
 
   Object.defineProperty(this, 'username', {
-    get: function() { 
-      return _username; 
+    get: function() {
+      return _username;
     },
-    set: function(s) { 
-      _username = s; 
+    set: function(s) {
+      _username = s;
     }
   });
 
   Object.defineProperty(this, 'firstName', {
-    get: function() { 
-      return _firstName; 
+    get: function() {
+      return _firstName;
     },
-    set: function(s) { 
-      _firstName = s; 
+    set: function(s) {
+      _firstName = s;
     }
   });
 
   Object.defineProperty(this, 'lastName', {
-    get: function() { 
-      return _lastName; 
+    get: function() {
+      return _lastName;
     },
-    set: function(s) { 
-      _lastName = s; 
+    set: function(s) {
+      _lastName = s;
     }
   });
 
   Object.defineProperty(this, 'email', {
-    get: function() { 
-      return _email; 
+    get: function() {
+      return _email;
     },
-    set: function(s) { 
-      _email = s; 
+    set: function(s) {
+      _email = s;
     }
   });
 
   Object.defineProperty(this, 'created', {
-    get: function() { 
-      return _created; 
+    get: function() {
+      return _created;
     },
-    set: function(s) { 
-      _created = s; 
+    set: function(s) {
+      _created = s;
     }
   });
 
   Object.defineProperty(this, 'newsletter', {
-    get: function() { 
-      return _newsletter; 
+    get: function() {
+      return _newsletter;
     },
-    set: function(s) { 
-      _newsletter = s; 
+    set: function(s) {
+      _newsletter = s;
     }
   });
 
   Object.defineProperty(this, 'gender', {
-    get: function() { 
-      return _gender; 
+    get: function() {
+      return _gender;
     },
-    set: function(s) { 
-      _gender = s; 
+    set: function(s) {
+      _gender = s;
     }
   });
 
   Object.defineProperty(this, 'dateOfBirth', {
-    get: function() { 
-      return _dateOfBirth; 
+    get: function() {
+      return _dateOfBirth;
     },
-    set: function(s) { 
+    set: function(s) {
       _dateOfBirth = s;
     }
   });
