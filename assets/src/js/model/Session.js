@@ -12,6 +12,8 @@ function Session() {
       _countryCode = null,
       _isLoggedIn = false;
 
+  // events -----------------------------------------------------//
+
   const _onLoginError   = new Broadcaster(),
         _onLoginSuccess = new Broadcaster();
 
@@ -27,6 +29,21 @@ function Session() {
       _countryCode = e.body.countryCode;
       _isLoggedIn  = true;
       _onLoginSuccess.broadcast({ session : this});
+  }
+
+  // privileged methods -----------------------------------------//
+
+  this.login = function(username, password) {
+    var request = new APIRequest(
+      APIConfig.URLs.login,
+      APIConfig.tokenHeader,
+      { username: username,
+        password: password },
+      APIRequest.method.post
+    );
+    request.onError.addListener(this, _handleLoginError);
+    request.onResponse.addListener(this, _handleLoginResponse);
+    request.send();
   }
 
   // getter/setters ---------------------------------------------//
@@ -54,21 +71,6 @@ function Session() {
   Object.defineProperty(this, 'isLoggedIn', {
     get: function() { return _isLoggedIn; }
   });
-
-  // privileged methods -----------------------------------------//
-
-  this.login = function(username, password) {
-    var request = new APIRequest(
-      APIConfig.URLs.login,
-      APIConfig.tokenHeader,
-      { username: username,
-        password: password },
-      APIRequest.method.post
-    );
-    request.onError.addListener(this, _handleLoginError);
-    request.onResponse.addListener(this, _handleLoginResponse);
-    request.send();
-  }
 }
 
 module.exports = Session;
