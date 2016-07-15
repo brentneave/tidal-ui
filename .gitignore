@@ -30,3 +30,4 @@ pids
 *.pid
 *.seed
 *.pyc
+assets/src/js/TidalCredentials.js
