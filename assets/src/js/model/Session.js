@@ -5,6 +5,7 @@ const Broadcaster = require('../events/Broadcaster'),
 
 function Session() {
 
+
   // private vars -----------------------------------------------//
 
   var _id = null,
@@ -14,13 +15,19 @@ function Session() {
 
   // events -----------------------------------------------------//
 
-  const _onLoginError   = new Broadcaster(),
+  const _onChange       = new Broadcaster(),
+        _onLoginError   = new Broadcaster(),
         _onLoginSuccess = new Broadcaster();
 
   // private event handlers -------------------------------------//
 
   const _handleLoginError = function(e) {
+      _id          = null;
+      _user        = null;
+      _countryCode = null;
+      _isLoggedIn  = false;
       _onLoginError.broadcast(this);
+      _onChange.broadcast();
   }
 
   const _handleLoginResponse = function(e) {
@@ -29,6 +36,7 @@ function Session() {
       _countryCode = e.body.countryCode;
       _isLoggedIn  = true;
       _onLoginSuccess.broadcast({ session : this});
+      _onChange.broadcast();
   }
 
   // privileged methods -----------------------------------------//
@@ -60,17 +68,23 @@ function Session() {
     get: function() { return _countryCode; }
   });
 
+  Object.defineProperty(this, 'isLoggedIn', {
+    get: function() {
+      return _isLoggedIn;
+    }
+  });
+
   Object.defineProperty(this, 'onLoginError', {
-    get: function() { return _onLoginError; }
+    value: _onLoginError
   });
 
   Object.defineProperty(this, 'onLoginSuccess', {
-    get: function() { return _onLoginSuccess; }
+    value: _onLoginSuccess
   });
 
-  Object.defineProperty(this, 'isLoggedIn', {
-    get: function() { return _isLoggedIn; }
+  Object.defineProperty(this, 'onChange', {
+    value: _onChange
   });
 }
 
-module.exports = Session;
+module.exports = new Session();
