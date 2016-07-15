@@ -5,13 +5,11 @@ var request = require('request'),
 // static properties
 
 Object.defineProperty(APIRequest, 'method', {
-  get: function() {
-    return Object.freeze({
-      get: 'get',
-      post: 'post'
-    });
-  }
-})
+  value: Object.freeze({
+    get: 'get',
+    post: 'post'
+  })
+});
 
 // constructor
 
@@ -21,35 +19,35 @@ function APIRequest(url, header, form, method) {
     throw new Error('Provide a valid method')
   }
 
-  var _onResponse = new Broadcaster(),
-      _onError = new Broadcaster(),
-      _header = header,
-      _url = url,
-      _form = form,
-      _method = method;
+  const _onResponse = new Broadcaster(),
+        _onError = new Broadcaster(),
+        _header = header,
+        _url = url,
+        _form = form,
+        _method = method;
 
   Object.defineProperty(this, 'onResponse', {
-    get: function() { return _onResponse; }
+    value: _onResponse
   });
 
   Object.defineProperty(this, 'onError', {
-    get: function() { return _onError; }
+    value: _onError
   });
 
   Object.defineProperty(this, 'header', {
-    get: function() { return _header; }
+    value: _header
   });
 
   Object.defineProperty(this, 'url', {
-    get: function() { return _url; }
+    value: _url
   });
 
   Object.defineProperty(this, 'form', {
-    get: function() { return _form; }
+    value: _form
   });
 
   Object.defineProperty(this, 'method', {
-    get: function() { return _method; }
+    value: _method
   });
 
 }
