@@ -1,18 +1,16 @@
-module.exports = View;
+const View = function(parentNode) {
 
-function View()
-{
   // private vars -----------------------------------------------//
 
-	var _node;
+	var _parentNode = parentNode instanceof HTMLElement ? parentNode : document.body,
+			_node;
 
   // private methods --------------------------------------------//
 
-	const _build = function(parentNode) {
+	const _render = function() {
 		this.removeNode();
-		if(parentNode == undefined) parentNode = document.body;
-		_node = View.buildNode(parentNode, this.structure);
-		this.init();
+		_node = View.buildNode(_parentNode, this.structure);
+		if(this.viewDidBuild) { this.viewDidBuild(); }
 	}
 
   // privileged getter/setters ----------------------------------//
@@ -23,9 +21,9 @@ function View()
     }
   });
 
-  Object.defineProperty(this, 'build', {
+  Object.defineProperty(this, 'render', {
     get: function() {
-      return _build;
+      return _render;
     }
   });
 }
@@ -43,17 +41,18 @@ Object.defineProperty(View.prototype, 'structure', {
 
 // public methods -----------------------------------------------//
 
-View.prototype.removeNode = function() {
-	if(this.node) {
-		this.node.parentNode.removeChild(this.node);
+Object.defineProperty(View.prototype, 'removeNode', {
+	value: function() {
+		if(this.node) {
+			this.node.parentNode.removeChild(this.node);
+		}
 	}
-}
-
-View.prototype.init = function() { /* placeholder */ }
+});
 
 // static methods
 
 View.buildNode = function(parentNode, o){
+	console.log('buildNode() ' + parentNode + ',' + o);
   /* dom structure, e.g.:
   -------------------------------------
   [{
@@ -95,7 +94,19 @@ View.buildNode = function(parentNode, o){
 	if(parentNode == undefined) parentNode = document.body;
 	if(o == undefined) o = this.structure;
 
-	if(o.tag) {
+	// View classes
+	if(o.viewClass && o.viewClass.prototype instanceof View) {
+		var view = new o.viewClass(parentNode);
+		if(o.properties) {
+			for(var s in o.properties) {
+				view[s] = o.properties[s];
+			}
+		}
+		view.render();
+	}
+
+	// basic DOM nodes
+	else if(o.tag) {
 		var node = document.createElement(o.tag);
 
 		if(o.className) node.setAttribute('class', o.className);
@@ -112,7 +123,7 @@ View.buildNode = function(parentNode, o){
 
 		parentNode.appendChild(node);
 	}
-
+	// recurse through child nodes
 	if(o.children) {
 		var a = o.children,
 				n = a.length,
@@ -127,3 +138,5 @@ View.buildNode = function(parentNode, o){
 
 	return node;
 }
+
+module.exports = View;
