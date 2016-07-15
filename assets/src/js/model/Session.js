@@ -22,11 +22,12 @@ function Session() {
   // private event handlers -------------------------------------//
 
   const _handleLoginError = function(e) {
+      console.log(e);
       _id          = null;
       _user        = null;
       _countryCode = null;
       _isLoggedIn  = false;
-      _onLoginError.broadcast(this);
+      _onLoginError.broadcast({ session: this, status: e.body.status, userMessage: e.body.userMessage });
       _onChange.broadcast();
   }
 
