@@ -25,8 +25,8 @@ module.exports = function(grunt) {
             debug: true
           }
         },
-        src: ['assets/src/js/site.js'],
-        dest: 'assets/dist/js/site.js'
+        src: ['assets/src/js/main.js'],
+        dest: 'assets/dist/js/main.js'
       }
     },
     watch: {
