@@ -13,9 +13,20 @@ const LoginForm = function(parentNode, build) {
 
   var _session;
 
+  // private methods
+
+  const _onLoginError = function(e) {
+    const errorMessage = this.node.querySelector('.' + LoginForm.classNames.errorMessage);
+    errorMessage.textContent = e.userMessage;
+  }
+
+  const _onLoginSuccess = function() {
+    this.removeNode();
+  }
+
   // privileged methods
 
-  Object.defineProperty(this, 'viewDidBuild', {
+  Object.defineProperty(this, 'onRender', {
     value: function() {
       var form          = this.node,
           usernameField = this.node.querySelector('.' + LoginForm.classNames.usernameField),
@@ -46,7 +57,9 @@ const LoginForm = function(parentNode, build) {
     },
     set: function(o) {
       if(o === Session) { // session is a singleton, we can probably remove this getter/setter?
-        _session = o
+        _session = o;
+        _session.onLoginError.addListener(this, _onLoginError);
+        _session.onLoginSuccess.addListener(this, _onLoginSuccess);
       } else {
         throw new Error();
       }
@@ -62,6 +75,7 @@ Object.defineProperty(LoginForm,'classNames', {
   get: function() {
     return {
       view: 'login-form',
+      errorMessage: 'login-form__error-message',
       usernameField: 'login-form__username',
       passwordField: 'login-form__password',
       submitButton: 'login-form__submit'
@@ -80,6 +94,9 @@ Object.defineProperty(LoginForm.prototype, 'structure', {
         method: 'post'
       },
       children: [{
+          tag: 'p',
+          className: LoginForm.classNames.errorMessage
+        },{
           tag: 'input',
           className: LoginForm.classNames.usernameField,
           attributes: {
