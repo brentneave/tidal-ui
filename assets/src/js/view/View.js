@@ -10,7 +10,7 @@ const View = function(parentNode) {
 	const _render = function() {
 		this.removeNode();
 		_node = View.buildNode(_parentNode, this.structure);
-		if(this.viewDidBuild) { this.viewDidBuild(); }
+		if(this.onRender) { this.onRender(); }
 	}
 
   // privileged getter/setters ----------------------------------//
@@ -52,7 +52,6 @@ Object.defineProperty(View.prototype, 'removeNode', {
 // static methods
 
 View.buildNode = function(parentNode, o){
-	console.log('buildNode() ' + parentNode + ',' + o);
   /* dom structure, e.g.:
   -------------------------------------
   [{
