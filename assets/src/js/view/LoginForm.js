@@ -3,17 +3,20 @@ const Session = require('../model/Session'),
       Broadcaster = require('../events/Broadcaster'),
       TidalCredentials = require('../TidalCredentials');
 
+
 // constructor ---------------------------------------------------------------//
 
 const LoginForm = function(parentNode, build) {
 
   View.prototype.constructor.call(this, parentNode);
 
-  // private vars
+
+  // private vars ------------------------------------------------------------//
 
   var _session;
 
-  // private methods
+
+  // private methods ---------------------------------------------------------//
 
   const _onLoginError = function(e) {
     const errorMessage = this.node.querySelector('.' + LoginForm.classNames.errorMessage);
@@ -24,7 +27,8 @@ const LoginForm = function(parentNode, build) {
     this.removeNode();
   }
 
-  // privileged methods
+
+  // privileged methods ------------------------------------------------------//
 
   Object.defineProperty(this, 'onRender', {
     value: function() {
@@ -43,7 +47,8 @@ const LoginForm = function(parentNode, build) {
     }
   });
 
-  // privileged properties
+
+  // privileged properties ---------------------------------------------------//
 
   Object.defineProperty(this, 'onSubmit', {
     get: function() {
@@ -52,11 +57,12 @@ const LoginForm = function(parentNode, build) {
   });
 
   Object.defineProperty(this, 'session', {
+    // as session is a singleton, we could remove this getter/setter
     get: function() {
       return _session;
     },
     set: function(o) {
-      if(o === Session) { // session is a singleton, we can probably remove this getter/setter?
+      if(o === Session) {
         _session = o;
         _session.onLoginError.addListener(this, _onLoginError);
         _session.onLoginSuccess.addListener(this, _onLoginSuccess);
@@ -68,6 +74,7 @@ const LoginForm = function(parentNode, build) {
 }
 
 LoginForm.prototype = new View();
+
 
 // static properties ---------------------------------------------------------//
 
@@ -84,6 +91,7 @@ Object.defineProperty(LoginForm,'classNames', {
 })
 
 // public getter/setters -----------------------------------------------------//
+
 
 Object.defineProperty(LoginForm.prototype, 'structure', {
   get: function() {
@@ -124,5 +132,6 @@ Object.defineProperty(LoginForm.prototype, 'structure', {
     }
   }
 });
+
 
 module.exports = LoginForm;
