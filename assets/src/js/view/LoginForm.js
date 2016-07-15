@@ -20,7 +20,7 @@ const LoginForm = function(parentNode, build) {
 
   const _onLoginError = function(e) {
     const errorMessage = this.node.querySelector('.' + LoginForm.classNames.errorMessage);
-    errorMessage.textContent = e.userMessage;
+    errorMessage.textContent = LoginForm.messages.loginError;
   }
 
   const _onLoginSuccess = function() {
@@ -88,7 +88,16 @@ Object.defineProperty(LoginForm,'classNames', {
       submitButton: 'login-form__submit'
     }
   }
-})
+});
+
+Object.defineProperty(LoginForm,'messages', {
+  get: function() {
+    return {
+      loginError: 'Incorrect username or password.'
+    }
+  }
+});
+
 
 // public getter/setters -----------------------------------------------------//
 
