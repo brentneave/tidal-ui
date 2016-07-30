@@ -16,7 +16,7 @@ const ListOf = function(type) {
       }
   		if(instance instanceof _type) {
   			_instances.push(instance);
-  			_onAddInstance.broadcast({instance: instance});
+  			_onAddInstance.broadcast(instance);
         return true;
   		} else {
         return false;
@@ -30,9 +30,9 @@ const ListOf = function(type) {
       }
 			var i = _instances.length;
 			while(i--) {
-				if(_instances[i] === o) {
+				if(_instances[i] === instance) {
           _instances.splice(i,1);
-      		_onRemoveInstance.broadcast({instance: instance});
+      		_onRemoveInstance.broadcast(instance);
       		return true;
         }
 			}
@@ -41,7 +41,7 @@ const ListOf = function(type) {
     const _contains = function(instance) {
 			var i = _instances.length;
 			while(i--) {
-				if(_instances[i] === o) {
+				if(_instances[i] === instance) {
           return true;
         }
 			}

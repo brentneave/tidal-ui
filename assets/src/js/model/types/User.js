@@ -4,8 +4,11 @@ function User (id) {
     throw new Error();
   }
 
-  var _id = id,
-      _username,
+
+
+  const _id = id;
+
+  var _username,
       _firstName,
       _lastName,
       _email,

@@ -1,20 +1,14 @@
-const Session = require('../model/Session'),
-      View = require('./View'),
-      Broadcaster = require('../events/Broadcaster'),
-      TidalCredentials = require('../TidalCredentials');
-
+const View = require('../View'),
+      ViewActions = require('../ViewActions'),
+      Broadcaster = require('../../events/Broadcaster'),
+      TidalCredentials = require('../../TidalCredentials'),
+      Action = require('../../events/Action');
 
 // constructor ---------------------------------------------------------------//
 
-const LoginForm = function(parentNode, build) {
+const LoginForm = function(parentNode) {
 
   View.prototype.constructor.call(this, parentNode);
-
-
-  // private vars ------------------------------------------------------------//
-
-  var _session;
-
 
   // private methods ---------------------------------------------------------//
 
@@ -24,7 +18,7 @@ const LoginForm = function(parentNode, build) {
   }
 
   const _onLoginSuccess = function() {
-    this.removeNode();
+    // this.removeNode();
   }
 
 
@@ -40,35 +34,18 @@ const LoginForm = function(parentNode, build) {
       usernameField.value = TidalCredentials.username;
       passwordField.value = TidalCredentials.password;
 
+      const username = usernameField.value,
+            password = passwordField.value,
+            that = this;
+
       form.addEventListener('submit', function(e) {
         e.preventDefault();
-        _session.login(usernameField.value, passwordField.value)
+        that.actions.broadcast(new Action(
+          ViewActions.LOGIN,
+          { username: username,
+            password: password }
+        ));
       });
-    }
-  });
-
-
-  // privileged properties ---------------------------------------------------//
-
-  Object.defineProperty(this, 'onSubmit', {
-    get: function() {
-      return _onSubmit;
-    }
-  });
-
-  Object.defineProperty(this, 'session', {
-    // as session is a singleton, we could remove this getter/setter
-    get: function() {
-      return _session;
-    },
-    set: function(o) {
-      if(o === Session) {
-        _session = o;
-        _session.onLoginError.addListener(this, _onLoginError);
-        _session.onLoginSuccess.addListener(this, _onLoginSuccess);
-      } else {
-        throw new Error();
-      }
     }
   });
 }

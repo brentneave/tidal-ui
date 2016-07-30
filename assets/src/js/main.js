@@ -1,6 +1,9 @@
-const App = require('./view/App');
+const ViewDispatcher = require('./view/ViewDispatcher'),
+      ModelActionHandler = require('./model/ModelReceiver'),
+      APIActionHandler = require('./api/APIReceiver'),
+      AppView = require('./view/types/AppView');
 
-const app = new App(document.body).render();
+const appView = new AppView(document.body).render();
 
 // const //FLAC = require('flac.js'),
       //AV = require('av'),

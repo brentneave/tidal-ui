@@ -1,9 +1,15 @@
+const Broadcaster = require('../events/Broadcaster'),
+			Model = require('../model/Model'),
+			ListOf = require('../utils/ListOf');
+
 const View = function(parentNode) {
 
   // private vars -----------------------------------------------//
 
+	const _actions = new Broadcaster();
 	var _parentNode = parentNode instanceof HTMLElement ? parentNode : document.body,
-			_node;
+			_node,
+			_model;
 
   // private methods --------------------------------------------//
 
@@ -22,10 +28,32 @@ const View = function(parentNode) {
   });
 
   Object.defineProperty(this, 'render', {
-    get: function() {
-      return _render;
-    }
+    value: _render
   });
+
+  Object.defineProperty(this, 'actions', {
+    get: function() { return _actions; }
+  });
+
+  Object.defineProperty(this, 'model', {
+    get: function() {
+			return _model;
+		},
+		set: function(o) {
+			if(o instanceof Model) {
+				if(_model) {
+					_model.onChange.removeListener(this, this.render);
+				}
+				_model = o;
+				_model.onChange.addListener(this, this.render);
+			} else {
+				throw new Error('Provide an instance of Model');
+			}
+		}
+  });
+
+  // initialise instance ----------------------------------------//
+	View.instances.add(this);
 }
 
 // getter/setters -----------------------------------------------//
@@ -47,6 +75,12 @@ Object.defineProperty(View.prototype, 'removeNode', {
 			this.node.parentNode.removeChild(this.node);
 		}
 	}
+});
+
+// static properties
+
+Object.defineProperty(View, 'instances', {
+	value: new ListOf(View)
 });
 
 // static methods

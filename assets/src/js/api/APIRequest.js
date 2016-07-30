@@ -1,8 +1,97 @@
-var request = require('request'),
-    Broadcaster = require('../events/Broadcaster');
+const request = require('request'),
+    APIConfig = require('./APIConfig'),
+    Broadcaster = require('../events/Broadcaster'),
+    Action = require('../events/Action'),
+    ListOf = require('../utils/ListOf');
 
+
+const APIRequest = function(url, header, form, method, responseAction, errorAction) {
+
+  const _actions = new Broadcaster();
+
+  var _header,
+      _url,
+      _form,
+      _method,
+      _responseAction,
+      _errorAction;
+
+  Object.defineProperty(this, 'actions', {
+    value: _actions
+  });
+
+  Object.defineProperty(this, 'header', {
+    get: function() {
+      return _header;
+    },
+    set: function(o) {
+      _header = o;
+    }
+  });
+
+  Object.defineProperty(this, 'url', {
+    get: function() {
+      return _url;
+    },
+    set: function(s) {
+      _url = s;
+    }
+  });
+
+  Object.defineProperty(this, 'responseAction', {
+    get: function() {
+      return _responseAction;
+    },
+    set: function(s) {
+      _responseAction = s;
+    }
+  });
+
+  Object.defineProperty(this, 'errorAction', {
+    get: function() {
+      return _errorAction;
+    },
+    set: function(s) {
+      _errorAction = s;
+    }
+  });
+
+  Object.defineProperty(this, 'form', {
+    get: function() {
+      return _form;
+    },
+    set: function(o) {
+      _form = o;
+    }
+  });
+
+  Object.defineProperty(this, 'method', {
+    get: function() {
+      return _method;
+    },
+    set: function(s) {
+      if (s == APIRequest.method.get || s == APIRequest.method.post) {
+        _method = s;
+      } else {
+        throw new Error('Provide a valid method.')
+      }
+    }
+  });
+
+  this.url    = url    ? url    : APIConfig.baseURL;
+  this.header = header ? header : APIConfig.tokenHeader;
+  this.form   = form   ? form   : {};
+  this.method = method ? method : APIRequest.method.get;
+
+  APIRequest.instances.add(this);
+
+}
 
 // static properties
+
+Object.defineProperty(APIRequest, 'instances', {
+  value: new ListOf(APIRequest)
+});
 
 Object.defineProperty(APIRequest, 'method', {
   value: Object.freeze({
@@ -11,99 +100,69 @@ Object.defineProperty(APIRequest, 'method', {
   })
 });
 
-// constructor
-
-function APIRequest(url, header, form, method) {
-
-  if (method != APIRequest.method.get && method != APIRequest.method.post) {
-    throw new Error('Provide a valid method')
-  }
-
-  const _onResponse = new Broadcaster(),
-        _onError = new Broadcaster(),
-        _header = header,
-        _url = url,
-        _form = form,
-        _method = method;
-
-  Object.defineProperty(this, 'onResponse', {
-    value: _onResponse
-  });
-
-  Object.defineProperty(this, 'onError', {
-    value: _onError
-  });
-
-  Object.defineProperty(this, 'header', {
-    value: _header
-  });
-
-  Object.defineProperty(this, 'url', {
-    value: _url
-  });
-
-  Object.defineProperty(this, 'form', {
-    value: _form
-  });
-
-  Object.defineProperty(this, 'method', {
-    value: _method
-  });
-
-}
-
 // public methods
 
-APIRequest.prototype.send = function() {
+Object.defineProperty(APIRequest.prototype, 'send', {
+  value: function() {
 
-  var that = this;
-  var callback = function(error, response, body) {
+    const that = this;
+    const callback = function(error, response, body) {
 
-    body = JSON.parse(body);
+      body = JSON.parse(body);
 
-    if(error) {
-      that.onError.broadcast({
-        error: error,
-        response: response,
-        body: body
-      });
+      if(error) {
+        that.actions.broadcast(new Action(
+          that.errorAction, {
+            apiRequest: this,
+            error: error,
+            response: response,
+            body: body
+          }
+        ));
+      }
+
+      else if (response.statusCode == 400
+            || response.statusCode == 401
+            || response.statusCode == 403
+            || response.statusCode == 404) {
+        that.actions.broadcast(new Action(
+          that.errorAction, {
+            apiRequest: this,
+            error: error,
+            response: response,
+            body: body
+          }
+        ));
+      }
+
+      else if (!error && response.statusCode == 200) {
+        that.actions.broadcast(new Action(
+          that.responseAction, {
+            apiRequest: this,
+            error: error,
+            response: response,
+            body: body
+          }
+        ));
+      }
+    };
+
+    if(this.method === APIRequest.method.get) {
+      request.get({
+        url : this.url,
+        headers: this.header,
+        qs: this.form
+      }, callback);
     }
 
-    else if (response.statusCode == 400
-          || response.statusCode == 401
-          || response.statusCode == 403
-          || response.statusCode == 404) {
-      that.onError.broadcast({
-        error: error,
-        response: response,
-        body: body
-      });
+    else if(this.method === APIRequest.method.post) {
+      request.post({
+        url : this.url,
+        headers: this.header,
+        form: this.form
+      }, callback);
     }
-
-    else if (!error && response.statusCode == 200) {
-      that.onResponse.broadcast({
-        error: error,
-        response: response,
-        body: body
-      });
-    }
-  };
-
-  if(this.method === APIRequest.method.get) {
-    request.get({
-      url : this.url,
-      headers: this.header,
-      qs: this.form
-    }, callback);
   }
-
-  else if(this.method === APIRequest.method.post) {
-    request.post({
-      url : this.url,
-      headers: this.header,
-      form: this.form
-    }, callback);
-  }
-}
+});
 
 module.exports = APIRequest;
