@@ -1,3 +1,3 @@
-const Artist = function() {
+const Artist = function(data) {
 }
 module.exports = Artist;

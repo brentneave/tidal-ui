@@ -8,14 +8,14 @@ Object.defineProperty(APIConfig, 'URLs', {
   value: Object.freeze({
     login: APIConfig.baseURL + '/login/username',
     user: APIConfig.baseURL + '/users',
-    favoriteAlbums: function(user) {
-      return APIConfig.baseURL + '/users/' + user.id + '/favorites/albums';
+    albums: function(session) {
+      return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/albums';
     },
-    favoriteArtists: function(user) {
-      return APIConfig.baseURL + '/users/' + user.id + '/favorites/artists';
+    artists: function(session) {
+      return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/artists';
     },
-    favoriteTracks: function(user) {
-      return APIConfig.baseURL + '/users/' + user.id + '/favorites/tracks';
+    tracks: function(session) {
+      return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/tracks';
     }
   })
 });
