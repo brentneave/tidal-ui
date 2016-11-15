@@ -21,12 +21,12 @@ Object.defineProperty(APIConfig, 'URLs', {
 });
 
 Object.defineProperty(APIConfig, 'token', {
-  value: '_KM2HixcUBZtmktH'
+  value: 'wdgaB1CilGA-S_s2'
 });
 
 Object.defineProperty(APIConfig, 'tokenHeader', {
   value: Object.freeze({
-    'X-Tidal-Token': '_KM2HixcUBZtmktH'
+    'X-Tidal-Token': 'wdgaB1CilGA-S_s2'
   })
 });
 
