@@ -1,10 +1,12 @@
+const Model = require('../Model');
+
 function User (id) {
+
+  Model.prototype.constructor.call(this);
 
   if(!id) {
     throw new Error();
   }
-
-
 
   const _id = id;
 
@@ -98,5 +100,7 @@ function User (id) {
   });
 
 }
+
+User.prototype = new Model();
 
 module.exports = User;
