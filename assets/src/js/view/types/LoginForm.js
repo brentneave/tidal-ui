@@ -10,20 +10,6 @@ const LoginForm = function(parentNode) {
 
   View.prototype.constructor.call(this, parentNode);
 
-  // private methods ---------------------------------------------------------//
-
-  const _onLoginError = function(e) {
-    const errorMessage = this.node.querySelector('.' + LoginForm.classNames.errorMessage);
-    errorMessage.textContent = LoginForm.messages.loginError;
-  }
-
-  const _onLoginSuccess = function() {
-    // this.removeNode();
-  }
-
-
-  // privileged methods ------------------------------------------------------//
-
   Object.defineProperty(this, 'onRender', {
     value: function() {
       var form          = this.node,
@@ -48,10 +34,15 @@ const LoginForm = function(parentNode) {
       });
     }
   });
+
+  this.onModelChange = function() {
+    if(this.model.isLoggedIn) {
+      this.destroy();
+    }
+  }
 }
 
 LoginForm.prototype = new View();
-
 
 // static properties ---------------------------------------------------------//
 
@@ -118,6 +109,5 @@ Object.defineProperty(LoginForm.prototype, 'structure', {
     }
   }
 });
-
 
 module.exports = LoginForm;

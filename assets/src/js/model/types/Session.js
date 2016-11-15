@@ -2,7 +2,7 @@ const Model = require('../Model'),
       Broadcaster = require('../../events/Broadcaster'),
       User = require('./User');
 
-function Session() {
+const Session = function() {
 
   Model.prototype.constructor.call(this);
 

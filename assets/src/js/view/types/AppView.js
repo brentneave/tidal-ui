@@ -1,15 +1,14 @@
 const View = require('../View'),
       LoginForm = require('./LoginForm'),
+      UserProfile = require('./UserProfile'),
       ModelState = require('../../model/ModelState');
+
 
 const AppView = function(parentNode) {
   View.prototype.constructor.call(this, parentNode);
 }
 
 AppView.prototype = new View();
-
-
-// public getter/setters -----------------------------------------------------//
 
 Object.defineProperty(AppView.prototype, 'structure', {
   value: {

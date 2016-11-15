@@ -42,12 +42,12 @@ const View = function(parentNode) {
 		set: function(o) {
 			if(o instanceof Model) {
 				if(_model) {
-					_model.onChange.removeListener(this, this.render);
+					_model.onChange.removeListener(this, this.onModelChange);
 				}
 				_model = o;
-				_model.onChange.addListener(this, this.render);
+				_model.onChange.addListener(this, this.onModelChange);
 			} else {
-				throw new Error('Provide an instance of Model');
+				throw new Error('Provide an instance of Model:' + o);
 			}
 		}
   });
@@ -69,11 +69,22 @@ Object.defineProperty(View.prototype, 'structure', {
 
 // public methods -----------------------------------------------//
 
+View.prototype.onModelChange = function() {
+		// placeholder
+}
+
 Object.defineProperty(View.prototype, 'removeNode', {
 	value: function() {
 		if(this.node) {
 			this.node.parentNode.removeChild(this.node);
 		}
+	}
+});
+
+Object.defineProperty(View.prototype, 'destroy', {
+	value: function() {
+		this.removeNode();
+		View.instances.remove(this);
 	}
 });
 
@@ -156,6 +167,7 @@ View.buildNode = function(parentNode, o){
 
 		parentNode.appendChild(node);
 	}
+
 	// recurse through child nodes
 	if(o.children) {
 		var a = o.children,

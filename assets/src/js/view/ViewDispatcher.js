@@ -5,7 +5,6 @@ const ViewDispatcher = function() {
   Object.defineProperty(this, 'actions', { value: new Broadcaster() });
 
   const _dispatchAction = function(action) {
-    console.log('dispatching action: ' + action.type);
     this.actions.broadcast(action);
   }
 
