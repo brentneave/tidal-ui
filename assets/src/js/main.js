@@ -1,9 +1,24 @@
 const ViewDispatcher = require('./view/ViewDispatcher'),
       ModelActionHandler = require('./model/ModelReceiver'),
       APIActionHandler = require('./api/APIReceiver'),
-      AppView = require('./view/types/AppView');
+      AppView = require('./view/types/AppView'),
+      DomDiff = require('skatejs-dom-diff');
 
 const appView = new AppView(document.body).render();
+
+const thing1 = document.body;
+const thing2 = document.createDocumentFragment();
+
+const thing3 = document.createElement('div');
+thing3.setAttribute('class', 'test');
+
+thing2.appendChild(thing3);
+
+DomDiff.merge({
+  source: thing1,
+  destination: thing2
+});
+
 
 // const //FLAC = require('flac.js'),
       //AV = require('av'),
