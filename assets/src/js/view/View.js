@@ -1,52 +1,75 @@
 
-const View = function() {
+const View = function()
+{
 
     var _root = undefined;
 
-    Object.defineProperty(this, 'root', {
-        set: function(node) {
+    Object.defineProperty(this, 'root',
+    {
+        set: function(node)
+        {
             _root = node;
         },
-        get: function() {
+        get: function()
+        {
             if (_root === undefined) throw new Error("No root defined");
             return _root;
         }
     });
 
-    Object.defineProperty(this, 'createNode', {
-        value: function(o, parentNode) {
-
+    Object.defineProperty(this, 'createNode',
+    {
+        value: function(o, parentNode)
+        {
             if(!o.tag) throw new Error();
 
             var node = document.createElement(o.tag);
 
-            if(o.id) {
+            if(o.id)
+            {
                 node.setAttribute('id', o.id);
             }
 
-            if(o.className) {
+            if(o.className)
+            {
                 node.setAttribute('class', o.className);
             }
 
-            if(o.attributes) {
-                for(var s in o.attributes) {
+            if(o.attributes)
+            {
+                for(var s in o.attributes)
+                {
                     node.setAttribute(s, o.attributes[s]);
                 }
             }
 
-            if(o.text) {
+            if(o.text)
+            {
                 node.textContent = o.text;
             }
 
-            if(parentNode) {
+            if(o.events)
+            {
+                for(var s in o.events)
+                {
+                    console.log(s);
+                    console.log(o.events[s]);
+                    node.addEventListener(s, o.events[s], false);
+                }
+            }
+
+            if(parentNode)
+            {
                 parentNode.appendChild(node);
             }
 
-            if(o.children) {
+            if(o.children)
+            {
                 var a = o.children,
                 n = a.length,
                 child;
-                for (var i=0; i<n; i++) {
+                for (var i=0; i<n; i++)
+                {
                     child = a[i];
                     this.createNode(child, node);
                 }

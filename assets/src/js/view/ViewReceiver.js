@@ -5,18 +5,18 @@ const ModelDispatcher = require('../model/ModelDispatcher'),
       LoginForm = require('./types/LoginForm'),
       DOMDiff = require('skatejs-dom-diff');
 
-const ViewReceiver = function() {
+const ViewReceiver = function()
+{
 
-    console.log(LoginForm.render);
-
-    const _updateDOM = function(node) {
-        const wrapper = document.createElement('div');
-        wrapper.setAttribute('id', 'app')
-        wrapper.appendChild(node);
-        DOMDiff.merge({
-            source: View.root,
-            destination: wrapper
-        });
+    const _updateDOM = function(node)
+    {
+        DOMDiff.merge
+        (
+            {
+                source: View.root,
+                destination: node
+            }
+        );
     }
 
     const _handleModelActions = function(action)
