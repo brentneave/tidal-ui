@@ -1,187 +1,61 @@
-const Broadcaster = require('../events/Broadcaster'),
-			Model = require('../model/Model'),
-			ListOf = require('../utils/ListOf');
 
-const View = function(parentNode) {
+const View = function() {
 
-  // private vars -----------------------------------------------//
+    var _root = undefined;
 
-	const _actions = new Broadcaster();
-	var _parentNode = parentNode instanceof HTMLElement ? parentNode : document.body,
-			_node,
-			_model;
+    Object.defineProperty(this, 'root', {
+        set: function(node) {
+            _root = node;
+        },
+        get: function() {
+            if (_root === undefined) throw new Error("No root defined");
+            return _root;
+        }
+    });
 
-  // private methods --------------------------------------------//
+    Object.defineProperty(this, 'createNode', {
+        value: function(o, parentNode) {
 
-	const _render = function() {
-		this.removeNode();
-		_node = View.buildNode(_parentNode, this.structure);
-		if(this.onRender) { this.onRender(); }
-	}
+            if(!o.tag) throw new Error();
 
-  // privileged getter/setters ----------------------------------//
+            var node = document.createElement(o.tag);
 
-  Object.defineProperty(this, 'node', {
-    get: function() {
-      return _node;
-    }
-  });
+            if(o.id) {
+                node.setAttribute('id', o.id);
+            }
 
-  Object.defineProperty(this, 'render', {
-    value: _render
-  });
+            if(o.className) {
+                node.setAttribute('class', o.className);
+            }
 
-  Object.defineProperty(this, 'actions', {
-    get: function() { return _actions; }
-  });
+            if(o.attributes) {
+                for(var s in o.attributes) {
+                    node.setAttribute(s, o.attributes[s]);
+                }
+            }
 
-  Object.defineProperty(this, 'model', {
-    get: function() {
-			return _model;
-		},
-		set: function(o) {
-			if(o instanceof Model) {
-				if(_model) {
-					_model.onChange.removeListener(this, this.onModelChange);
-				}
-				_model = o;
-				_model.onChange.addListener(this, this.onModelChange);
-			} else {
-				throw new Error('Provide an instance of Model:' + o);
-			}
-		}
-  });
+            if(o.text) {
+                node.textContent = o.text;
+            }
 
-  // initialise instance ----------------------------------------//
-	View.instances.add(this);
+            if(parentNode) {
+                parentNode.appendChild(node);
+            }
+
+            if(o.children) {
+                var a = o.children,
+                n = a.length,
+                child;
+                for (var i=0; i<n; i++) {
+                    child = a[i];
+                    this.createNode(child, node);
+                }
+            }
+
+            return node;
+        }
+    });
+
 }
 
-// getter/setters -----------------------------------------------//
-
-Object.defineProperty(View.prototype, 'structure', {
-  get: function() {
-    return {
-  		tag : 'div',
-  		className : 'view'
-    }
-  }
-});
-
-// public methods -----------------------------------------------//
-
-View.prototype.onModelChange = function() {
-		// placeholder
-}
-
-Object.defineProperty(View.prototype, 'removeNode', {
-	value: function() {
-		if(this.node) {
-			this.node.parentNode.removeChild(this.node);
-		}
-	}
-});
-
-Object.defineProperty(View.prototype, 'destroy', {
-	value: function() {
-		this.removeNode();
-		View.instances.remove(this);
-	}
-});
-
-// static properties
-
-Object.defineProperty(View, 'instances', {
-	value: new ListOf(View)
-});
-
-// static methods
-
-View.buildNode = function(parentNode, o){
-  /* dom structure, e.g.:
-  -------------------------------------
-  [{
-  	tag : 'div',
-  	className : 'view',
-  	children : [
-  		{
-  			tag : 'span',
-  			className : 'child',
-  			children : [
-  				{
-  					tag : 'p',
-  					className : 'subChild'
-  				},
-  				{
-  					tag : 'p',
-  					className : 'subChild'
-  				}
-  			]
-  		},
-  		{
-  			tag : 'span',
-  			className : 'child',
-  			children : [
-  				{
-  					tag : 'p',
-  					className : 'subChild'
-  				},
-  				{
-  					tag : 'p',
-  					className : 'subChild'
-  				}
-  			]
-  		}
-  	]
-  }];
-  -------------------------------------  */
-
-	if(parentNode == undefined) parentNode = document.body;
-	if(o == undefined) o = this.structure;
-
-	// View classes
-	if(o.viewClass && o.viewClass.prototype instanceof View) {
-		var view = new o.viewClass(parentNode);
-		if(o.properties) {
-			for(var s in o.properties) {
-				view[s] = o.properties[s];
-			}
-		}
-		view.render();
-	}
-
-	// basic DOM nodes
-	else if(o.tag) {
-		var node = document.createElement(o.tag);
-
-		if(o.className) node.setAttribute('class', o.className);
-
-		if(o.attributes) {
-			for(var s in o.attributes) {
-				node.setAttribute(s, o.attributes[s]);
-			}
-		}
-
-		if(o.text) {
-			node.textContent = o.text;
-		}
-
-		parentNode.appendChild(node);
-	}
-
-	// recurse through child nodes
-	if(o.children) {
-		var a = o.children,
-				n = a.length,
-				child;
-
-		for (var i=0; i<n; i++)
-		{
-			child = a[i];
-			View.buildNode(node, child);
-		}
-	}
-
-	return node;
-}
-
-module.exports = View;
+module.exports = new View();

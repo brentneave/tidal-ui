@@ -1,56 +1,14 @@
-const ViewDispatcher = require('./view/ViewDispatcher'),
-      ModelActionHandler = require('./model/ModelReceiver'),
-      APIActionHandler = require('./api/APIReceiver'),
-      AppView = require('./view/types/AppView'),
-      DomDiff = require('skatejs-dom-diff');
+const Action = require('./events/Action'),
+      View = require('./view/View'),
+      ViewDispatcher = require('./view/ViewDispatcher'),
+      ViewReceiver = require('./view/ViewReceiver'),
+      ViewActions = require('./view/ViewActions'),
+      ModelDispatcher = require('./model/ModelDispatcher'),
+      ModelReceiver = require('./model/ModelReceiver'),
+      ModelActions = require('./model/ModelActions'),
+      APIDispatcher = require('./api/APIDispatcher'),
+      APIReceiver = require('./api/APIReceiver'),
+      APIActions = require('./api/APIActions');
 
-const appView = new AppView(document.body).render();
-
-const thing1 = document.body;
-const thing2 = document.createDocumentFragment();
-
-const thing3 = document.createElement('div');
-thing3.setAttribute('class', 'test');
-
-thing2.appendChild(thing3);
-
-DomDiff.merge({
-  source: thing1,
-  destination: thing2
-});
-
-
-// const //FLAC = require('flac.js'),
-      //AV = require('av'),
-      // TidalCredentials = require('./TidalCredentials'),
-      // API = require('./api/API'),
-      // APIDispatcher = require('./api/APIDispatcher');//,
-      // Session = require('./model/Session'),
-      // LoginForm = require('./view/LoginForm'),
-      // Favorites = require('./model/Favorites');
-
-
-
-// const sessionListener = {
-//   onLoginSuccess : function(e) {
-//     console.log('Logged in: ' + e);
-//     console.log('\t' + e.session.id);
-//     console.log('\t' + e.session.user.id);
-//     console.log('\t' + e.session.countryCode);
-//     console.log('\t' + e.session.isLoggedIn);
-//     Favorites.loadAlbums();
-//   }
-// }
-// Session.onLoginSuccess.addListener(sessionListener, sessionListener.onLoginSuccess);
-//
-// const formListener = {
-//   onSubmit : function(e) {
-//     console.log('username = ' + e.username);
-//     console.log('password = ' + e.password);
-//     Session.login(e.username, e.password);
-//   }
-// }
-//
-// const loginForm = new LoginForm()
-// loginForm.build(document.body);
-// loginForm.onSubmit.addListener(formListener, formListener.onSubmit);
+View.root = document.getElementById('app');
+ModelDispatcher.actions.broadcast(new Action(ModelActions.INITIALISE));

@@ -45,7 +45,7 @@ const ModelReceiver = function() {
     }
   }
 
-  ViewDispatcher.actions.addListener(this, _handleViewActions);
+  ViewDispatcher.addListener(this, _handleViewActions);
   APIDispatcher.actions.addListener(this, _handleAPIActions);
 
 }
