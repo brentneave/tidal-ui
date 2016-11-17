@@ -1,29 +1,45 @@
 const APIConfig = require('./APIConfig'),
-      ModelDispatcher = require('../model/ModelDispatcher'),
-      ModelActions = require('../model/ModelActions'),
-      Login = require('./types/Login'),
-      Artists = require('./types/Artists');
+APIRequest = require('./APIRequest'),
+APIActions = require('./APIActions'),
+ModelDispatcher = require('../model/ModelDispatcher'),
+ModelActions = require('../model/ModelActions');
 
 const APIReceiver = function() {
 
-    const _handleModelActions = function(action) {
+    const _handleModelActions = function(action)
+    {
         console.log('APIReceiver handling ' + action.type);
 
-        switch(action.type) {
+        switch(action.type)
+        {
             case ModelActions.LOGIN:
-                Login.form = { username: action.payload.username, password: action.payload.password };
-                Login.send();
+                var request = new APIRequest();
+                request.url = APIConfig.URLs.login;
+                request.header = APIConfig.tokenHeader;
+                request.method = APIRequest.method.post;
+                request.responseAction = APIActions.RESPONSE_LOGIN;
+                request.errorAction = APIActions.ERROR_LOGIN;
+                request.form =
+                {
+                    username: action.payload.username, password: action.payload.password
+                };
+                request.send();
                 break;
 
             case ModelActions.GET_ARTISTS:
                 const session = action.payload.session;
-                Artists.header = APIConfig.sessionHeader(session);
-                Artists.url = APIConfig.URLs.artists(session);
-                Artists.form = {
+                var request = new APIRequest();
+                request.url = APIConfig.URLs.artists(session);
+                request.header = APIConfig.sessionHeader(session);
+                request.method = APIRequest.method.get;
+                request.responseAction = APIActions.RESPONSE_ARTISTS;
+                request.errorAction = APIActions.ERROR_ARTISTS;
+                request.form =
+                {
                     countryCode: session.countryCode,
                     limit: 9999
                 };
-                Artists.send();
+                request.send();
                 break;
 
             default:
