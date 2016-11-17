@@ -7,11 +7,12 @@ const LoginForm = function()
 {
     var submitLogin = function(e)
     {
+        e.preventDefault();
+
         const
-        parentNode = e.target.parentNode,
-        username = document.querySelector('[name="username"]').value,
-        password = document.querySelector('[name="password"]').value;
-        console.log('username = ' + username + ', password = ' + password);
+            parentNode = e.target,
+            username = parentNode.querySelector('[name="username"]').value,
+            password = parentNode.querySelector('[name="password"]').value;
 
         ViewDispatcher.broadcast
         (
@@ -24,12 +25,18 @@ const LoginForm = function()
                 }
             )
         );
+
+        return false;
     }
 
     const _render = function(o)
     {
         return {
-            tag: 'div',
+            tag: 'form',
+            events:
+            {
+                submit: submitLogin
+            },
             children:
             [
                 {
@@ -60,10 +67,6 @@ const LoginForm = function()
                     attributes:
                     {
                         type: 'submit'
-                    },
-                    events:
-                    {
-                        click: submitLogin
                     }
                 }
             ]

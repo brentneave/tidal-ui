@@ -21,35 +21,36 @@ const ViewReceiver = function()
 
     const _handleModelActions = function(action)
     {
+        const node = { tag: 'div', id: 'app', children: [] }
+
         switch(action.type)
         {
             case ModelActions.INITIALISE:
-                const node = View.createNode
-                ({
-                    tag: 'div',
-                    text: 'hello!',
-                    className: 'test',
-                    children:
-                    [
-                        {
-                            tag: 'span',
-                            text: 'hello to you!'
-                        },
-                        LoginForm.render({ title: 'Please to be logging in!' })
-                    ]
-                });
-                _updateDOM(node);
+                node.children.push
+                (
+                    LoginForm.render({ title: 'Please to be logging in!' })
+                );
                 break;
             case ModelActions.LOGIN_ERROR:
-                const node = View.createNode
+                node.children.push
                 (
                     LoginForm.render({ title: 'Whoops! Try a different username or password.' })
                 );
-                _updateDOM(node);
+                break;
+            case ModelActions.LOGIN_RESPONSE:
+                node.children.push
+                (
+                    {
+                        tag: 'div',
+                        text: 'Great success! You have logged in'
+                    }
+                );
                 break;
             default:
-            break;
+                break;
         }
+
+        _updateDOM(View.createNode(node));
     }
 
     ModelDispatcher.actions.addListener(this, _handleModelActions);
