@@ -23,7 +23,10 @@ Object.defineProperty(APIConfig, 'URLs',
     })
 });
 
-Object.defineProperty(APIConfig, 'token', { value: 'wdgaB1CilGA-S_s2' });
+Object.defineProperty(APIConfig, 'token',
+{
+    value: 'wdgaB1CilGA-S_s2' 
+});
 
 Object.defineProperty(APIConfig, 'tokenHeader',
 {

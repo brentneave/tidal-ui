@@ -1,21 +1,26 @@
 const Action = require('../../events/Action'),
-      ViewActions = require('../ViewActions'),
-      ViewDispatcher = require('../ViewDispatcher'),
-      TidalCredentials = require('../../TidalCredentials');
+ViewActions = require('../ViewActions'),
+ViewDispatcher = require('../ViewDispatcher'),
+TidalCredentials = require('../../TidalCredentials');
 
 const LoginForm = function()
 {
-    var testFunction = function()
+    var submitLogin = function(e)
     {
-        console.log('Hi there!');
+        const
+        parentNode = e.target.parentNode,
+        username = document.querySelector('[name="username"]').value,
+        password = document.querySelector('[name="password"]').value;
+        console.log('username = ' + username + ', password = ' + password);
+
         ViewDispatcher.broadcast
         (
             new Action
             (
                 ViewActions.LOGIN,
                 {
-                    username: TidalCredentials.username,
-                    password: TidalCredentials.password
+                    username: username,
+                    password: password
                 }
             )
         );
@@ -30,7 +35,8 @@ const LoginForm = function()
                 {
                     tag: 'p',
                     text: o.title
-                },{
+                },
+                {
                     tag: 'input',
                     attributes:
                     {
@@ -38,7 +44,8 @@ const LoginForm = function()
                         name: 'username',
                         placeholder: 'Email'
                     }
-                },{
+                },
+                {
                     tag: 'input',
                     attributes:
                     {
@@ -46,15 +53,17 @@ const LoginForm = function()
                         name: 'password',
                         placeholder: 'Password'
                     }
-                },{
+                },
+                {
                     tag: 'button',
                     text: 'Log in',
                     attributes:
                     {
                         type: 'submit'
                     },
-                    events: {
-                        click: testFunction
+                    events:
+                    {
+                        click: submitLogin
                     }
                 }
             ]
@@ -63,10 +72,10 @@ const LoginForm = function()
 
     Object.defineProperty
     (this, 'render',
-        {
-            value: _render
-        }
-    );
+    {
+        value: _render
+    }
+);
 }
 
 module.exports = new LoginForm();

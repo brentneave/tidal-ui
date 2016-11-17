@@ -40,6 +40,13 @@ const ViewReceiver = function()
                 });
                 _updateDOM(node);
                 break;
+            case ModelActions.LOGIN_ERROR:
+                const node = View.createNode
+                (
+                    LoginForm.render({ title: 'Whoops! Try a different username or password.' })
+                );
+                _updateDOM(node);
+                break;
             default:
             break;
         }
