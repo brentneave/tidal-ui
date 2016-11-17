@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       main: {
         options: {
           browserifyOptions: {
-            debug: false
+            debug: true
           }
         },
         src: ['assets/src/js/main.js'],
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: ['assets/src/js/**/*', 'package.json'],
-        tasks: ['browserify', 'uglify']
+        tasks: ['browserify']
       }
     }
   });
@@ -51,5 +51,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.registerTask('default',['sass', 'autoprefixer', 'browserify', 'uglify', 'watch']);
+  grunt.registerTask('default',['sass', 'autoprefixer', 'browserify', 'watch']);
+  grunt.registerTask('build',['sass', 'autoprefixer', 'browserify', 'uglify']);
 }
