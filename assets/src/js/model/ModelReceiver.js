@@ -22,21 +22,28 @@ const ModelReceiver = function()
                 ModelState.session.user = new User(action.payload.body.userId);
                 ModelState.session.countryCode = action.payload.body.countryCode;
                 ModelState.session.id = action.payload.body.sessionId;
-                // ModelDispatcher.actions.broadcast(new Action(ModelActions.GET_ARTISTS, { session: ModelState.session }));
-                ModelDispatcher.actions.broadcast(new Action(ModelActions.LOGIN_RESPONSE));
+                ModelDispatcher.actions.broadcast(new Action(ModelActions.LOGIN_RESPONSE, { state: ModelState }));
                 break;
 
             case APIActions.ERROR_LOGIN:
-                ModelDispatcher.actions.broadcast(new Action(ModelActions.LOGIN_ERROR));
+                ModelState.session.user = null;
+                ModelState.session.countryCode = null;
+                ModelState.session.id = null;
+                ModelDispatcher.actions.broadcast(new Action(ModelActions.LOGIN_ERROR, { state: ModelState }));
                 break;
 
             case APIActions.RESPONSE_ARTISTS:
-                var n = action.payload.body.items.length,
-                i;
+                var i, n = action.payload.body.items.length;
                 for(i=0; i<n; i++)
                 {
                     console.log(action.payload.body.items[i].item);
+                    ModelState.artists.push(action.payload.body.items[i].item);
                 }
+                ModelDispatcher.actions.broadcast(new Action(ModelActions.ARTISTS_RESPONSE, { state: ModelState }));
+                break;
+
+            case APIActions.ERROR_ARTISTS:
+                ModelDispatcher.actions.broadcast(new Action(ModelActions.ARTISTS_ERROR, { state: ModelState }));
                 break;
 
             default:
@@ -50,6 +57,12 @@ const ModelReceiver = function()
         {
             case ViewActions.LOGIN:
                 ModelDispatcher.actions.broadcast(new Action(ModelActions.LOGIN, action.payload));
+                break;
+            case ViewActions.GET_ARTISTS:
+                ModelDispatcher.actions.broadcast(new Action(ModelActions.GET_ARTISTS, {session: ModelState.session}));
+                break;
+            case ViewActions.GET_LATEST_RELEASES:
+                ModelDispatcher.actions.broadcast(new Action(ModelActions.GET_LATEST_RELEASES, {artists: ModelState.artists, session: ModelState.session}));
                 break;
             default:
                 break;

@@ -7,7 +7,9 @@ const request = require('request'),
 
 const APIRequest = function(url, header, form, method, responseAction, errorAction) {
 
-  const _actions = new Broadcaster();
+  // const _actions = new Broadcaster();
+  const _onResponse = new Broadcaster();
+  const _onError = new Broadcaster();
 
   var _header,
       _url,
@@ -16,8 +18,12 @@ const APIRequest = function(url, header, form, method, responseAction, errorActi
       _responseAction,
       _errorAction;
 
-  Object.defineProperty(this, 'actions', {
-    value: _actions
+  Object.defineProperty(this, 'onResponse', {
+      value: _onResponse
+  });
+
+  Object.defineProperty(this, 'onError', {
+      value: _onError
   });
 
   Object.defineProperty(this, 'header', {
@@ -83,21 +89,19 @@ const APIRequest = function(url, header, form, method, responseAction, errorActi
   this.form   = form   ? form   : {};
   this.method = method ? method : APIRequest.method.get;
 
-  APIRequest.instances.add(this);
+  APIRequest.onCreateInstance.broadcast(this);
 
 }
-
-// static properties
-
-Object.defineProperty(APIRequest, 'instances', {
-  value: new ListOf(APIRequest)
-});
 
 Object.defineProperty(APIRequest, 'method', {
   value: Object.freeze({
     get: 'get',
     post: 'post'
   })
+});
+
+Object.defineProperty(APIRequest, 'onCreateInstance', {
+  value: new Broadcaster()
 });
 
 // public methods
@@ -108,43 +112,52 @@ Object.defineProperty(APIRequest.prototype, 'send', {
     const that = this;
     const callback = function(error, response, body) {
 
-      body = JSON.parse(body);
+        body = JSON.parse(body);
 
-      if(error) {
-        that.actions.broadcast(new Action(
-          that.errorAction, {
-            apiRequest: this,
-            error: error,
-            response: response,
-            body: body
-          }
-        ));
-      }
+        if(error)
+        {
+            that.onError.broadcast
+            (
+                {
+                    source: that,
+                    error: error,
+                    response: response,
+                    body: body
+                }
+            )
+        }
 
-      else if (response.statusCode == 400
-            || response.statusCode == 401
-            || response.statusCode == 403
-            || response.statusCode == 404) {
-        that.actions.broadcast(new Action(
-          that.errorAction, {
-            apiRequest: this,
-            error: error,
-            response: response,
-            body: body
-          }
-        ));
-      }
+        else if
+        (
+            response.statusCode == 400
+         || response.statusCode == 401
+         || response.statusCode == 403
+         || response.statusCode == 404
+        )
+        {
+            that.onError.broadcast
+            (
+                {
+                    source: that,
+                    error: error,
+                    response: response,
+                    body: body
+                }
+            );
+        }
 
-      else if (!error && response.statusCode == 200) {
-        that.actions.broadcast(new Action(
-          that.responseAction, {
-            apiRequest: this,
-            error: error,
-            response: response,
-            body: body
-          }
-        ));
-      }
+        else if (!error && response.statusCode == 200)
+        {
+            that.onResponse.broadcast
+            (
+                {
+                    source: that,
+                    error: error,
+                    response: response,
+                    body: body
+                }
+            );
+        }
     };
 
     if(this.method === APIRequest.method.get) {

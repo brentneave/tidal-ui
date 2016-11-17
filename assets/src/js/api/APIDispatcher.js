@@ -1,11 +1,42 @@
-const APIRequest = require('./APIRequest'),
-      Broadcaster = require('../events/Broadcaster');
+const
+    Action = require('../events/Action'),
+    Broadcaster = require('../events/Broadcaster'),
+    APIRequest = require('./APIRequest');
 
-const APIDispatcher = function() {
-  Object.defineProperty(this, 'actions', { value: new Broadcaster() });
-  APIRequest.instances.onAddInstance.addListener(this, function(instance) {
-    instance.actions.addListener(this.actions, this.actions.broadcast);
-  });
+const APIDispatcher = function()
+{
+    const _actions = new Broadcaster();
+
+    const _broadcastResponseAction = function(e)
+    {
+        if(e.source.responseAction)
+        {
+            _actions.broadcast
+            (
+                new Action(e.source.responseAction, e)
+            );
+        }
+    }
+
+    const _broadcastErrorAction = function(e)
+    {
+        if(e.source.responseAction)
+        {
+            _actions.broadcast
+            (
+                new Action(e.source.errorAction, e)
+            );
+        }
+    }
+
+    const _onCreateInstance = function(instance)
+    {
+        instance.onResponse.addListener(this, _broadcastResponseAction);
+        instance.onError.addListener(this, _broadcastErrorAction);
+    }
+
+    APIRequest.onCreateInstance.addListener(this, _onCreateInstance);
+
+    Object.defineProperty(this, 'actions', { value: _actions });
 }
-
 module.exports = new APIDispatcher();

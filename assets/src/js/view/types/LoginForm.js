@@ -1,7 +1,6 @@
 const Action = require('../../events/Action'),
 ViewActions = require('../ViewActions'),
-ViewDispatcher = require('../ViewDispatcher'),
-TidalCredentials = require('../../TidalCredentials');
+ViewDispatcher = require('../ViewDispatcher');
 
 const LoginForm = function()
 {
@@ -74,11 +73,12 @@ const LoginForm = function()
     };
 
     Object.defineProperty
-    (this, 'render',
-    {
-        value: _render
-    }
-);
+    (
+        this, 'render',
+        {
+            value: _render
+        }
+    );
 }
 
 module.exports = new LoginForm();

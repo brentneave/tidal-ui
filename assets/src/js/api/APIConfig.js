@@ -19,13 +19,17 @@ Object.defineProperty(APIConfig, 'URLs',
         tracks: function(session)
         {
             return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/tracks';
+        },
+        artistAlbums: function(artistId)
+        {
+            return APIConfig.baseURL + '/artists/' + artistId + '/albums';
         }
     })
 });
 
 Object.defineProperty(APIConfig, 'token',
 {
-    value: 'wdgaB1CilGA-S_s2' 
+    value: 'wdgaB1CilGA-S_s2'
 });
 
 Object.defineProperty(APIConfig, 'tokenHeader',

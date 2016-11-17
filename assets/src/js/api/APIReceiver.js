@@ -1,6 +1,9 @@
 const APIConfig = require('./APIConfig'),
 APIRequest = require('./APIRequest'),
 APIActions = require('./APIActions'),
+LoginRequest = require('./types/LoginRequest'),
+ArtistsRequest = require('./types/ArtistsRequest'),
+LatestReleasesRequest = require('./types/LatestReleasesRequest'),
 ModelDispatcher = require('../model/ModelDispatcher'),
 ModelActions = require('../model/ModelActions');
 
@@ -13,33 +16,15 @@ const APIReceiver = function() {
         switch(action.type)
         {
             case ModelActions.LOGIN:
-                var request = new APIRequest();
-                request.url = APIConfig.URLs.login;
-                request.header = APIConfig.tokenHeader;
-                request.method = APIRequest.method.post;
-                request.responseAction = APIActions.RESPONSE_LOGIN;
-                request.errorAction = APIActions.ERROR_LOGIN;
-                request.form =
-                {
-                    username: action.payload.username, password: action.payload.password
-                };
-                request.send();
+                new LoginRequest(action.payload.username, action.payload.password).send();
                 break;
 
             case ModelActions.GET_ARTISTS:
-                const session = action.payload.session;
-                var request = new APIRequest();
-                request.url = APIConfig.URLs.artists(session);
-                request.header = APIConfig.sessionHeader(session);
-                request.method = APIRequest.method.get;
-                request.responseAction = APIActions.RESPONSE_ARTISTS;
-                request.errorAction = APIActions.ERROR_ARTISTS;
-                request.form =
-                {
-                    countryCode: session.countryCode,
-                    limit: 9999
-                };
-                request.send();
+                new ArtistsRequest(action.payload.session).send();
+                break;
+
+            case ModelActions.GET_LATEST_RELEASES:
+                new LatestReleasesRequest(action.payload.artists, action.payload.session);
                 break;
 
             default:
