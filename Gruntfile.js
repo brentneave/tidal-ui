@@ -22,12 +22,18 @@ module.exports = function(grunt) {
       main: {
         options: {
           browserifyOptions: {
-            debug: true
+            debug: false
           }
         },
         src: ['assets/src/js/main.js'],
         dest: 'assets/dist/js/main.js'
       }
+    },
+    uglify: {
+      dist: {
+        src: 'assets/dist/js/main.js',
+        dest: 'assets/dist/js/main.js'
+      },
     },
     watch: {
       css: {
@@ -36,7 +42,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: ['assets/src/js/**/*', 'package.json'],
-        tasks: ['browserify']
+        tasks: ['browserify', 'uglify']
       }
     }
   });
@@ -44,5 +50,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-browserify');
-  grunt.registerTask('default',['sass', 'autoprefixer', 'browserify', 'watch']);
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.registerTask('default',['sass', 'autoprefixer', 'browserify', 'uglify', 'watch']);
 }
