@@ -3,10 +3,9 @@
   "version": "0.0.1",
   "dependencies": {
     "request": "latest",
-    "wimp-api": "latest",
     "av": "latest",
     "flac.js": "latest",
-    "fluent-ffmpeg": "latest"
+    "skatejs-dom-diff": "latest"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

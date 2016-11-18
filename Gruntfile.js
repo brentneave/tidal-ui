@@ -25,9 +25,15 @@ module.exports = function(grunt) {
             debug: true
           }
         },
-        src: ['assets/src/js/site.js'],
-        dest: 'assets/dist/js/site.js'
+        src: ['assets/src/js/main.js'],
+        dest: 'assets/dist/js/main.js'
       }
+    },
+    uglify: {
+      dist: {
+        src: 'assets/dist/js/main.js',
+        dest: 'assets/dist/js/main.js'
+      },
     },
     watch: {
       css: {
@@ -44,5 +50,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-autoprefixer');
   grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.registerTask('default',['sass', 'autoprefixer', 'browserify', 'watch']);
+  grunt.registerTask('build',['sass', 'autoprefixer', 'browserify', 'uglify']);
 }
