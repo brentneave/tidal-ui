@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       main: {
         options: {
           browserifyOptions: {
-            debug: true
+            debug: false
           }
         },
         src: ['assets/src/js/main.js'],
