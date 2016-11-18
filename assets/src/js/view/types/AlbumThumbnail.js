@@ -69,6 +69,10 @@ const AlbumThumbnail = function()
                 {
                     tag: 'p',
                     text: album.artist.name
+                },
+                {
+                    tag: 'p',
+                    text: album.streamStartDate.slice(0,10)
                 }
             ]
         };
