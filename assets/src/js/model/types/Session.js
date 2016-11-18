@@ -31,7 +31,7 @@ const Session = function() {
       return _user;
     },
     set: function(o) {
-      if(o instanceof User) {
+      if(o instanceof User || o === null) {
         _user = o;
         this.onChange.broadcast(this);
       } else {
