@@ -14,8 +14,6 @@ const ModelReceiver = function()
 
     const _handleAPIActions = function(action)
     {
-        console.log('ModelReceiver handling ' + action.type);
-
         switch(action.type)
         {
             case APIActions.RESPONSE_LOGIN:
@@ -33,10 +31,9 @@ const ModelReceiver = function()
                 break;
 
             case APIActions.RESPONSE_ARTISTS:
-                var i, n = action.payload.body.items.length;
-                for(i=0; i<n; i++)
+                const n = action.payload.body.items.length;
+                for(var i=0; i<n; i++)
                 {
-                    console.log(action.payload.body.items[i].item);
                     ModelState.artists.push(action.payload.body.items[i].item);
                 }
                 ModelDispatcher.actions.broadcast(new Action(ModelActions.ARTISTS_RESPONSE, { state: ModelState }));
@@ -45,6 +42,10 @@ const ModelReceiver = function()
             case APIActions.ERROR_ARTISTS:
                 ModelDispatcher.actions.broadcast(new Action(ModelActions.ARTISTS_ERROR, { state: ModelState }));
                 break;
+
+            case APIActions.RESPONSE_LATEST_RELEASES:
+                ModelState.latestReleases = action.payload.body.items;
+                ModelDispatcher.actions.broadcast(new Action(ModelActions.LATEST_RELEASES_RESPONSE, { state: ModelState }));
 
             default:
             break;

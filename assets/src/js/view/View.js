@@ -52,8 +52,6 @@ const View = function()
             {
                 for(var s in o.events)
                 {
-                    console.log(s);
-                    console.log(o.events[s]);
                     node.addEventListener(s, o.events[s], false);
                 }
             }

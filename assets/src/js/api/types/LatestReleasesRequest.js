@@ -1,4 +1,5 @@
 const
+    Broadcaster = require('../../events/Broadcaster'),
     APIConfig = require('../APIConfig'),
     APIActions = require('../APIActions'),
     APIRequest = require('../APIRequest'),
@@ -10,13 +11,17 @@ const LatestReleasesRequest = function(artists, session)
     const _numArtists = artists.length,
           _albumsPerArtist = 2,
           _albums = [],
-          _body = { items: [] };
+          _body = { items: [] },
+          _onError = new Broadcaster(),
+          _onResponse = new Broadcaster(),
+          _responseAction = APIActions.RESPONSE_LATEST_RELEASES,
+          _errorAction = APIActions.ERROR_LATEST_RELEASES;
 
     var _artistsLoaded = 0;
 
     const _onAlbumResponse = function(e)
     {
-        // console.log(e)
+        console.log('loaded album')
         var i, n = e.body.items.length;
         for(i=0; i<n; i++)
         {
@@ -45,10 +50,22 @@ const LatestReleasesRequest = function(artists, session)
                     }
                 }
             );
-
-            console.log('loaded all artists’ albums');
-            console.log(_body);
+            console.log('loaded all artists albums')
+            _onResponse.broadcast
+            (
+                {
+                    source: this,
+                    error: null,
+                    response: null,
+                    body: _body
+                }
+            )
         }
+    }
+
+    const _onAlbumError = function(e)
+    {
+        _onError.broadcast(e)
     }
 
     var i, artistAlbumRequest, that = this;
@@ -65,7 +82,15 @@ const LatestReleasesRequest = function(artists, session)
         };
         artistAlbumRequest.send();
         artistAlbumRequest.onResponse.addListener(that, _onAlbumResponse);
+        artistAlbumRequest.onError.addListener(that, _onAlbumError);
     }
+
+    // pretty much we’re just spoofing an APIRequest object here so that we can send the accumulated results of all of those requests in one big bunch
+    Object.defineProperty(this, 'onResponse', { value: _onResponse });
+    Object.defineProperty(this, 'onError', { value: _onError });
+    Object.defineProperty(this, 'responseAction', { value: _responseAction });
+    Object.defineProperty(this, 'errorAction', { value: _errorAction });
+    APIRequest.onCreateInstance.broadcast(this);
 }
 
 module.exports = LatestReleasesRequest;

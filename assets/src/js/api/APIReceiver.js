@@ -11,7 +11,6 @@ const APIReceiver = function() {
 
     const _handleModelActions = function(action)
     {
-        console.log('APIReceiver handling ' + action.type);
 
         switch(action.type)
         {
