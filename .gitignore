@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # Your own project's ignores
 # -------------------------------------------------
-assets/dist
+# assets/dist
 .sass-cache
 node_modules
 
