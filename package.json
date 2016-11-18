@@ -4,7 +4,8 @@
   "dependencies": {
     "request": "latest",
     "av": "latest",
-    "flac.js": "latest"
+    "flac.js": "latest",
+    "skatejs-dom-diff": "latest"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
