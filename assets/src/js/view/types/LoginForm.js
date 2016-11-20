@@ -10,8 +10,16 @@ const LoginForm = function()
 
         const
             parentNode = e.target,
-            username = parentNode.querySelector('[name="username"]').value,
-            password = parentNode.querySelector('[name="password"]').value;
+            username = parentNode.querySelector('[name="username"]'),
+            password = parentNode.querySelector('[name="password"]'),
+            submit = parentNode.querySelector('[type="submit"]');
+
+        username.blur();
+        password.blur();
+        submit.blur();
+        username.setAttribute("disabled", "disabled");
+        password.setAttribute("disabled", "disabled");
+        submit.setAttribute("disabled", "disabled");
 
         ViewDispatcher.broadcast
         (
@@ -19,8 +27,8 @@ const LoginForm = function()
             (
                 ViewActions.LOGIN,
                 {
-                    username: username,
-                    password: password
+                    username: username.value,
+                    password: password.value
                 }
             )
         );

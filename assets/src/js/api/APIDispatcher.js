@@ -11,7 +11,6 @@ const APIDispatcher = function()
     {
         if(e.source.responseAction)
         {
-            console.log(e.source.responseAction);
             _actions.broadcast
             (
                 new Action(e.source.responseAction, e)
