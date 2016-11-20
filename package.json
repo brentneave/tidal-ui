@@ -2,9 +2,10 @@
   "name": "tidal-ui",
   "version": "0.0.1",
   "dependencies": {
-    "request": "latest",
     "av": "latest",
     "flac.js": "latest",
+    "ogg.js": "latest",
+    "request": "latest",
     "skatejs-dom-diff": "latest"
   },
   "devDependencies": {
