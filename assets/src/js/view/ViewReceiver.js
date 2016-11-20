@@ -7,7 +7,9 @@ const ModelDispatcher = require('../model/ModelDispatcher'),
       LoginForm = require('./types/LoginForm'),
       ArtistList = require('./types/ArtistList'),
       AlbumList = require('./types/AlbumList'),
-      DOMDiff = require('skatejs-dom-diff');
+      DOMDiff = require('skatejs-dom-diff'),
+      FLAC = require('flac.js'),
+      AV = require('av');
 
 const ViewReceiver = function()
 {
@@ -24,8 +26,10 @@ const ViewReceiver = function()
 
     const _handleModelActions = function(action)
     {
+        console.log('ViewReceiver._handleModelActions: ' + action.type);
 
         const node = { tag: 'div', id: 'app', children: [] }
+        var doUpdate = true;
 
         switch(action.type)
         {
@@ -55,26 +59,26 @@ const ViewReceiver = function()
                 );
                 break;
             case ModelActions.ARTISTS_RESPONSE:
-                // if(action.payload.state.artists.length)
-                // {
-                //     node.children.push(ArtistList.render(action.payload.state.artists));
-                // }
                 ViewDispatcher.broadcast
                 (
                     new Action(ViewActions.GET_LATEST_RELEASES)
                 );
+                break;
             case ModelActions.LATEST_RELEASES_RESPONSE:
-                console.log(action.type);
-                console.log(action.payload.state.latestReleases);
                 if(action.payload.state.latestReleases.length)
                 {
                     node.children.push(AlbumList.render(action.payload.state.latestReleases));
                 }
+                break;
             default:
+                doUpdate = false;
                 break;
         }
 
-        _updateDOM(View.createNode(node));
+        if(doUpdate)
+        {
+            _updateDOM(View.createNode(node));
+        }
     }
 
     ModelDispatcher.actions.addListener(this, _handleModelActions);
