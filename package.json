@@ -12,6 +12,7 @@
     "devDependencies":
     {
         "autoprefixer": "latest",
+        "watchify": "latest",
         "node-sass": "latest",
         "uglify-js": "latest",
         "onchange": "latest",
@@ -25,6 +26,7 @@
         "autoprefixer": "postcss -u autoprefixer assets/dist/css/index.css",
         "uglify": "uglifyjs assets/dist/js/main.js --compress --mangle",
 
+        "watchify": "watchify assets/src/js/main.js -o assets/dist/js/main.js -v -d",
         "browserify:dev": "browserify assets/src/js/main.js > assets/dist/js/main.js --debug",
         "browserify:dist": "browserify assets/src/js/main.js > assets/dist/js/main.js",
 
@@ -33,7 +35,7 @@
         "build:js-dist": "npm run browserify:dist && npm run uglify",
 
         "watch:css": "onchange \"assets/src/scss/**/*\" -- npm run build:css",
-        "watch:js": "onchange \"assets/src/js/**/*\" -- npm run build:js-dev",
+        "watch:js": "npm run watchify",
 
         "build": "npm run build:css && npm run build:js-dev",
         "watch": "npm-run-all -p watch:css watch:js",
