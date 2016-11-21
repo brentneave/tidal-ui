@@ -36,7 +36,7 @@ const ViewReceiver = function()
             case ModelActions.notifications.INITIALISE:
                 node.children.push
                 (
-                    LoginForm.render({ title: 'Please to be logging in!' })
+                    LoginForm.render({ title: 'Please to be logging in!!!!' })
                 );
                 break;
 
