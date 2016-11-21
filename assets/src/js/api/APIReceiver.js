@@ -13,7 +13,7 @@ const APIReceiver = function() {
     const _handleModelRequests = function(action)
     {
         console.log('APIReceiver._handleModelRequests: ' + action.type);
-
+        
         switch(action.type)
         {
             case ModelActions.requests.GET_LOGIN:

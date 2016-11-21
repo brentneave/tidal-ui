@@ -34,12 +34,12 @@ const ViewReceiver = function()
 
         switch(action.type)
         {
-            case ModelActions.notifications.INITIALISE:
-                node.children.push
-                (
-                    LoginForm.render({ title: 'Please to be logging in' })
-                );
-                break;
+            // case ModelActions.notifications.INITIALISE:
+            //     node.children.push
+            //     (
+            //         LoginForm.render({ title: 'Please to be logging in' })
+            //     );
+            //     break;
 
             case ModelActions.notifications.LOGIN_ERROR:
                 node.children.push

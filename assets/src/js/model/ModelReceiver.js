@@ -4,6 +4,8 @@ ViewDispatcher = require('../view/ViewDispatcher'),
 ViewActions = require('../view/ViewActions'),
 ModelDispatcher = require('./ModelDispatcher'),
 ModelActions = require('./ModelActions'),
+LocalStorageDispatcher = require('../localstorage/LocalStorageDispatcher'),
+LocalStorageActions = require('../localstorage/LocalStorageActions'),
 Action = require('../events/Action'),
 User = require('./types/User'),
 Session = require('./types/Session');
@@ -188,6 +190,35 @@ const ModelReceiver = function()
         }
     }
 
+    const _handleLocalStorageNotifications = function(action, state)
+    {
+        console.log('ModelReceiver._handleLocalStorageNotifications:' + action.type)
+        console.log(action);
+
+        if(!state)
+        {
+            state = _cloneState(_defaultState);
+        }
+
+        switch (action.type)
+        {
+            case LocalStorageActions.READ_LOCAL_STATE:
+                console.log('updating state from local storage')
+                _currentState = action.payload.state;
+                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.STATE_CHANGE, { state: _currentState }));
+                break;
+            default:
+                break;
+        }
+    }
+
+    LocalStorageDispatcher.notifications.addListener
+    (
+        this, function(action)
+        {
+            _handleLocalStorageNotifications(action, _currentState);
+        }
+    );
     ViewDispatcher.requests.addListener
     (
         this,

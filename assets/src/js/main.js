@@ -8,7 +8,8 @@ const Action = require('./events/Action'),
       ModelActions = require('./model/ModelActions'),
       APIDispatcher = require('./api/APIDispatcher'),
       APIReceiver = require('./api/APIReceiver'),
-      APIActions = require('./api/APIActions');
+      APIActions = require('./api/APIActions'),
+      LocalStorageReceiver = require('./localstorage/LocalStorageReceiver');
 
 View.root = document.getElementById('app');
 ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.INITIALISE));
