@@ -31,7 +31,7 @@ const ArtistThumbnail = function()
                     className: 'c-thumbnail__img',
                     attributes:
                     {
-                        src: _getImgSrc(artist.picture)
+                        src: artist.picture ? _getImgSrc(artist.picture) : ""
                     }
                 },
                 {
