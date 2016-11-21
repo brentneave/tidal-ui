@@ -5,11 +5,11 @@ const
     APIRequest = require('../APIRequest'),
     ArtistsRequest = require('./ArtistsRequest');
 
-const LatestReleasesRequest = function(artists, session, limit)
+const LatestReleasesRequest = function(artists, session)
 {
 
     const _numArtists = artists.length,
-          _albumsPerArtist = 2,
+          _albumsPerArtist = 1,
           _albumKeys = {},
           _albums = [],
           _onError = new Broadcaster(),
