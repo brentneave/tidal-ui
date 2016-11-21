@@ -21,11 +21,11 @@ const LoginForm = function()
         password.setAttribute("disabled", "disabled");
         submit.setAttribute("disabled", "disabled");
 
-        ViewDispatcher.broadcast
+        ViewDispatcher.requests.broadcast
         (
             new Action
             (
-                ViewActions.LOGIN,
+                ViewActions.GET_LOGIN,
                 {
                     username: username.value,
                     password: password.value

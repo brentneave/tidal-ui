@@ -24,28 +24,30 @@ const ViewReceiver = function()
         );
     }
 
-    const _handleModelActions = function(action)
+    const _handleModelNotifications = function(action)
     {
-        console.log('ViewReceiver._handleModelActions: ' + action.type);
+        console.log('ViewReceiver._handleModelNotifications: ' + action.type);
 
         const node = { tag: 'div', id: 'app', children: [] }
         var doUpdate = true;
 
         switch(action.type)
         {
-            case ModelActions.INITIALISE:
+            case ModelActions.notifications.INITIALISE:
                 node.children.push
                 (
                     LoginForm.render({ title: 'Please to be logging in!' })
                 );
                 break;
-            case ModelActions.LOGIN_ERROR:
+
+            case ModelActions.notifications.LOGIN_ERROR:
                 node.children.push
                 (
                     LoginForm.render({ title: 'Whoops! Try a different username or password.' })
                 );
                 break;
-            case ModelActions.LOGIN_RESPONSE:
+
+            case ModelActions.notifications.LOGIN_RESPONSE:
                 node.children.push
                 (
                     {
@@ -53,23 +55,27 @@ const ViewReceiver = function()
                         text: 'Great success! You have logged in'
                     }
                 );
-                ViewDispatcher.broadcast
+                ViewDispatcher.requests.broadcast
                 (
                     new Action(ViewActions.GET_ARTISTS)
                 );
                 break;
-            case ModelActions.ARTISTS_RESPONSE:
-                ViewDispatcher.broadcast
+
+            case ModelActions.notifications.ARTISTS_RESPONSE:
+                ViewDispatcher.requests.broadcast
                 (
                     new Action(ViewActions.GET_LATEST_RELEASES)
                 );
+                doUpdate = false;
                 break;
-            case ModelActions.LATEST_RELEASES_RESPONSE:
+
+            case ModelActions.notifications.LATEST_RELEASES_RESPONSE:
                 if(action.payload.state.latestReleases.length)
                 {
                     node.children.push(AlbumList.render(action.payload.state.latestReleases));
                 }
                 break;
+
             default:
                 doUpdate = false;
                 break;
@@ -81,7 +87,7 @@ const ViewReceiver = function()
         }
     }
 
-    ModelDispatcher.actions.addListener(this, _handleModelActions);
+    ModelDispatcher.notifications.addListener(this, _handleModelNotifications);
 
 }
 

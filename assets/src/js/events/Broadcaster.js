@@ -8,9 +8,10 @@ function Broadcaster()
   this.addListener = function(listener, handler)
   {
     if(listener == undefined) {
-      throw new Error();
+      throw new Error('Please provide a listener');
     }
     else if(!(handler instanceof Function)) {
+      throw new Error('Handler must be a function');
       throw new Error();
     }
     this.removeListener(listener, handler);

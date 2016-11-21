@@ -5,13 +5,13 @@ const
 
 const APIDispatcher = function()
 {
-    const _actions = new Broadcaster();
+    const _notifications = new Broadcaster();
 
     const _broadcastResponseAction = function(e)
     {
         if(e.source.responseAction)
         {
-            _actions.broadcast
+            _notifications.broadcast
             (
                 new Action(e.source.responseAction, e)
             );
@@ -22,7 +22,7 @@ const APIDispatcher = function()
     {
         if(e.source.responseAction)
         {
-            _actions.broadcast
+            _notifications.broadcast
             (
                 new Action(e.source.errorAction, e)
             );
@@ -37,6 +37,6 @@ const APIDispatcher = function()
 
     APIRequest.onCreateInstance.addListener(this, _onCreateInstance);
 
-    Object.defineProperty(this, 'actions', { value: _actions });
+    Object.defineProperty(this, 'notifications', { value: _notifications });
 }
 module.exports = new APIDispatcher();

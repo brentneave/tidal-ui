@@ -13,4 +13,4 @@ const Action = require('./events/Action'),
 
 window.ModelState = ModelState;
 View.root = document.getElementById('app');
-ModelDispatcher.actions.broadcast(new Action(ModelActions.INITIALISE));
+ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.INITIALISE));
