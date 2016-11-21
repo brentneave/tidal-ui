@@ -49,6 +49,7 @@ const RecommendedArtistsRequest = function(session, artists)
         }
 
         _artistsChecked++;
+
         if(_artistsChecked === _numArtists)
         {
             _finish();
@@ -73,7 +74,7 @@ const RecommendedArtistsRequest = function(session, artists)
         similarArtistsRequest.errorAction = undefined;
         similarArtistsRequest.onResponse.addListener(that, _onSimiliarArtistsResponse);
         similarArtistsRequest.onError.addListener(that, _onSimiliarArtistsError);
-        similarArtistsRequest.form.limit = 2;
+        similarArtistsRequest.form.limit = 1;
         similarArtistsRequest.send();
     }
 
