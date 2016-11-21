@@ -7,7 +7,7 @@ const ModelDispatcher = require('../model/ModelDispatcher'),
       LoginForm = require('./types/LoginForm'),
       ArtistList = require('./types/ArtistList'),
       AlbumList = require('./types/AlbumList'),
-      DOMDiff = require('skatejs-dom-diff'),
+      DOMDiff = require('skatejs-dom-diff/').default,
       FLAC = require('flac.js'),
       AV = require('av');
 
@@ -15,6 +15,8 @@ const ViewReceiver = function()
 {
     const _updateDOM = function(node)
     {
+        console.log('DOMDiff = ')
+        console.log(DOMDiff);
         DOMDiff.merge
         (
             {
@@ -36,7 +38,7 @@ const ViewReceiver = function()
             case ModelActions.notifications.INITIALISE:
                 node.children.push
                 (
-                    LoginForm.render({ title: 'Please to be logging in!!!!' })
+                    LoginForm.render({ title: 'Please to be logging in' })
                 );
                 break;
 
