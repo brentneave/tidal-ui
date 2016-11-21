@@ -7,7 +7,7 @@ const ModelDispatcher = require('../model/ModelDispatcher'),
       LoginForm = require('./types/LoginForm'),
       ArtistList = require('./types/ArtistList'),
       AlbumList = require('./types/AlbumList'),
-      DOMDiff = require('skatejs-dom-diff'),
+      DOMDiff = require('skatejs-dom-diff/').default,
       FLAC = require('flac.js'),
       AV = require('av');
 
@@ -17,7 +17,7 @@ const ViewReceiver = function()
     {
         console.log('DOMDiff = ')
         console.log(DOMDiff);
-        DOMDiff.default.merge
+        DOMDiff.merge
         (
             {
                 source: View.root,
