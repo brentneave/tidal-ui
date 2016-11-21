@@ -5,9 +5,8 @@ const
     APIRequest = require('../APIRequest'),
     SimilarArtistsRequest = require('./SimilarArtistsRequest');
 
-const RecommendedArtistsRequest = function(artists, session)
+const RecommendedArtistsRequest = function(session, artists)
 {
-
     const _numArtists = artists.length,
           _similarArtists = [],
           _similarArtistsKeys = {},
@@ -69,7 +68,7 @@ const RecommendedArtistsRequest = function(artists, session)
     var i, similarArtistsRequest, that = this;
     for(i=0; i<_numArtists; i++)
     {
-        similarArtistsRequest = new SimilarArtistsRequest(session, artists[i].id);
+        similarArtistsRequest = new SimilarArtistsRequest(session, artists[i]);
         similarArtistsRequest.responseAction = undefined;
         similarArtistsRequest.errorAction = undefined;
         similarArtistsRequest.onResponse.addListener(that, _onSimiliarArtistsResponse);

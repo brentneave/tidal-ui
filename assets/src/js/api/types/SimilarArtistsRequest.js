@@ -3,11 +3,11 @@ const
     APIActions = require('../APIActions'),
     APIRequest = require('../APIRequest');
 
-const SimilarArtistsRequest = function(session, artistId)
+const SimilarArtistsRequest = function(session, artist)
 {
     APIRequest.prototype.constructor.call(this);
-    this.url = APIConfig.URLs.similarArtists(artistId);
-    this.header = APIConfig.sessionHeader(session);
+    this.url = APIConfig.URLs.similarArtists(artist.id);
+    this.header = APIConfig.sessionHeader(session.id);
     this.method = APIRequest.method.get;
     this.responseAction = APIActions.RESPONSE_SIMILAR_ARTISTS;
     this.errorAction = APIActions.ERROR_SIMILAR_ARTISTS;

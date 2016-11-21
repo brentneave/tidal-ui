@@ -8,21 +8,21 @@ Object.defineProperty(APIConfig, 'URLs',
     ({
         login: APIConfig.baseURL + '/login/username?countryCode=NZ',
         user: APIConfig.baseURL + '/users',
-        albums: function(session)
+        albums: function(sessionId)
         {
-            return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/albums';
+            return APIConfig.baseURL + '/users/' + sessionId + '/favorites/albums';
         },
-        artists: function(session)
+        artists: function(userId)
         {
-            return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/artists';
+            return APIConfig.baseURL + '/users/' + userId + '/favorites/artists';
         },
         similarArtists: function(artistId)
         {
             return APIConfig.baseURL + '/artists/' + artistId + '/similar';
         },
-        tracks: function(session)
+        tracks: function(sessionId)
         {
-            return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/tracks';
+            return APIConfig.baseURL + '/users/' + sessionId + '/favorites/tracks';
         },
         artistAlbums: function(artistId)
         {
@@ -48,10 +48,10 @@ Object.defineProperty(APIConfig, 'tokenHeader',
 
 Object.defineProperty(APIConfig, 'sessionHeader',
 {
-    value: function(session)
+    value: function(sessionId)
     {
         return {
-            'X-Tidal-SessionId': session.id
+            'X-Tidal-SessionId': sessionId
         }
     }
 });

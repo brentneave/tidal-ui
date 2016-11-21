@@ -5,7 +5,7 @@ const
     APIRequest = require('../APIRequest'),
     ArtistsRequest = require('./ArtistsRequest');
 
-const LatestReleasesRequest = function(artists, session)
+const LatestReleasesRequest = function(session, artists)
 {
 
     const _numArtists = artists.length,
@@ -77,7 +77,7 @@ const LatestReleasesRequest = function(artists, session)
     {
         artistAlbumRequest = new APIRequest();
         artistAlbumRequest.url = APIConfig.URLs.artistAlbums(artists[i].id);
-        artistAlbumRequest.header = APIConfig.sessionHeader(session);
+        artistAlbumRequest.header = APIConfig.sessionHeader(session.id);
         artistAlbumRequest.method = APIRequest.method.get;
         artistAlbumRequest.form =
         {

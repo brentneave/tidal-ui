@@ -12,6 +12,7 @@ const ModelActions = Object.freeze({
     (
         {
             INITIALISE                   : 'MODEL_INITIALISE',
+            STATE_CHANGE                 : 'STATE_CHANGE',
             LOGIN_RESPONSE               : 'MODEL_LOGIN_RESPONSE',
             LOGIN_ERROR                  : 'MODEL_LOGIN_ERROR',
             ARTISTS_RESPONSE             : 'MODEL_ARTISTS_RESPONSE',

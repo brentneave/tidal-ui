@@ -21,15 +21,15 @@ const APIReceiver = function() {
                 break;
 
             case ModelActions.requests.GET_ARTISTS:
-                new ArtistsRequest(action.payload.session).send();
+                new ArtistsRequest(action.payload.session, action.payload.user).send();
                 break;
 
             case ModelActions.requests.GET_LATEST_RELEASES:
-                new LatestReleasesRequest(action.payload.artists, action.payload.session);
+                new LatestReleasesRequest(action.payload.session, action.payload.artists);
                 break;
 
             case ModelActions.requests.GET_RECOMMENDED_ARTISTS:
-                new RecommendedArtistsRequest(action.payload.artists, action.payload.session);
+                new RecommendedArtistsRequest(action.payload.session, action.payload.artists);
                 break;
 
             default:

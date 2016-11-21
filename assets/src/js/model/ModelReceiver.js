@@ -4,80 +4,183 @@ ViewDispatcher = require('../view/ViewDispatcher'),
 ViewActions = require('../view/ViewActions'),
 ModelDispatcher = require('./ModelDispatcher'),
 ModelActions = require('./ModelActions'),
-ModelState = require('./ModelState'),
 Action = require('../events/Action'),
 User = require('./types/User'),
 Session = require('./types/Session');
 
 const ModelReceiver = function()
 {
-
-    const _handleAPINotifications = function(action)
+    const _defaultState =
     {
+        session:
+        {
+            id: null,
+            countryCode: null
+        },
+
+        user:
+        {
+            id: null
+        },
+
+        favorites:
+        {
+            artists: [],
+            albums: []
+        },
+
+        latestReleases:
+        {
+            albums: []
+        },
+
+        recommendations:
+        {
+            artists: [],
+            albums: []
+        }
+    };
+
+    const _cloneState = function(state)
+    {
+        return JSON.parse(JSON.stringify(state));
+    }
+
+    var _currentState = null;
+
+    const _handleAPINotifications = function(action, state)
+    {
+
+        if(!state)
+        {
+            state = _cloneState(_defaultState);
+        }
+        else {
+            state = _cloneState(state);
+        }
         console.log('ModelReceiver._handleAPINotifications: ' + action.type);
-        console.log(action.payload);
+
         switch(action.type)
         {
             case APIActions.RESPONSE_LOGIN:
-                ModelState.session.user = new User(action.payload.body.userId);
-                ModelState.session.countryCode = action.payload.body.countryCode;
-                ModelState.session.id = action.payload.body.sessionId;
-                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_ARTISTS, { session: ModelState.session }));
-                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LOGIN_RESPONSE, { state: ModelState }));
+                state.user.id = action.payload.body.userId;
+                state.session.countryCode = action.payload.body.countryCode;
+                state.session.id = action.payload.body.sessionId;
+                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_ARTISTS, { session: state.session, user: state.user }));
+                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LOGIN_RESPONSE, { state: state }));
                 break;
 
             case APIActions.ERROR_LOGIN:
-                ModelState.session.user = null;
-                ModelState.session.countryCode = null;
-                ModelState.session.id = null;
-                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LOGIN_ERROR, { state: ModelState }));
+                state.user = null;
+                state.session.countryCode = null;
+                state.session.id = null;
+                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LOGIN_ERROR, { state: state }));
                 break;
 
             case APIActions.RESPONSE_ARTISTS:
-                ModelState.artists = [];
+                state.favorites.artists = [];
                 const n = action.payload.body.items.length;
                 for(var i=0; i<n; i++)
                 {
-                    ModelState.artists.push(action.payload.body.items[i].item);
+                    state.favorites.artists.push(action.payload.body.items[i].item);
                 }
-                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_RECOMMENDED_ARTISTS, { artists: ModelState.artists, session: ModelState.session }));
-                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.ARTISTS_RESPONSE, { state: ModelState }));
+                ModelDispatcher.requests.broadcast
+                (
+                    new Action
+                    (
+                        ModelActions.requests.GET_RECOMMENDED_ARTISTS,
+                        { session: state.session, artists: state.favorites.artists }
+                    )
+                );
+                ModelDispatcher.notifications.broadcast
+                (
+                    new Action
+                    (
+                        ModelActions.notifications.ARTISTS_RESPONSE,
+                        { state: state }
+                    )
+                );
                 break;
 
             case APIActions.RESPONSE_RECOMMENDED_ARTISTS:
-                ModelState.recommendedArtists = action.payload.body.items;
-                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_LATEST_RELEASES, {artists: ModelState.recommendedArtists.concat(ModelState.artists), session: ModelState.session}));
+                state.recommendations.artists = action.payload.body.items;
+                ModelDispatcher.requests.broadcast
+                (
+                    new Action
+                    (
+                        ModelActions.requests.GET_LATEST_RELEASES,
+                        {
+                            artists: state.recommendations.artists.concat(state.favorites.artists),
+                            session: state.session
+                        }
+                    )
+                );
                 break;
 
             case APIActions.ERROR_ARTISTS:
-                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.ARTISTS_ERROR, { state: ModelState }));
+                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.ARTISTS_ERROR, { state: state }));
                 break;
 
             case APIActions.RESPONSE_LATEST_RELEASES:
-                ModelState.latestReleases = action.payload.body.items;
-                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LATEST_RELEASES_RESPONSE, { state: ModelState }));
+                state.latestReleases.albums = action.payload.body.items;
+                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LATEST_RELEASES_RESPONSE, { state: state }));
                 break;
 
             default:
                 break;
         }
+
+        ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.STATE_CHANGE, { state: state }));
+
+        _currentState = state;
     }
 
-    const _handleViewRequests = function(action)
+    const _handleViewRequests = function(action, state)
     {
-        console.log('ModelReceiver._handleViewRequests: ' + action.type);
+        if(!state)
+        {
+            state = _cloneState(_defaultState);
+        }
+
         switch(action.type)
         {
             case ViewActions.GET_LOGIN:
-                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_LOGIN, action.payload));
+                ModelDispatcher.requests.broadcast
+                (
+                    new Action
+                    (
+                        ModelActions.requests.GET_LOGIN,
+                        action.payload
+                    )
+                );
                 break;
 
             case ViewActions.GET_ARTISTS:
-                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_ARTISTS, {session: ModelState.session}));
+                ModelDispatcher.requests.broadcast
+                (
+                    new Action
+                    (
+                        ModelActions.requests.GET_ARTISTS,
+                        {
+                            session: state.session,
+                            user: state.user
+                        }
+                    )
+                );
                 break;
 
             case ViewActions.GET_LATEST_RELEASES:
-                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_LATEST_RELEASES, {artists: ModelState.artists, session: ModelState.session}));
+                ModelDispatcher.requests.broadcast
+                (
+                    new Action
+                    (
+                        ModelActions.requests.GET_LATEST_RELEASES,
+                        {
+                            artists: state.favorites.artists,
+                            session: state.session
+                        }
+                    )
+                );
                 break;
 
             default:
@@ -85,8 +188,21 @@ const ModelReceiver = function()
         }
     }
 
-    ViewDispatcher.requests.addListener(this, _handleViewRequests);
-    APIDispatcher.notifications.addListener(this, _handleAPINotifications);
+    ViewDispatcher.requests.addListener
+    (
+        this,
+        function(action)
+        {
+            _handleViewRequests(action, _currentState);
+        }
+    );
+    APIDispatcher.notifications.addListener
+    (
+        this, function(action)
+        {
+            _handleAPINotifications(action, _currentState);
+        }
+    );
 }
 
 module.exports = new ModelReceiver();

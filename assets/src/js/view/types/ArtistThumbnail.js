@@ -15,6 +15,7 @@ const ArtistThumbnail = function()
     {
         const _getImgSrc = function(serial, w, h)
         {
+            if(!serial) return undefined;
             if(!w) w = 640;
             if(!h) h = 428;
             //http://resources.tidal.com/images/14e5fcd9/25fc/4d61/9c3f/8f88770a8188/640x428.jpg

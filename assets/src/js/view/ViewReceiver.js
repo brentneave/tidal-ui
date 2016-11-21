@@ -15,6 +15,7 @@ const ViewReceiver = function()
 {
     const _updateDOM = function(node)
     {
+        console.log('ViewReceiver._updateDOM');
         DOMDiff.merge
         (
             {
@@ -55,24 +56,22 @@ const ViewReceiver = function()
                         text: 'Great success! You have logged in'
                     }
                 );
-                // ViewDispatcher.requests.broadcast
-                // (
-                //     new Action(ViewActions.GET_ARTISTS)
-                // );
                 break;
 
-            // case ModelActions.notifications.ARTISTS_RESPONSE:
-            //     ViewDispatcher.requests.broadcast
-            //     (
-            //         new Action(ViewActions.GET_LATEST_RELEASES)
-            //     );
-            //     doUpdate = false;
-            //     break;
-
-            case ModelActions.notifications.LATEST_RELEASES_RESPONSE:
-                if(action.payload.state.latestReleases.length)
+            case ModelActions.notifications.STATE_CHANGE:
+                if(action.payload.state.latestReleases.albums.length)
                 {
-                    node.children.push(AlbumList.render(action.payload.state.latestReleases));
+                    node.children.push(AlbumList.render(action.payload.state.latestReleases.albums));
+                }
+                // if(action.payload.state.recommendations.artists.length)
+                // {
+                //     console.log('action.payload.state.recommendations.artists');
+                //     console.log(action.payload.state.recommendations.artists);
+                //     node.children.push(ArtistList.render(action.payload.state.recommendations.artists));
+                // }
+                else
+                {
+                    doUpdate = false;
                 }
                 break;
 
