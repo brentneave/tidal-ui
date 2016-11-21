@@ -15,7 +15,9 @@ const ViewReceiver = function()
 {
     const _updateDOM = function(node)
     {
-        DOMDiff.merge
+        console.log('DOMDiff = ')
+        console.log(DOMDiff);
+        DOMDiff.default.merge
         (
             {
                 source: View.root,
@@ -36,7 +38,7 @@ const ViewReceiver = function()
             case ModelActions.notifications.INITIALISE:
                 node.children.push
                 (
-                    LoginForm.render({ title: 'Please to be logging in!!!!' })
+                    LoginForm.render({ title: 'Please to be logging in' })
                 );
                 break;
 
