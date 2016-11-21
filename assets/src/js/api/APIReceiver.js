@@ -4,26 +4,32 @@ APIActions = require('./APIActions'),
 LoginRequest = require('./types/LoginRequest'),
 ArtistsRequest = require('./types/ArtistsRequest'),
 LatestReleasesRequest = require('./types/LatestReleasesRequest'),
+RecommendedArtistsRequest = require('./types/RecommendedArtistsRequest'),
 ModelDispatcher = require('../model/ModelDispatcher'),
 ModelActions = require('../model/ModelActions');
 
 const APIReceiver = function() {
 
-    const _handleModelActions = function(action)
+    const _handleModelRequests = function(action)
     {
+        console.log('APIReceiver._handleModelRequests: ' + action.type);
 
         switch(action.type)
         {
-            case ModelActions.LOGIN:
+            case ModelActions.requests.GET_LOGIN:
                 new LoginRequest(action.payload.username, action.payload.password).send();
                 break;
 
-            case ModelActions.GET_ARTISTS:
+            case ModelActions.requests.GET_ARTISTS:
                 new ArtistsRequest(action.payload.session).send();
                 break;
 
-            case ModelActions.GET_LATEST_RELEASES:
+            case ModelActions.requests.GET_LATEST_RELEASES:
                 new LatestReleasesRequest(action.payload.artists, action.payload.session);
+                break;
+
+            case ModelActions.requests.GET_RECOMMENDED_ARTISTS:
+                new RecommendedArtistsRequest(action.payload.artists, action.payload.session);
                 break;
 
             default:
@@ -31,7 +37,7 @@ const APIReceiver = function() {
         }
     }
 
-    ModelDispatcher.actions.addListener(this, _handleModelActions);
+    ModelDispatcher.requests.addListener(this, _handleModelRequests);
 
 }
 

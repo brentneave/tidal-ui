@@ -3,6 +3,7 @@ const Session = require('./types/Session');
 const ModelState = function() {
 
     var _artists = [],
+        _recommendedArtists = [],
         _latestReleases = [];
 
     Object.defineProperty
@@ -24,6 +25,21 @@ const ModelState = function() {
             get: function()
             {
                 return _artists;
+            }
+        }
+    );
+
+    Object.defineProperty
+    (
+        this, 'recommendedArtists',
+        {
+            set: function(a)
+            {
+                _recommendedArtists = a;
+            },
+            get: function()
+            {
+                return _recommendedArtists;
             }
         }
     );

@@ -9,34 +9,43 @@ const LatestReleasesRequest = function(artists, session)
 {
 
     const _numArtists = artists.length,
-          _albumsPerArtist = 2,
+          _albumsPerArtist = 1,
+          _albumKeys = {},
           _albums = [],
-          _body = { items: [] },
           _onError = new Broadcaster(),
           _onResponse = new Broadcaster(),
           _responseAction = APIActions.RESPONSE_LATEST_RELEASES,
-          _errorAction = APIActions.ERROR_LATEST_RELEASES;
+          _errorAction = APIActions.ERROR_LATEST_RELEASES,
+          _that = this;
 
     var _artistsLoaded = 0;
 
     const _onAlbumResponse = function(e)
     {
-        console.log('loaded album')
-        var i, n = e.body.items.length;
+        var i,
+        n = e.body.items.length,
+        item;
+
         for(i=0; i<n; i++)
         {
-            _body.items.push(e.body.items[i]);
+            item = e.body.items[i];
+            if(!_albumKeys[item.id])
+            {
+                _albumKeys[item.id] = item;
+                _albums.push(_albumKeys[item.id]);
+            }
         }
+
         _artistsLoaded++;
         if(_artistsLoaded === _numArtists)
         {
-            _body.items = _body.items.sort
+            _albums.items = _albums.sort
             (
                 function(a, b)
                 {
                     const aDate = Date.parse(a.streamStartDate.slice(0,10)),
                           bDate = Date.parse(b.streamStartDate.slice(0,10));
-                    if(aDate > bDate)
+                    if(aDate >= bDate)
                     {
                         return -1;
                     }
@@ -44,20 +53,15 @@ const LatestReleasesRequest = function(artists, session)
                     {
                         return 1;
                     }
-                    else
-                    {
-                        return 0;
-                    }
                 }
             );
-            console.log('loaded all artists albums')
             _onResponse.broadcast
             (
                 {
-                    source: this,
+                    source: _that,
                     error: null,
                     response: null,
-                    body: _body
+                    body: { items: _albums }
                 }
             )
         }
@@ -80,9 +84,9 @@ const LatestReleasesRequest = function(artists, session)
             countryCode: session.countryCode,
             limit: _albumsPerArtist
         };
-        artistAlbumRequest.send();
         artistAlbumRequest.onResponse.addListener(that, _onAlbumResponse);
         artistAlbumRequest.onError.addListener(that, _onAlbumError);
+        artistAlbumRequest.send();
     }
 
     // pretty much we’re just spoofing an APIRequest object here so that we can send the accumulated results of all of those requests in one big bunch

@@ -49,6 +49,14 @@ const AlbumThumbnail = function()
             return 'http://resources.tidal.com/images/'+ serial.split('-').join('/') + '/' + w + 'x' + h + '.jpg';
         }
 
+        const _artists = [];
+
+        var i, n = album.artists.length;
+        for(i=0; i<n; i++)
+        {
+            _artists.push(album.artists[i].name);
+        }
+
         return {
             tag: 'div',
             className: 'c-thumbnail',
@@ -59,7 +67,7 @@ const AlbumThumbnail = function()
                     className: 'c-thumbnail__img',
                     attributes:
                     {
-                        src: _getImgSrc(album.cover)
+                        src: album.cover ? _getImgSrc(album.cover) : ""
                     }
                 },
                 {
@@ -68,7 +76,7 @@ const AlbumThumbnail = function()
                 },
                 {
                     tag: 'p',
-                    text: album.artist.name
+                    text: _artists.join(', ')
                 },
                 {
                     tag: 'p',

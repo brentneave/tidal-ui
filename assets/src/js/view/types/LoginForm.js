@@ -10,17 +10,25 @@ const LoginForm = function()
 
         const
             parentNode = e.target,
-            username = parentNode.querySelector('[name="username"]').value,
-            password = parentNode.querySelector('[name="password"]').value;
+            username = parentNode.querySelector('[name="username"]'),
+            password = parentNode.querySelector('[name="password"]'),
+            submit = parentNode.querySelector('[type="submit"]');
 
-        ViewDispatcher.broadcast
+        username.blur();
+        password.blur();
+        submit.blur();
+        username.setAttribute("disabled", "disabled");
+        password.setAttribute("disabled", "disabled");
+        submit.setAttribute("disabled", "disabled");
+
+        ViewDispatcher.requests.broadcast
         (
             new Action
             (
-                ViewActions.LOGIN,
+                ViewActions.GET_LOGIN,
                 {
-                    username: username,
-                    password: password
+                    username: username.value,
+                    password: password.value
                 }
             )
         );
