@@ -3,72 +3,87 @@ const
     APIConfig = require('../APIConfig'),
     APIActions = require('../APIActions'),
     APIRequest = require('../APIRequest'),
-    ArtistsRequest = require('./ArtistsRequest');
+    SimilarArtistsRequest = require('./SimilarArtistsRequest');
 
-const LatestReleasesRequest = function(artists, session)
+const RecommendedArtistsRequest = function(artists, session)
 {
 
     const _numArtists = artists.length,
-          _similiarArtists = [],
+          _similarArtists = [],
+          _similarArtistsKeys = {},
           _body = { items: [] },
           _onError = new Broadcaster(),
           _onResponse = new Broadcaster(),
           _responseAction = APIActions.RESPONSE_RECOMMENDED_ARTISTS,
-          _errorAction = APIActions.ERROR_RECOMMENDED_ARTISTS
+          _errorAction = APIActions.ERROR_RECOMMENDED_ARTISTS,
+          _that = this;
 
     var _artistsChecked = 0;
 
+    const _finish = function()
+    {
+        _onResponse.broadcast
+        (
+            {
+                source: _that,
+                error: null,
+                response: null,
+                body: { items: _similarArtists }
+            }
+        )
+    }
+
     const _onSimiliarArtistsResponse = function(e)
     {
-        var i, n = e.body.items.length;
+        var i,
+        n = e.body.items.length,
+        item;
+
         for(i=0; i<n; i++)
         {
-            _body.items.push(e.body.items[i]);
+            item = e.body.items[i];
+            if(!_similarArtistsKeys[item.id])
+            {
+                _similarArtistsKeys[item.id] = item;
+                _similarArtists.push(_similarArtistsKeys[item.id]);
+            }
         }
+
         _artistsChecked++;
         if(_artistsChecked === _numArtists)
         {
-
-            _onResponse.broadcast
-            (
-                {
-                    source: this,
-                    error: null,
-                    response: null,
-                    body: _body
-                }
-            )
+            _finish();
         }
     }
 
     const _onSimiliarArtistsError = function(e)
     {
-        _onError.broadcast(e)
+        _artistsChecked++;
+
+        if(_artistsChecked === _numArtists)
+        {
+            _finish();
+        }
     }
 
-    var i, artistAlbumRequest, that = this;
+    var i, similarArtistsRequest, that = this;
     for(i=0; i<_numArtists; i++)
     {
-        artistAlbumRequest = new APIRequest();
-        artistAlbumRequest.url = APIConfig.URLs.artistAlbums(artists[i].id);
-        artistAlbumRequest.header = APIConfig.sessionHeader(session);
-        artistAlbumRequest.method = APIRequest.method.get;
-        artistAlbumRequest.form =
-        {
-            countryCode: session.countryCode,
-            limit: _albumsPerArtist
-        };
-        artistAlbumRequest.send();
-        artistAlbumRequest.onResponse.addListener(that, _onSimiliarArtistsResponse);
-        artistAlbumRequest.onError.addListener(that, _onSimiliarArtistsError);
+        similarArtistsRequest = new SimilarArtistsRequest(session, artists[i].id);
+        similarArtistsRequest.responseAction = undefined;
+        similarArtistsRequest.errorAction = undefined;
+        similarArtistsRequest.onResponse.addListener(that, _onSimiliarArtistsResponse);
+        similarArtistsRequest.onError.addListener(that, _onSimiliarArtistsError);
+        similarArtistsRequest.form.limit = 2;
+        similarArtistsRequest.send();
     }
 
-    // pretty much we’re just spoofing an APIRequest object here so that we can send the accumulated results of all of those requests in one big bunch
     Object.defineProperty(this, 'onResponse', { value: _onResponse });
     Object.defineProperty(this, 'onError', { value: _onError });
     Object.defineProperty(this, 'responseAction', { value: _responseAction });
     Object.defineProperty(this, 'errorAction', { value: _errorAction });
+
     APIRequest.onCreateInstance.broadcast(this);
 }
 
-module.exports = LatestReleasesRequest;
+module.exports = RecommendedArtistsRequest;

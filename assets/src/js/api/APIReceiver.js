@@ -4,6 +4,7 @@ APIActions = require('./APIActions'),
 LoginRequest = require('./types/LoginRequest'),
 ArtistsRequest = require('./types/ArtistsRequest'),
 LatestReleasesRequest = require('./types/LatestReleasesRequest'),
+RecommendedArtistsRequest = require('./types/RecommendedArtistsRequest'),
 ModelDispatcher = require('../model/ModelDispatcher'),
 ModelActions = require('../model/ModelActions');
 
@@ -25,6 +26,10 @@ const APIReceiver = function() {
 
             case ModelActions.requests.GET_LATEST_RELEASES:
                 new LatestReleasesRequest(action.payload.artists, action.payload.session);
+                break;
+
+            case ModelActions.requests.GET_RECOMMENDED_ARTISTS:
+                new RecommendedArtistsRequest(action.payload.artists, action.payload.session);
                 break;
 
             default:

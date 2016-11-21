@@ -15,12 +15,14 @@ const ModelReceiver = function()
     const _handleAPINotifications = function(action)
     {
         console.log('ModelReceiver._handleAPINotifications: ' + action.type);
+        console.log(action.payload);
         switch(action.type)
         {
             case APIActions.RESPONSE_LOGIN:
                 ModelState.session.user = new User(action.payload.body.userId);
                 ModelState.session.countryCode = action.payload.body.countryCode;
                 ModelState.session.id = action.payload.body.sessionId;
+                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_ARTISTS, { session: ModelState.session }));
                 ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LOGIN_RESPONSE, { state: ModelState }));
                 break;
 
@@ -32,12 +34,19 @@ const ModelReceiver = function()
                 break;
 
             case APIActions.RESPONSE_ARTISTS:
+                ModelState.artists = [];
                 const n = action.payload.body.items.length;
                 for(var i=0; i<n; i++)
                 {
                     ModelState.artists.push(action.payload.body.items[i].item);
                 }
+                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_RECOMMENDED_ARTISTS, { artists: ModelState.artists, session: ModelState.session }));
                 ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.ARTISTS_RESPONSE, { state: ModelState }));
+                break;
+
+            case APIActions.RESPONSE_RECOMMENDED_ARTISTS:
+                ModelState.recommendedArtists = action.payload.body.items;
+                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_LATEST_RELEASES, {artists: ModelState.recommendedArtists.concat(ModelState.artists), session: ModelState.session}));
                 break;
 
             case APIActions.ERROR_ARTISTS:

@@ -16,6 +16,10 @@ Object.defineProperty(APIConfig, 'URLs',
         {
             return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/artists';
         },
+        similarArtists: function(artistId)
+        {
+            return APIConfig.baseURL + '/artists/' + artistId + '/similar';
+        },
         tracks: function(session)
         {
             return APIConfig.baseURL + '/users/' + session.user.id + '/favorites/tracks';

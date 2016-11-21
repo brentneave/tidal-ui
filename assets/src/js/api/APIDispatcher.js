@@ -1,7 +1,8 @@
 const
     Action = require('../events/Action'),
     Broadcaster = require('../events/Broadcaster'),
-    APIRequest = require('./APIRequest');
+    APIRequest = require('./APIRequest'),
+    RecommendedArtistsRequest = require('./types/RecommendedArtistsRequest');
 
 const APIDispatcher = function()
 {

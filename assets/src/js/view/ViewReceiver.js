@@ -55,19 +55,19 @@ const ViewReceiver = function()
                         text: 'Great success! You have logged in'
                     }
                 );
-                ViewDispatcher.requests.broadcast
-                (
-                    new Action(ViewActions.GET_ARTISTS)
-                );
+                // ViewDispatcher.requests.broadcast
+                // (
+                //     new Action(ViewActions.GET_ARTISTS)
+                // );
                 break;
 
-            case ModelActions.notifications.ARTISTS_RESPONSE:
-                ViewDispatcher.requests.broadcast
-                (
-                    new Action(ViewActions.GET_LATEST_RELEASES)
-                );
-                doUpdate = false;
-                break;
+            // case ModelActions.notifications.ARTISTS_RESPONSE:
+            //     ViewDispatcher.requests.broadcast
+            //     (
+            //         new Action(ViewActions.GET_LATEST_RELEASES)
+            //     );
+            //     doUpdate = false;
+            //     break;
 
             case ModelActions.notifications.LATEST_RELEASES_RESPONSE:
                 if(action.payload.state.latestReleases.length)
