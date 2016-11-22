@@ -41,6 +41,13 @@ const ViewReceiver = function()
             //     );
             //     break;
 
+            case ModelActions.notifications.SESSION_INVALID:
+                node.children.push
+                (
+                    LoginForm.render({ title: 'Please to be logging in.' })
+                );
+                break;
+
             case ModelActions.notifications.LOGIN_ERROR:
                 node.children.push
                 (
@@ -63,12 +70,6 @@ const ViewReceiver = function()
                 {
                     node.children.push(AlbumList.render(action.payload.state.latestReleases.albums));
                 }
-                // if(action.payload.state.recommendations.artists.length)
-                // {
-                //     console.log('action.payload.state.recommendations.artists');
-                //     console.log(action.payload.state.recommendations.artists);
-                //     node.children.push(ArtistList.render(action.payload.state.recommendations.artists));
-                // }
                 else
                 {
                     doUpdate = false;

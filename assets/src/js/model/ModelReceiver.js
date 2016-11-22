@@ -52,6 +52,10 @@ const ModelReceiver = function()
 
     const _handleAPINotifications = function(action, state)
     {
+        console.log('ModelReceiver._handleAPINotifications: ' + action.type);
+        console.log(action);
+
+        var stateWillUpdate = true;
 
         if(!state)
         {
@@ -60,23 +64,39 @@ const ModelReceiver = function()
         else {
             state = _cloneState(state);
         }
-        console.log('ModelReceiver._handleAPINotifications: ' + action.type);
 
         switch(action.type)
         {
-            case APIActions.RESPONSE_LOGIN:
-                state.user.id = action.payload.body.userId;
-                state.session.countryCode = action.payload.body.countryCode;
-                state.session.id = action.payload.body.sessionId;
-                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_ARTISTS, { session: state.session, user: state.user }));
-                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LOGIN_RESPONSE, { state: state }));
+            case APIActions.ERROR:
+                if(action.payload.body.status == 401
+                || action.payload.body.status == 400
+                || action.payload.body.status == 403)
+                {
+                    // session is over, login again
+                    state.user = null;
+                    state.session.countryCode = null;
+                    state.session.id = null;
+                    ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.SESSION_INVALID, { state: state }));
+                }
+                stateWillUpdate = false;
                 break;
 
             case APIActions.ERROR_LOGIN:
                 state.user = null;
                 state.session.countryCode = null;
                 state.session.id = null;
+                stateWillUpdate = false;
                 ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LOGIN_ERROR, { state: state }));
+                break;
+
+            case APIActions.RESPONSE_LOGIN:
+                console.log('state.user.id = ' + state.user.id);
+                console.log('action.payload.body.userId = ' + action.payload.body.userId);
+                state.user.id = action.payload.body.userId;
+                state.session.countryCode = action.payload.body.countryCode;
+                state.session.id = action.payload.body.sessionId;
+                ModelDispatcher.requests.broadcast(new Action(ModelActions.requests.GET_ARTISTS, { session: state.session, user: state.user }));
+                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LOGIN_RESPONSE, { state: state }));
                 break;
 
             case APIActions.RESPONSE_ARTISTS:
@@ -86,22 +106,14 @@ const ModelReceiver = function()
                 {
                     state.favorites.artists.push(action.payload.body.items[i].item);
                 }
-                ModelDispatcher.requests.broadcast
-                (
-                    new Action
-                    (
-                        ModelActions.requests.GET_RECOMMENDED_ARTISTS,
-                        { session: state.session, artists: state.favorites.artists }
-                    )
-                );
-                ModelDispatcher.notifications.broadcast
-                (
-                    new Action
-                    (
-                        ModelActions.notifications.ARTISTS_RESPONSE,
-                        { state: state }
-                    )
-                );
+                // ModelDispatcher.requests.broadcast
+                // (
+                //     new Action
+                //     (
+                //         ModelActions.requests.GET_RECOMMENDED_ARTISTS,
+                //         { session: state.session, artists: state.favorites.artists }
+                //     )
+                // );
                 break;
 
             case APIActions.RESPONSE_RECOMMENDED_ARTISTS:
@@ -119,20 +131,19 @@ const ModelReceiver = function()
                 );
                 break;
 
-            case APIActions.ERROR_ARTISTS:
-                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.ARTISTS_ERROR, { state: state }));
-                break;
-
             case APIActions.RESPONSE_LATEST_RELEASES:
                 state.latestReleases.albums = action.payload.body.items;
-                ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LATEST_RELEASES_RESPONSE, { state: state }));
+                // ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.LATEST_RELEASES_RESPONSE, { state: state }));
                 break;
 
             default:
                 break;
         }
 
-        ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.STATE_CHANGE, { state: state }));
+        if(stateWillUpdate)
+        {
+            ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.STATE_CHANGE, { state: _cloneState(state) }));
+        }
 
         _currentState = state;
     }
@@ -203,8 +214,19 @@ const ModelReceiver = function()
         switch (action.type)
         {
             case LocalStorageActions.READ_LOCAL_STATE:
-                console.log('updating state from local storage')
                 _currentState = action.payload.state;
+                _currentState.session.id = 'TEST';
+                ModelDispatcher.requests.broadcast
+                (
+                    new Action
+                    (
+                        ModelActions.requests.GET_ARTISTS,
+                        {
+                            artists: _currentState.favorites.artists,
+                            session: _currentState.session
+                        }
+                    )
+                );
                 ModelDispatcher.notifications.broadcast(new Action(ModelActions.notifications.STATE_CHANGE, { state: _currentState }));
                 break;
             default:
@@ -231,6 +253,7 @@ const ModelReceiver = function()
     (
         this, function(action)
         {
+            console.log('handling action' + action.type);
             _handleAPINotifications(action, _currentState);
         }
     );

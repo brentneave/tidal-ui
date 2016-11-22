@@ -21,7 +21,9 @@ const APIDispatcher = function()
 
     const _broadcastErrorAction = function(e)
     {
-        if(e.source.responseAction)
+        console.log('dispatcher onerror ' + e.source.errorAction);
+        console.log(e.source);
+        if(e.source.errorAction)
         {
             _notifications.broadcast
             (

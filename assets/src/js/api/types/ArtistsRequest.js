@@ -10,7 +10,7 @@ const ArtistsRequest = function(session, user)
     this.header = APIConfig.sessionHeader(session.id);
     this.method = APIRequest.method.get;
     this.responseAction = APIActions.RESPONSE_ARTISTS;
-    this.errorAction = APIActions.ERROR_ARTISTS;
+    this.errorAction = APIActions.ERROR;
     this.form =
     {
         countryCode: session.countryCode,

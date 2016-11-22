@@ -7,6 +7,9 @@ const
 
 const LatestReleasesRequest = function(session, artists)
 {
+    console.log('LatestReleasesRequest');
+    console.log(session);
+    console.log(artists);
 
     const _numArtists = artists.length,
           _albumsPerArtist = 1,
@@ -15,7 +18,7 @@ const LatestReleasesRequest = function(session, artists)
           _onError = new Broadcaster(),
           _onResponse = new Broadcaster(),
           _responseAction = APIActions.RESPONSE_LATEST_RELEASES,
-          _errorAction = APIActions.ERROR_LATEST_RELEASES,
+          _errorAction = APIActions.ERROR,
           _that = this;
 
     var _artistsLoaded = 0;
@@ -69,7 +72,16 @@ const LatestReleasesRequest = function(session, artists)
 
     const _onAlbumError = function(e)
     {
-        _onError.broadcast(e)
+        console.log('_that.errorAction = ' + _that.errorAction);
+        _onError.broadcast
+        (
+            {
+                source: _that,
+                error: e.error,
+                response: e.response,
+                body: e.body
+            }
+        )
     }
 
     var i, artistAlbumRequest, that = this;

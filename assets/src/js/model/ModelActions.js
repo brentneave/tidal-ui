@@ -15,6 +15,7 @@ const ModelActions = Object.freeze({
             STATE_CHANGE                 : 'STATE_CHANGE',
             LOGIN_RESPONSE               : 'MODEL_LOGIN_RESPONSE',
             LOGIN_ERROR                  : 'MODEL_LOGIN_ERROR',
+            SESSION_INVALID              : 'MODEL_SESSION_INVALID',
             ARTISTS_RESPONSE             : 'MODEL_ARTISTS_RESPONSE',
             ARTISTS_ERROR                : 'MODEL_ARTISTS_ERROR',
             LATEST_RELEASES_RESPONSE     : 'MODEL_LATEST_RELEASES_RESPONSE',
