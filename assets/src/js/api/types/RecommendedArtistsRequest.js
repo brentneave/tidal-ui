@@ -13,6 +13,7 @@ const RecommendedArtistsRequest = function(session, artists)
     const _numArtists = artists.length,
           _similarArtists = [],
           _similarArtistsKeys = {},
+          _numberSimilarArtists = 2,
           _body = { items: [] },
           _onError = new Broadcaster(),
           _onResponse = new Broadcaster(),
@@ -86,7 +87,7 @@ const RecommendedArtistsRequest = function(session, artists)
             similarArtistsRequest.errorAction = undefined;
             similarArtistsRequest.onResponse.addListener(_that, _onSimiliarArtistsResponse);
             similarArtistsRequest.onError.addListener(_that, _onSimiliarArtistsError);
-            similarArtistsRequest.form.limit = 1;
+            similarArtistsRequest.form.limit = _numberSimilarArtists;
             similarArtistsRequest.send();
         }
     }

@@ -1,1 +1,0 @@
-console.error("\n/Users/brentneave/Sites/tidal-ui/assets/src/js/view/View.js:92\n                );\n                 ^\nParseError: Unexpected token");

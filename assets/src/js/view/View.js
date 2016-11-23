@@ -6,7 +6,7 @@ const Broadcaster = require('../events/Broadcaster'),
 
 const View = function()
 {
-
+    
     const _createNode = function(o, parentNode)
     {
         if(!o.tag) throw new Error();
@@ -63,7 +63,6 @@ const View = function()
 
         return node;
     }
-
 
     const _updateDOM = function(node)
     {

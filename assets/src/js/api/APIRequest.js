@@ -1,8 +1,7 @@
 const request = require('request'),
     APIConfig = require('./APIConfig'),
     Broadcaster = require('../events/Broadcaster'),
-    Action = require('../events/Action'),
-    ListOf = require('../utils/ListOf');
+    Action = require('../events/Action');
 
 
 const APIRequest = function(url, header, form, method, responseAction, errorAction) {
