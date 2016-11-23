@@ -81,28 +81,30 @@ const LatestReleasesRequest = function(session, artists)
         )
     }
 
-    var i, artistAlbumRequest, that = this;
-    for(i=0; i<_numArtists; i++)
+    const _send = function()
     {
-        artistAlbumRequest = new APIRequest();
-        artistAlbumRequest.url = APIConfig.URLs.artistAlbums(artists[i].id);
-        artistAlbumRequest.header = APIConfig.sessionHeader(session.id);
-        artistAlbumRequest.method = APIRequest.method.get;
-        artistAlbumRequest.form =
+        var i, artistAlbumRequest;
+        for(i=0; i<_numArtists; i++)
         {
-            countryCode: session.countryCode,
-            limit: _albumsPerArtist
-        };
-        artistAlbumRequest.onResponse.addListener(that, _onAlbumResponse);
-        artistAlbumRequest.onError.addListener(that, _onAlbumError);
-        artistAlbumRequest.send();
+            artistAlbumRequest = new APIRequest();
+            artistAlbumRequest.url = APIConfig.URLs.artistAlbums(artists[i].id);
+            artistAlbumRequest.header = APIConfig.sessionHeader(session.id);
+            artistAlbumRequest.method = APIRequest.method.get;
+            artistAlbumRequest.form =
+            {
+                countryCode: session.countryCode,
+                limit: _albumsPerArtist
+            };
+            artistAlbumRequest.onResponse.addListener(_that, _onAlbumResponse);
+            artistAlbumRequest.onError.addListener(_that, _onAlbumError);
+            artistAlbumRequest.send();
+        }
     }
 
     // pretty much we’re just spoofing an APIRequest object here so that we can send the accumulated results of all of those requests in one big bunch
     Object.defineProperty(this, 'onResponse', { value: _onResponse });
     Object.defineProperty(this, 'onError', { value: _onError });
-    Object.defineProperty(this, 'responseAction', { value: _responseAction });
-    Object.defineProperty(this, 'errorAction', { value: _errorAction });
+    Object.defineProperty(this, 'send', { value: _send });
     APIRequest.onCreateInstance.broadcast(this);
 }
 

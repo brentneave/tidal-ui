@@ -1,6 +1,7 @@
 const Broadcaster = require('../events/Broadcaster'),
       LoginForm = require('./types/LoginForm'),
       ArtistList = require('./types/ArtistList'),
+      AlbumList = require('./types/AlbumList'),
       DOMDiff = require('skatejs-dom-diff/').default;
 
 const View = function()
@@ -98,7 +99,7 @@ const View = function()
         }
         else if(state.favorites.artists)
         {
-            node.children.push(ArtistList.render(state.favorites.artists));
+            node.children.push(AlbumList.render(state.recommendations.albums));
         }
 
         _updateDOM(node);

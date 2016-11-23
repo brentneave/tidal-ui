@@ -7,7 +7,8 @@ const Reducer = function()
         LOGIN_ERROR : 'LOGIN_ERROR',
         FAVORITE_ARTISTS : 'FAVORITE_ARTISTS',
         RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
-        LATEST_ALBUMS : 'LATEST_ALBUMS'
+        LATEST_ALBUMS : 'LATEST_ALBUMS',
+        RECOMMENDED_ALBUMS : 'RECOMMENDED_ALBUMS'
     }
 
     console.log('Reducer._actions');
@@ -47,7 +48,11 @@ const Reducer = function()
         console.log(action);
         const newState = state ? _cloneState(state) : _cloneState(_defaultState);
 
-        if(!action) return newState;
+        if(!action) 
+        {
+            console.log(newState);
+            return newState;
+        }
 
         switch(action.type)
         {
@@ -83,10 +88,14 @@ const Reducer = function()
             case _actions.LATEST_ALBUMS:
                 newState.latestReleases.albums = action.payload.body.items;
 
+            case _actions.RECOMMENDED_ALBUMS:
+                newState.recommendations.albums = action.payload.body.items;
+                break;
+
             default:
                 break;
         }
-        
+
         console.log(newState);
         return newState;
     }
