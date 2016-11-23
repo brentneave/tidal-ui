@@ -50,14 +50,14 @@ function Broadcaster()
     return false;
   }
 
-  this.broadcast = function(e) {
+  this.broadcast = function() {
 
     var i = _listeners.length;
     var o;
     while(i--)
     {
       o = _listeners[i];
-      o.handler.call(o.listener, e);
+      o.handler.apply(o.listener, arguments);
     }
 
     return this;

@@ -1,7 +1,6 @@
 const
     Broadcaster = require('../../events/Broadcaster'),
     APIConfig = require('../APIConfig'),
-    APIActions = require('../APIActions'),
     APIRequest = require('../APIRequest'),
     SimilarArtistsRequest = require('./SimilarArtistsRequest');
 
@@ -13,8 +12,6 @@ const RecommendedArtistsRequest = function(session, artists)
           _body = { items: [] },
           _onError = new Broadcaster(),
           _onResponse = new Broadcaster(),
-          _responseAction = APIActions.RESPONSE_RECOMMENDED_ARTISTS,
-          _errorAction = APIActions.ERROR_RECOMMENDED_ARTISTS,
           _that = this;
 
     var _artistsChecked = 0;
@@ -59,6 +56,15 @@ const RecommendedArtistsRequest = function(session, artists)
     const _onSimiliarArtistsError = function(e)
     {
         _artistsChecked++;
+        _onError.broadcast
+        (
+            {
+                source: _that,
+                error: e.error,
+                response: e.response,
+                body: e.body
+            }
+        )
 
         if(_artistsChecked === _numArtists)
         {

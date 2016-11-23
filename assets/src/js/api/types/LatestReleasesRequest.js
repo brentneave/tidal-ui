@@ -1,7 +1,6 @@
 const
     Broadcaster = require('../../events/Broadcaster'),
     APIConfig = require('../APIConfig'),
-    APIActions = require('../APIActions'),
     APIRequest = require('../APIRequest'),
     ArtistsRequest = require('./ArtistsRequest');
 
@@ -17,8 +16,6 @@ const LatestReleasesRequest = function(session, artists)
           _albums = [],
           _onError = new Broadcaster(),
           _onResponse = new Broadcaster(),
-          _responseAction = APIActions.RESPONSE_LATEST_RELEASES,
-          _errorAction = APIActions.ERROR,
           _that = this;
 
     var _artistsLoaded = 0;
