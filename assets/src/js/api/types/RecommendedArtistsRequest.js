@@ -1,20 +1,22 @@
 const
     Broadcaster = require('../../events/Broadcaster'),
     APIConfig = require('../APIConfig'),
-    APIActions = require('../APIActions'),
     APIRequest = require('../APIRequest'),
     SimilarArtistsRequest = require('./SimilarArtistsRequest');
 
 const RecommendedArtistsRequest = function(session, artists)
 {
+    console.log('RecommendedArtistsRequest');
+    console.log(session);
+    console.log(artists);
+    
     const _numArtists = artists.length,
           _similarArtists = [],
           _similarArtistsKeys = {},
+          _numberSimilarArtists = 2,
           _body = { items: [] },
           _onError = new Broadcaster(),
           _onResponse = new Broadcaster(),
-          _responseAction = APIActions.RESPONSE_RECOMMENDED_ARTISTS,
-          _errorAction = APIActions.ERROR_RECOMMENDED_ARTISTS,
           _that = this;
 
     var _artistsChecked = 0;
@@ -59,6 +61,15 @@ const RecommendedArtistsRequest = function(session, artists)
     const _onSimiliarArtistsError = function(e)
     {
         _artistsChecked++;
+        _onError.broadcast
+        (
+            {
+                source: _that,
+                error: e.error,
+                response: e.response,
+                body: e.body
+            }
+        )
 
         if(_artistsChecked === _numArtists)
         {
@@ -66,22 +77,24 @@ const RecommendedArtistsRequest = function(session, artists)
         }
     }
 
-    var i, similarArtistsRequest, that = this;
-    for(i=0; i<_numArtists; i++)
+    const _send = function()
     {
-        similarArtistsRequest = new SimilarArtistsRequest(session, artists[i]);
-        similarArtistsRequest.responseAction = undefined;
-        similarArtistsRequest.errorAction = undefined;
-        similarArtistsRequest.onResponse.addListener(that, _onSimiliarArtistsResponse);
-        similarArtistsRequest.onError.addListener(that, _onSimiliarArtistsError);
-        similarArtistsRequest.form.limit = 1;
-        similarArtistsRequest.send();
+        var i, similarArtistsRequest;
+        for(i=0; i<_numArtists; i++)
+        {
+            similarArtistsRequest = new SimilarArtistsRequest(session, artists[i]);
+            similarArtistsRequest.responseAction = undefined;
+            similarArtistsRequest.errorAction = undefined;
+            similarArtistsRequest.onResponse.addListener(_that, _onSimiliarArtistsResponse);
+            similarArtistsRequest.onError.addListener(_that, _onSimiliarArtistsError);
+            similarArtistsRequest.form.limit = _numberSimilarArtists;
+            similarArtistsRequest.send();
+        }
     }
 
     Object.defineProperty(this, 'onResponse', { value: _onResponse });
     Object.defineProperty(this, 'onError', { value: _onError });
-    Object.defineProperty(this, 'responseAction', { value: _responseAction });
-    Object.defineProperty(this, 'errorAction', { value: _errorAction });
+    Object.defineProperty(this, 'send', { value: _send });
 
     APIRequest.onCreateInstance.broadcast(this);
 }

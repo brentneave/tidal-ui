@@ -1,81 +1,111 @@
+const Broadcaster = require('../events/Broadcaster'),
+      LoginForm = require('./types/LoginForm'),
+      ArtistList = require('./types/ArtistList'),
+      AlbumList = require('./types/AlbumList'),
+      DOMDiff = require('skatejs-dom-diff/').default;
 
 const View = function()
 {
-
-    var _root = undefined;
-
-    Object.defineProperty(this, 'root',
+    
+    const _createNode = function(o, parentNode)
     {
-        set: function(node)
-        {
-            _root = node;
-        },
-        get: function()
-        {
-            if (_root === undefined) throw new Error("No root defined");
-            return _root;
-        }
-    });
+        if(!o.tag) throw new Error();
 
-    Object.defineProperty(this, 'createNode',
+        var node = document.createElement(o.tag);
+
+        if(o.id)
+        {
+            node.setAttribute('id', o.id);
+        }
+
+        if(o.className)
+        {
+            node.setAttribute('class', o.className);
+        }
+
+        if(o.attributes)
+        {
+            for(var s in o.attributes)
+            {
+                node.setAttribute(s, o.attributes[s]);
+            }
+        }
+
+        if(o.text)
+        {
+            node.textContent = o.text;
+        }
+
+        if(o.events)
+        {
+            for(var s in o.events)
+            {
+                node.addEventListener(s, o.events[s], false);
+            }
+        }
+
+        if(parentNode)
+        {
+            parentNode.appendChild(node);
+        }
+
+        if(o.children)
+        {
+            var a = o.children,
+            n = a.length,
+            child;
+            for (var i=0; i<n; i++)
+            {
+                child = a[i];
+                _createNode(child, node);
+            }
+        }
+
+        return node;
+    }
+
+    const _updateDOM = function(node)
     {
-        value: function(o, parentNode)
+        console.log('View._updateDOM');
+        console.log(node);
+        DOMDiff.merge
+        (
+            {
+                source: document.getElementById('app'),
+                destination: _createNode(node)
+            }
+        );
+    }
+
+    const _render = function(state)
+    {
+        console.log('View._render');
+        console.log(state);
+
+        const node = { tag: 'div', id:'app', children: [] }
+
+        if(!state.session.id)
         {
-            if(!o.tag) throw new Error();
-
-            var node = document.createElement(o.tag);
-
-            if(o.id)
-            {
-                node.setAttribute('id', o.id);
-            }
-
-            if(o.className)
-            {
-                node.setAttribute('class', o.className);
-            }
-
-            if(o.attributes)
-            {
-                for(var s in o.attributes)
-                {
-                    node.setAttribute(s, o.attributes[s]);
-                }
-            }
-
-            if(o.text)
-            {
-                node.textContent = o.text;
-            }
-
-            if(o.events)
-            {
-                for(var s in o.events)
-                {
-                    node.addEventListener(s, o.events[s], false);
-                }
-            }
-
-            if(parentNode)
-            {
-                parentNode.appendChild(node);
-            }
-
-            if(o.children)
-            {
-                var a = o.children,
-                n = a.length,
-                child;
-                for (var i=0; i<n; i++)
-                {
-                    child = a[i];
-                    this.createNode(child, node);
-                }
-            }
-
-            return node;
+            node.children.push
+            (
+                LoginForm.render
+                (
+                    {
+                        title: state.session.loginError ? state.session.loginError : 'Log in'
+                    }
+                )
+            );
         }
-    });
+        else if(state.favorites.artists)
+        {
+            node.children.push(AlbumList.render(state.recommendations.albums));
+        }
+
+        _updateDOM(node);
+    }
+
+
+    Object.defineProperty(this, 'render', { value: _render });
 
 }
 

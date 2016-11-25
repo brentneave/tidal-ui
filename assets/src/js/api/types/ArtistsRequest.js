@@ -1,6 +1,5 @@
 const
     APIConfig = require('../APIConfig'),
-    APIActions = require('../APIActions'),
     APIRequest = require('../APIRequest');
 
 const ArtistsRequest = function(session, user)
@@ -9,8 +8,6 @@ const ArtistsRequest = function(session, user)
     this.url = APIConfig.URLs.artists(user.id);
     this.header = APIConfig.sessionHeader(session.id);
     this.method = APIRequest.method.get;
-    this.responseAction = APIActions.RESPONSE_ARTISTS;
-    this.errorAction = APIActions.ERROR;
     this.form =
     {
         countryCode: session.countryCode,
