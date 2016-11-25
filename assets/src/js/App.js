@@ -10,17 +10,13 @@ const App = function()
 {
     const _that = this;
 
-    var _state = Reducer.reduce
-    (
-        {},
-        new Action(Reducer.actions.RESTORE_LOCAL_STATE, { state: LocalStorage.readState() })
-    );
+    var _state;
 
     const _update = function(action, updateView)
     {
         console.log('App._update');
         _state = Reducer.reduce(_state, action);
-        if(updateView) View.render(_state);
+        if(updateView != false) View.render(_state);
         LocalStorage.writeState(_state);
     }
 
@@ -87,7 +83,16 @@ const App = function()
 
     ViewEvents.login.addListener(this, _login);
 
-    _update(null, true);
+    const _localState = LocalStorage.readState();
+    if(_localState)
+    {
+        _update(new Action(Reducer.actions.RESTORE_LOCAL_STATE, { state: LocalStorage.readState() }));
+        _recommendedAlbums();
+    }
+    else
+    {
+        _update();
+    }
 }
 
 module.exports = new App();
