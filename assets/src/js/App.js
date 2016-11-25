@@ -10,16 +10,20 @@ const App = function()
 {
     const _that = this;
 
-    var _state;
+    var _state = Reducer.reduce
+    (
+        {},
+        new Action(Reducer.actions.RESTORE_LOCAL_STATE, { state: LocalStorage.readState() })
+    );
 
-    var _update = function(action)
+    const _update = function(action, updateView)
     {
-        console.log('App.update');
+        console.log('App._update');
         _state = Reducer.reduce(_state, action);
-        View.render(_state);
+        if(updateView) View.render(_state);
+        LocalStorage.writeState(_state);
     }
 
-    // generic api error
     const _handleAPIError = function(e)
     {
         console.log('App._handleAPIError');
@@ -32,8 +36,8 @@ const App = function()
         const request = new API.LoginRequest(e.username, e.password);
         request.onResponse.addListener(this, function(e)
         {
-            // _update(new Action(Reducer.actions.LOGIN, e));
-            _state = Reducer.reduce(_state, new Action(Reducer.actions.LOGIN, e));
+            _update(new Action(Reducer.actions.LOGIN, e), false);
+            // _state = Reducer.reduce(_state, new Action(Reducer.actions.LOGIN, e));
             _favouriteArtists();
         });
         request.onError.addListener(this, function(e)
@@ -49,8 +53,7 @@ const App = function()
         const request = new API.FavoriteArtistsRequest(_state.session, _state.user);
         request.onResponse.addListener(_that, function(e)
         {
-            // _update(new Action(Reducer.actions.FAVORITE_ARTISTS, e));
-            _state = Reducer.reduce(_state, new Action(Reducer.actions.FAVORITE_ARTISTS, e));
+            _update(new Action(Reducer.actions.FAVORITE_ARTISTS, e), false);
             _recommendedArtists();
         });
         request.onError.addListener(_that, _handleAPIError);
@@ -63,8 +66,7 @@ const App = function()
         const request = new API.RecommendedArtistsRequest(_state.session, _state.favorites.artists);
         request.onResponse.addListener(_that, function(e)
         {
-            // _update(new Action(Reducer.actions.RECOMMENDED_ARTISTS, e));
-            _state = Reducer.reduce(_state, new Action(Reducer.actions.RECOMMENDED_ARTISTS, e));
+            _update(new Action(Reducer.actions.RECOMMENDED_ARTISTS, e), false);
             _recommendedAlbums();
         });
         request.onError.addListener(_that, _handleAPIError);
@@ -77,15 +79,15 @@ const App = function()
         const request = new API.LatestAlbumsRequest(_state.session, _state.favorites.artists.concat(_state.recommendations.artists));
         request.onResponse.addListener(_that, function(e)
         {
-            _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, e));
+            _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, e), true);
         });
         request.onError.addListener(_that, _handleAPIError);
-        request.send();    
+        request.send();
     }
 
     ViewEvents.login.addListener(this, _login);
 
-    _update();
+    _update(null, true);
 }
 
 module.exports = new App();

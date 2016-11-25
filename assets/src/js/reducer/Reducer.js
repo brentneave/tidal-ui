@@ -1,10 +1,11 @@
 const Reducer = function()
 {
-    const _actions = 
+    const _actions =
     {
         LOGOUT : 'LOGOUT',
         LOGIN : 'LOGIN',
         LOGIN_ERROR : 'LOGIN_ERROR',
+        RESTORE_LOCAL_STATE: 'RESTORE_LOCAL_STATE',
         FAVORITE_ARTISTS : 'FAVORITE_ARTISTS',
         RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
         LATEST_ALBUMS : 'LATEST_ALBUMS',
@@ -48,7 +49,7 @@ const Reducer = function()
         console.log(action);
         const newState = state ? _cloneState(state) : _cloneState(_defaultState);
 
-        if(!action) 
+        if(!action)
         {
             console.log(newState);
             return newState;
@@ -70,6 +71,10 @@ const Reducer = function()
                 newState.user.id = action.payload.body.userId;
                 newState.session.countryCode = action.payload.body.countryCode;
                 newState.session.id = action.payload.body.sessionId;
+                break;
+
+            case _actions.RESTORE_LOCAL_STATE:
+                newState = _cloneState(action.payload.state);
                 break;
 
             case _actions.FAVORITE_ARTISTS:

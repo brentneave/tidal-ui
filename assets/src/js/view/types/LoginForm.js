@@ -1,9 +1,9 @@
 const View = require('../View'),
       ViewEvents = require('../ViewEvents');
 
-const LoginForm = function(view)
+const LoginForm = function()
 {
-    var submitLogin = function(e)
+    const submitLogin = function(e)
     {
         e.preventDefault();
 
