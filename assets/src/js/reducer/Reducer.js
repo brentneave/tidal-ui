@@ -4,7 +4,6 @@ const Reducer = function()
     {
         LOGOUT : 'LOGOUT',
         LOGIN : 'LOGIN',
-        LOGIN_ERROR : 'LOGIN_ERROR',
         RESTORE_LOCAL_STATE: 'RESTORE_LOCAL_STATE',
         FAVORITE_ARTISTS : 'FAVORITE_ARTISTS',
         RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
@@ -16,13 +15,13 @@ const Reducer = function()
     console.log(_actions);
 
     const _defaultState = {
-        session:{
+        session: {
             id: null,
             countryCode: null,
-            loginError: null
-        },
-        user: {
-            id: null
+            loginError: null,
+            user: {
+                id: null
+            }
         },
         favorites: {
             artists: [],
@@ -61,16 +60,9 @@ const Reducer = function()
                 newState = _cloneState(_defaultState);
                 break;
 
-            case _actions.LOGIN_ERROR:
-                newState = _cloneState(_defaultState);
-                newState.session.loginError = 'Please try again.';
-                break;
-
             case _actions.LOGIN:
                 newState = _cloneState(_defaultState);
-                newState.user.id = action.payload.body.userId;
-                newState.session.countryCode = action.payload.body.countryCode;
-                newState.session.id = action.payload.body.sessionId;
+                newState.session = action.payload;
                 break;
 
             case _actions.RESTORE_LOCAL_STATE:
