@@ -1,12 +1,14 @@
 const
     Broadcaster = require('../../events/Broadcaster'),
     APIConfig = require('../APIConfig'),
-    APIActions = require('../APIActions'),
     APIRequest = require('../APIRequest'),
     ArtistsRequest = require('./ArtistsRequest');
 
-const LatestReleasesRequest = function(artists, session)
+const LatestReleasesRequest = function(session, artists)
 {
+    console.log('LatestReleasesRequest');
+    console.log(session);
+    console.log(artists);
 
     const _numArtists = artists.length,
           _albumsPerArtist = 1,
@@ -14,8 +16,6 @@ const LatestReleasesRequest = function(artists, session)
           _albums = [],
           _onError = new Broadcaster(),
           _onResponse = new Broadcaster(),
-          _responseAction = APIActions.RESPONSE_LATEST_RELEASES,
-          _errorAction = APIActions.ERROR_LATEST_RELEASES,
           _that = this;
 
     var _artistsLoaded = 0;
@@ -69,31 +69,42 @@ const LatestReleasesRequest = function(artists, session)
 
     const _onAlbumError = function(e)
     {
-        _onError.broadcast(e)
+        console.log('_that.errorAction = ' + _that.errorAction);
+        _onError.broadcast
+        (
+            {
+                source: _that,
+                error: e.error,
+                response: e.response,
+                body: e.body
+            }
+        )
     }
 
-    var i, artistAlbumRequest, that = this;
-    for(i=0; i<_numArtists; i++)
+    const _send = function()
     {
-        artistAlbumRequest = new APIRequest();
-        artistAlbumRequest.url = APIConfig.URLs.artistAlbums(artists[i].id);
-        artistAlbumRequest.header = APIConfig.sessionHeader(session);
-        artistAlbumRequest.method = APIRequest.method.get;
-        artistAlbumRequest.form =
+        var i, artistAlbumRequest;
+        for(i=0; i<_numArtists; i++)
         {
-            countryCode: session.countryCode,
-            limit: _albumsPerArtist
-        };
-        artistAlbumRequest.onResponse.addListener(that, _onAlbumResponse);
-        artistAlbumRequest.onError.addListener(that, _onAlbumError);
-        artistAlbumRequest.send();
+            artistAlbumRequest = new APIRequest();
+            artistAlbumRequest.url = APIConfig.URLs.artistAlbums(artists[i].id);
+            artistAlbumRequest.header = APIConfig.sessionHeader(session.id);
+            artistAlbumRequest.method = APIRequest.method.get;
+            artistAlbumRequest.form =
+            {
+                countryCode: session.countryCode,
+                limit: _albumsPerArtist
+            };
+            artistAlbumRequest.onResponse.addListener(_that, _onAlbumResponse);
+            artistAlbumRequest.onError.addListener(_that, _onAlbumError);
+            artistAlbumRequest.send();
+        }
     }
 
     // pretty much we’re just spoofing an APIRequest object here so that we can send the accumulated results of all of those requests in one big bunch
     Object.defineProperty(this, 'onResponse', { value: _onResponse });
     Object.defineProperty(this, 'onError', { value: _onError });
-    Object.defineProperty(this, 'responseAction', { value: _responseAction });
-    Object.defineProperty(this, 'errorAction', { value: _errorAction });
+    Object.defineProperty(this, 'send', { value: _send });
     APIRequest.onCreateInstance.broadcast(this);
 }
 

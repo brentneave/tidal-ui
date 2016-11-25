@@ -1,8 +1,7 @@
 const request = require('request'),
     APIConfig = require('./APIConfig'),
     Broadcaster = require('../events/Broadcaster'),
-    Action = require('../events/Action'),
-    ListOf = require('../utils/ListOf');
+    Action = require('../events/Action');
 
 
 const APIRequest = function(url, header, form, method, responseAction, errorAction) {
@@ -14,9 +13,7 @@ const APIRequest = function(url, header, form, method, responseAction, errorActi
   var _header,
       _url,
       _form,
-      _method,
-      _responseAction,
-      _errorAction;
+      _method;
 
   Object.defineProperty(this, 'onResponse', {
       value: _onResponse
@@ -41,24 +38,6 @@ const APIRequest = function(url, header, form, method, responseAction, errorActi
     },
     set: function(s) {
       _url = s;
-    }
-  });
-
-  Object.defineProperty(this, 'responseAction', {
-    get: function() {
-      return _responseAction;
-    },
-    set: function(s) {
-      _responseAction = s;
-    }
-  });
-
-  Object.defineProperty(this, 'errorAction', {
-    get: function() {
-      return _errorAction;
-    },
-    set: function(s) {
-      _errorAction = s;
     }
   });
 
@@ -107,75 +86,77 @@ Object.defineProperty(APIRequest, 'onCreateInstance', {
 // public methods
 
 Object.defineProperty(APIRequest.prototype, 'send', {
-  value: function() {
+    value: function() {
 
-    const that = this;
-    const callback = function(error, response, body) {
+        const that = this;
+        const callback = function(error, response, body) {
 
-        body = JSON.parse(body);
+            body = JSON.parse(body);
 
-        if(error)
-        {
-            that.onError.broadcast
+            if(error)
+            {
+                that.onError.broadcast
+                (
+                    {
+                        source: that,
+                        error: error,
+                        response: response,
+                        body: body
+                    }
+                )
+            }
+
+            else if
             (
-                {
-                    source: that,
-                    error: error,
-                    response: response,
-                    body: body
-                }
+                response.statusCode == 400
+                || response.statusCode == 401
+                || response.statusCode == 403
+                || response.statusCode == 404
             )
+            {
+                that.onError.broadcast
+                (
+                    {
+                        source: that,
+                        error: error,
+                        response: response,
+                        body: body
+                    }
+                );
+            }
+
+            else if (!error && response.statusCode == 200)
+            {
+                that.onResponse.broadcast
+                (
+                    {
+                        source: that,
+                        error: error,
+                        response: response,
+                        body: body
+                    }
+                );
+            }
+        };
+
+        if(this.method === APIRequest.method.get) {
+            request.get({
+                url : this.url,
+                headers: this.header,
+                qs: this.form
+            }, callback);
         }
 
-        else if
-        (
-            response.statusCode == 400
-         || response.statusCode == 401
-         || response.statusCode == 403
-         || response.statusCode == 404
-        )
-        {
-            that.onError.broadcast
-            (
-                {
-                    source: that,
-                    error: error,
-                    response: response,
-                    body: body
-                }
-            );
+        else if(this.method === APIRequest.method.post) {
+            request.post({
+                url : this.url,
+                headers: this.header,
+                form: this.form
+            }, callback);
         }
 
-        else if (!error && response.statusCode == 200)
-        {
-            that.onResponse.broadcast
-            (
-                {
-                    source: that,
-                    error: error,
-                    response: response,
-                    body: body
-                }
-            );
-        }
-    };
-
-    if(this.method === APIRequest.method.get) {
-      request.get({
-        url : this.url,
-        headers: this.header,
-        qs: this.form
-      }, callback);
+        return this;
     }
-
-    else if(this.method === APIRequest.method.post) {
-      request.post({
-        url : this.url,
-        headers: this.header,
-        form: this.form
-      }, callback);
-    }
-  }
 });
 
 module.exports = APIRequest;

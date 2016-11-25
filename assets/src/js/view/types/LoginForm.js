@@ -1,10 +1,9 @@
-const Action = require('../../events/Action'),
-ViewActions = require('../ViewActions'),
-ViewDispatcher = require('../ViewDispatcher');
+const View = require('../View'),
+      ViewEvents = require('../ViewEvents');
 
 const LoginForm = function()
 {
-    var submitLogin = function(e)
+    const submitLogin = function(e)
     {
         e.preventDefault();
 
@@ -21,17 +20,7 @@ const LoginForm = function()
         password.setAttribute("disabled", "disabled");
         submit.setAttribute("disabled", "disabled");
 
-        ViewDispatcher.requests.broadcast
-        (
-            new Action
-            (
-                ViewActions.GET_LOGIN,
-                {
-                    username: username.value,
-                    password: password.value
-                }
-            )
-        );
+        ViewEvents.login.broadcast({ username: username.value, password: password.value });
 
         return false;
     }
