@@ -24,7 +24,7 @@
     {
         "scss": "node-sass --output-style compressed -o assets/dist/css assets/src/scss/index.scss",
         "autoprefixer": "postcss -u autoprefixer assets/dist/css/index.css",
-        "uglify": "uglifyjs assets/dist/js/App.js --compress --mangle",
+        "uglify": "uglifyjs assets/dist/js/App.js -c dead_code -m -o assets/dist/js/App.js",
 
         "watchify": "watchify assets/src/js/App.js -o assets/dist/js/App.js -v -d",
         "browserify:dev": "browserify assets/src/js/App.js > assets/dist/js/App.js --debug",
