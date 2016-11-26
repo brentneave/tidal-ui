@@ -1,4 +1,5 @@
 module.exports = Object.freeze
 ({
-    login: require('./requests/login')
+    login: require('./requests/login'),
+    loadFavoriteArtists: require('./requests/loadFavoriteArtists')
 });

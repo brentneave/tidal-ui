@@ -40,7 +40,7 @@ module.exports = function(form)
     })
     .catch
     (
-        Error
+        reject
     )
     .then
     (

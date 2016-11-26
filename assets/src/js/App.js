@@ -29,14 +29,22 @@ const App = function()
     const _login = function(form)
     {
         console.log('App._login');
-        return API.login(form).then
+        return API.login(form)
+        .then
         (
             function(response)
             {
                 console.log('app got the api response')
                 _update(new Action(Reducer.actions.LOGIN, response));
             }
-        );
+        )
+        .then
+        (
+            function()
+            {
+                API.loadFavoriteArtists(_state.session)
+            }
+        )
     }
 
     // const _favouriteArtists = function()
@@ -79,18 +87,17 @@ const App = function()
 
     ViewEvents.login.addListener(this, _login);
 
-    const _localState = LocalStorage.readState();
-    if(_localState)
-    {
-        _update(new Action(Reducer.actions.RESTORE_LOCAL_STATE, { state: LocalStorage.readState() }));
-        // _recommendedAlbums();
-    }
-    else
-    {
-        _update();
-    }
-
-    console.log(API.login({username: 'asdasd', password: 'password'}));
+    // const _localState = LocalStorage.readState();
+    // if(_localState)
+    // {
+    //     _update(new Action(Reducer.actions.RESTORE_LOCAL_STATE, { state: LocalStorage.readState() }));
+    //     // _recommendedAlbums();
+    // }
+    // else
+    // {
+    //     _update();
+    // }
+    _update();
 }
 
 module.exports = new App();
