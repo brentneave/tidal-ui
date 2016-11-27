@@ -40,9 +40,18 @@ const App = function()
         )
         .then
         (
-            function()
+            _loadFavoriteArtists
+        )
+    }
+
+    const _loadFavoriteArtists = function()
+    {
+        API.loadFavoriteArtists(_state.session)
+        .then
+        (
+            function(response)
             {
-                API.loadFavoriteArtists(_state.session)
+                _update(new Action(Reducer.actions.FAVORITE_ARTISTS, response));
             }
         )
     }

@@ -1,19 +1,43 @@
-const request = require('request');
+const request = require('request'),
+      APIConfig = require('./APIConfig');
 
 const callback = function(response, resolve, reject)
 {
     (!response.error && response.response.statusCode == 200) ? resolve(response) : reject(response);
 }
 
-const send = function(args, resolve, reject)
+const send = function(options, resolve, reject)
 {
-    request[args.method]
+    console.log('apiRequest.send:')
+    console.log(options);
+
+    var requestOptions;
+
+    switch(options.method)
+    {
+        case APIConfig.method.get:
+            requestOptions =
+            {
+                url : options.url,
+                headers: options.header,
+                qs: options.parameters
+            }
+            break;
+        case APIConfig.method.post:
+            requestOptions =
+            {
+                url : options.url,
+                headers: options.header,
+                form: options.parameters
+            }
+            break;
+        default:
+            break;
+    }
+
+    request[options.method]
     (
-        {
-            url : args.url,
-            headers: args.header,
-            form: args.form
-        },
+        requestOptions,
         function(error, response, body)
         {
             body = JSON.parse(body);
@@ -31,12 +55,12 @@ const send = function(args, resolve, reject)
     );
 }
 
-module.exports = function(args)
+module.exports = function(options)
 {
     return new Promise(
         function(resolve, reject)
         {
-            send(args, resolve, reject);
+            send(options, resolve, reject);
         }
     );
 }

@@ -39,25 +39,25 @@ const reject = function(response)
     console.log('API.loadFavoriteArtists.reject:');
     console.log(response);
     return {
-        loginError: 'Could not load artists'
+        error: 'Could not load artists'
     }
 }
 
 module.exports = function(session)
 {
     console.log('API.loadFavoriteArtists:');
-    console.log(session.countryCode);
+    console.log(session);
 
     return apiRequest
     ({
+        method: 'get',
         url: APIConfig.URLs.artists(session.user.id),
         header: APIConfig.sessionHeader(session.id),
-        form:
+        parameters:
         {
             countryCode: session.countryCode,
             limit: 9999
-        },
-        method: 'get'
+        }
     })
     .catch
     (

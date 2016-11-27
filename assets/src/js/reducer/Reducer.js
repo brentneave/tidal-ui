@@ -70,12 +70,7 @@ const Reducer = function()
                 break;
 
             case _actions.FAVORITE_ARTISTS:
-                newState.favorites.artists = [];
-                const n = action.payload.body.items.length;
-                for(var i=0; i<n; i++)
-                {
-                    newState.favorites.artists.push(action.payload.body.items[i].item);
-                }
+                newState.favorites.artists = action.payload;
                 break;
 
             case _actions.RECOMMENDED_ARTISTS:

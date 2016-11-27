@@ -16,9 +16,10 @@ const resolve = function(response)
     }
 }
 
-const reject = function(args)
+const reject = function(response)
 {
     console.log('API.login.reject')
+    console.log(response)
     return {
         user: null,
         countryCode: null,
@@ -27,16 +28,16 @@ const reject = function(args)
     }
 }
 
-module.exports = function(form)
+module.exports = function(credentials)
 {
     console.log('API.login');
-    console.log(form);
+    console.log(credentials);
     return apiRequest
     ({
         url: APIConfig.URLs.login,
         header: APIConfig.tokenHeader,
-        form: form,
-        method: APIConfig.method.post
+        method: APIConfig.method.post,
+        parameters: credentials
     })
     .catch
     (
