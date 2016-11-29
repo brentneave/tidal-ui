@@ -39,7 +39,7 @@ const App = function()
         )
         .then
         (
-            _loadFavoriteArtists
+            _loadRecommendedAlbums
         )
     }
 
@@ -94,7 +94,10 @@ const App = function()
         new Action(Reducer.actions.RESTORE_LOCAL_STATE, LocalStorage.readState())
     );
 
-    _loadRecommendedAlbums();
+    if(_state.session.id)
+    {
+        _loadRecommendedAlbums();
+    }
 }
 
 module.exports = new App();
