@@ -6,7 +6,7 @@ const Broadcaster = require('../events/Broadcaster'),
 
 const View = function()
 {
-    
+
     const _createNode = function(o, parentNode)
     {
         if(!o.tag) throw new Error();
@@ -96,7 +96,11 @@ const View = function()
                 )
             );
         }
-        else if(state.favorites.artists)
+        // else if(state.recommendations.artists)
+        // {
+        //     node.children.push(ArtistList.render(state.recommendations.artists));
+        // }
+        else if(state.recommendations.albums)
         {
             node.children.push(AlbumList.render(state.recommendations.albums));
         }

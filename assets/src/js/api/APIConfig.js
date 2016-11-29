@@ -56,4 +56,15 @@ Object.defineProperty(APIConfig, 'sessionHeader',
     }
 });
 
+Object.defineProperty(APIConfig, 'method',
+{
+    value: Object.freeze
+    (
+        {
+            get: 'get',
+            post: 'post',
+        }
+    )
+});
+
 module.exports = APIConfig;

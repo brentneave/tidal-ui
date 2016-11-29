@@ -4,7 +4,6 @@ const Reducer = function()
     {
         LOGOUT : 'LOGOUT',
         LOGIN : 'LOGIN',
-        LOGIN_ERROR : 'LOGIN_ERROR',
         RESTORE_LOCAL_STATE: 'RESTORE_LOCAL_STATE',
         FAVORITE_ARTISTS : 'FAVORITE_ARTISTS',
         RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
@@ -16,13 +15,13 @@ const Reducer = function()
     console.log(_actions);
 
     const _defaultState = {
-        session:{
+        session: {
             id: null,
             countryCode: null,
-            loginError: null
-        },
-        user: {
-            id: null
+            loginError: null,
+            user: {
+                id: null
+            }
         },
         favorites: {
             artists: [],
@@ -47,7 +46,7 @@ const Reducer = function()
         console.log('Reducer._reduce');
         console.log(state);
         console.log(action);
-        const newState = state ? _cloneState(state) : _cloneState(_defaultState);
+        var newState = state ? _cloneState(state) : _cloneState(_defaultState);
 
         if(!action)
         {
@@ -61,40 +60,35 @@ const Reducer = function()
                 newState = _cloneState(_defaultState);
                 break;
 
-            case _actions.LOGIN_ERROR:
-                newState = _cloneState(_defaultState);
-                newState.session.loginError = 'Please try again.';
-                break;
-
             case _actions.LOGIN:
                 newState = _cloneState(_defaultState);
-                newState.user.id = action.payload.body.userId;
-                newState.session.countryCode = action.payload.body.countryCode;
-                newState.session.id = action.payload.body.sessionId;
+                newState.session = action.payload;
                 break;
 
             case _actions.RESTORE_LOCAL_STATE:
-                newState = _cloneState(action.payload.state);
-                break;
-
-            case _actions.FAVORITE_ARTISTS:
-                newState.favorites.artists = [];
-                const n = action.payload.body.items.length;
-                for(var i=0; i<n; i++)
+                if(action.payload.session.id && action.payload.session.countryCode && action.payload.session.user.id)
                 {
-                    newState.favorites.artists.push(action.payload.body.items[i].item);
+                    newState = _cloneState(action.payload);
+                }
+                else
+                {
+                    newState = _cloneState(_defaultState);
                 }
                 break;
 
+            case _actions.FAVORITE_ARTISTS:
+                newState.favorites.artists = action.payload;
+                break;
+
             case _actions.RECOMMENDED_ARTISTS:
-                newState.recommendations.artists = action.payload.body.items;
+                newState.recommendations.artists = action.payload;
                 break;
 
             case _actions.LATEST_ALBUMS:
-                newState.latestReleases.albums = action.payload.body.items;
+                newState.latestReleases.albums = action.payload;
 
             case _actions.RECOMMENDED_ALBUMS:
-                newState.recommendations.albums = action.payload.body.items;
+                newState.recommendations.albums = action.payload;
                 break;
 
             default:

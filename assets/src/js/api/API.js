@@ -1,9 +1,8 @@
-const API = function()
-{
-    Object.defineProperty(this, 'LoginRequest',              { value: require('./types/LoginRequest') });
-    Object.defineProperty(this, 'FavoriteArtistsRequest',    { value: require('./types/ArtistsRequest') });
-    Object.defineProperty(this, 'RecommendedArtistsRequest', { value: require('./types/RecommendedArtistsRequest') });
-    Object.defineProperty(this, 'LatestAlbumsRequest',       { value: require('./types/LatestReleasesRequest') });
-}
-
-module.exports = new API();
+module.exports = Object.freeze
+({
+    login: require('./requests/login'),
+    loadFavoriteArtists: require('./requests/loadFavoriteArtists'),
+    loadMultipleSimilarArtists: require('./requests/loadMultipleSimilarArtists'),
+    loadArtistAlbums: require('./requests/loadArtistAlbums'),
+    loadMultipleArtistAlbums: require('./requests/loadMultipleArtistAlbums')
+});
