@@ -1,9 +1,9 @@
 const Action = require('./events/Action.js'),
-      API = require('./api/API.js'),
-      View = require('./view/View.js'),
-      ViewEvents = require('./view/ViewEvents.js'),
-      Reducer = require('./reducer/Reducer.js'),
-      LocalStorage = require('./localstorage/LocalStorage.js');
+API = require('./api/API.js'),
+View = require('./view/View.js'),
+ViewEvents = require('./view/ViewEvents.js'),
+Reducer = require('./reducer/Reducer.js'),
+LocalStorage = require('./localstorage/LocalStorage.js');
 
 
 const App = function()
@@ -51,7 +51,6 @@ const App = function()
             function(response)
             {
                 _update(new Action(Reducer.actions.FAVORITE_ARTISTS, response));
-                _loadRecommendedArtists();
             }
         )
     }
@@ -64,28 +63,38 @@ const App = function()
             function(response)
             {
                 _update(new Action(Reducer.actions.RECOMMENDED_ARTISTS, response));
-                _loadRecommendedAlbums();
             }
         )
     }
 
     const _loadRecommendedAlbums = function()
     {
-        return API.loadMultipleArtistAlbums(_state.session, _state.recommendations.artists, 1)
+        return _loadFavoriteArtists()
+        .then(_loadRecommendedArtists)
         .then
         (
-            function(response)
+            function()
             {
-                _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, response));
+                API.loadMultipleArtistAlbums(_state.session, _state.recommendations.artists, 1)
+                .then
+                (
+                    function(response)
+                    {
+                        _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, response));
+                    }
+                )
             }
-        )
+        );
     }
-
 
     ViewEvents.login.addListener(this, _login);
 
+    _update
+    (
+        new Action(Reducer.actions.RESTORE_LOCAL_STATE, LocalStorage.readState())
+    );
 
-    _update();
+    _loadRecommendedAlbums();
 }
 
 module.exports = new App();

@@ -66,7 +66,14 @@ const Reducer = function()
                 break;
 
             case _actions.RESTORE_LOCAL_STATE:
-                newState = _cloneState(action.payload.state);
+                if(action.payload.session.id && action.payload.session.countryCode && action.payload.session.user.id)
+                {
+                    newState = _cloneState(action.payload);
+                }
+                else
+                {
+                    newState = _cloneState(_defaultState);
+                }
                 break;
 
             case _actions.FAVORITE_ARTISTS:
