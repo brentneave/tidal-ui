@@ -34,7 +34,6 @@ const App = function()
         (
             function(response)
             {
-                console.log('app got the api response')
                 _update(new Action(Reducer.actions.LOGIN, response));
             }
         )
@@ -46,66 +45,46 @@ const App = function()
 
     const _loadFavoriteArtists = function()
     {
-        API.loadFavoriteArtists(_state.session)
+        return API.loadFavoriteArtists(_state.session)
         .then
         (
             function(response)
             {
                 _update(new Action(Reducer.actions.FAVORITE_ARTISTS, response));
+                _loadRecommendedArtists();
             }
         )
     }
 
-    // const _favouriteArtists = function()
-    // {
-    //     console.log('App._favouriteArtists');
-    //     const request = new API.FavoriteArtistsRequest(_state.session, _state.user);
-    //     request.onResponse.addListener(_that, function(e)
-    //     {
-    //         _update(new Action(Reducer.actions.FAVORITE_ARTISTS, e), false);
-    //         _recommendedArtists();
-    //     });
-    //     request.onError.addListener(_that, _handleAPIError);
-    //     request.send();
-    // }
-    //
-    // const _recommendedArtists = function()
-    // {
-    //     console.log('App._recommendedArtists');
-    //     const request = new API.RecommendedArtistsRequest(_state.session, _state.favorites.artists);
-    //     request.onResponse.addListener(_that, function(e)
-    //     {
-    //         _update(new Action(Reducer.actions.RECOMMENDED_ARTISTS, e), false);
-    //         _recommendedAlbums();
-    //     });
-    //     request.onError.addListener(_that, _handleAPIError);
-    //     request.send();
-    // }
-    //
-    // const _recommendedAlbums = function()
-    // {
-    //     console.log('App._recommendedAlbums');
-    //     const request = new API.LatestAlbumsRequest(_state.session, _state.favorites.artists.concat(_state.recommendations.artists));
-    //     request.onResponse.addListener(_that, function(e)
-    //     {
-    //         _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, e), true);
-    //     });
-    //     request.onError.addListener(_that, _handleAPIError);
-    //     request.send();
-    // }
+    const _loadRecommendedArtists = function()
+    {
+        return API.loadMultipleSimilarArtists(_state.session, _state.favorites.artists, 2)
+        .then
+        (
+            function(response)
+            {
+                _update(new Action(Reducer.actions.RECOMMENDED_ARTISTS, response));
+                _loadRecommendedAlbums();
+            }
+        )
+    }
+
+    const _loadRecommendedAlbums = function()
+    {
+        return API.loadMultipleArtistAlbums(_state.session, _state.recommendations.artists, 1)
+        .then
+        (
+            function(response)
+            {
+                _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, response));
+            }
+        )
+    }
+
 
     ViewEvents.login.addListener(this, _login);
 
-    // const _localState = LocalStorage.readState();
-    // if(_localState)
-    // {
-    //     _update(new Action(Reducer.actions.RESTORE_LOCAL_STATE, { state: LocalStorage.readState() }));
-    //     // _recommendedAlbums();
-    // }
-    // else
-    // {
-    //     _update();
-    // }
+
     _update();
 }
 

@@ -8,9 +8,6 @@ const callback = function(response, resolve, reject)
 
 const send = function(options, resolve, reject)
 {
-    console.log('apiRequest.send:')
-    console.log(options);
-
     var requestOptions;
 
     switch(options.method)

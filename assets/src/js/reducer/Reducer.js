@@ -46,7 +46,7 @@ const Reducer = function()
         console.log('Reducer._reduce');
         console.log(state);
         console.log(action);
-        const newState = state ? _cloneState(state) : _cloneState(_defaultState);
+        var newState = state ? _cloneState(state) : _cloneState(_defaultState);
 
         if(!action)
         {
@@ -74,14 +74,14 @@ const Reducer = function()
                 break;
 
             case _actions.RECOMMENDED_ARTISTS:
-                newState.recommendations.artists = action.payload.body.items;
+                newState.recommendations.artists = action.payload;
                 break;
 
             case _actions.LATEST_ALBUMS:
-                newState.latestReleases.albums = action.payload.body.items;
+                newState.latestReleases.albums = action.payload;
 
             case _actions.RECOMMENDED_ALBUMS:
-                newState.recommendations.albums = action.payload.body.items;
+                newState.recommendations.albums = action.payload;
                 break;
 
             default:
