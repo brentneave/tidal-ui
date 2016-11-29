@@ -1,5 +1,6 @@
 const apiRequest = require('../apiRequest'),
-loadSimilarArtists = require('./loadSimilarArtists');
+loadSimilarArtists = require('./loadSimilarArtists'),
+_array = require('lodash/array');
 
 const reducePromiseResolutions = function(arrays)
 {
@@ -7,12 +8,16 @@ const reducePromiseResolutions = function(arrays)
     console.log(arrays);
     if(arrays.length)
     {
-        return arrays.reduce
+        return _array.uniqBy
         (
-            function(a,b)
-            {
-                return a.concat(b);
-            }
+            arrays.reduce
+            (
+                function(a,b)
+                {
+                    return a.concat(b);
+                }
+            ),
+            'id'
         )
     }
     else

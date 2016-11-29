@@ -1,5 +1,6 @@
 const apiRequest = require('../apiRequest'),
-loadArtistAlbums = require('./loadArtistAlbums');
+loadArtistAlbums = require('./loadArtistAlbums'),
+_array = require('lodash/array');
 
 
 const reducePromiseResolutions = function(arrays)
@@ -7,15 +8,16 @@ const reducePromiseResolutions = function(arrays)
     console.log('reduce:');
     console.log(arrays);
 
-    return arrays.reduce
-    (
-        function(a,b)
-        {
-            return a.concat(b);
-        }
+    return _array.uniqBy(
+        arrays.reduce
+        (
+            function(a,b)
+            {
+                return a.concat(b);
+            }
+        ),
+        'id'
     )
-    .slice
-    ()
     .sort
     (
         function(a, b)
@@ -24,7 +26,7 @@ const reducePromiseResolutions = function(arrays)
             b = Date.parse(b.streamStartDate.slice(0,10));
             return a > b ? -1 : 1;
         }
-    );
+    )
 }
 
 module.exports = function(session, artists, limit)

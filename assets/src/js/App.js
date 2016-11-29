@@ -58,7 +58,7 @@ const App = function()
 
     const _loadRecommendedArtists = function()
     {
-        return API.loadMultipleSimilarArtists(_state.session, _state.favorites.artists, 2)
+        return API.loadMultipleSimilarArtists(_state.session, _state.favorites.artists, 1)
         .then
         (
             function(response)
