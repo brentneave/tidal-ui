@@ -1,5 +1,7 @@
 # tidal-ui
-An unofficial Tidal client in Javascript.
+An unofficial Tidal client in Javascript. Allows you to:
+- log in to your Tidal account
+- get a list of the most recently released albums from artists you follow, and related artists
 
 ##Get started:
 ```
