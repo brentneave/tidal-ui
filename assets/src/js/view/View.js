@@ -2,7 +2,12 @@ const Broadcaster = require('../events/Broadcaster'),
       LoginForm = require('./types/LoginForm'),
       ArtistList = require('./types/ArtistList'),
       AlbumList = require('./types/AlbumList'),
-      DOMDiff = require('skatejs-dom-diff/').default;
+      DOMDiff = require('skatejs-dom-diff/').default,
+      setRoute = require('./helpers/setRoute');
+
+
+console.log('setRoute:')
+console.log(setRoute);
 
 const View = function()
 {
@@ -102,6 +107,36 @@ const View = function()
         // }
         else if(state.recommendations.albums)
         {
+            node.children.push
+            (
+                {
+                    tag: 'a',
+                    text: 'Favorites',
+                    attributes:
+                    {
+                        href: '/favorites/'
+                    },
+                    events:
+                    {
+                        click: setRoute
+                    }
+                }
+            );
+            node.children.push
+            (
+                {
+                    tag: 'a',
+                    text: 'Recommended',
+                    attributes:
+                    {
+                        href: '/recommended/'
+                    },
+                    events:
+                    {
+                        click: setRoute
+                    }
+                }
+            );
             node.children.push(AlbumList.render(state.recommendations.albums));
         }
 

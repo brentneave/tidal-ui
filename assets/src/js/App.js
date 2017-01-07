@@ -3,7 +3,8 @@ API = require('./api/API.js'),
 View = require('./view/View.js'),
 ViewEvents = require('./view/ViewEvents.js'),
 Reducer = require('./reducer/Reducer.js'),
-LocalStorage = require('./localstorage/LocalStorage.js');
+LocalStorage = require('./localstorage/LocalStorage.js'),
+Router = require('./router/Router.js');
 
 
 const App = function()
@@ -88,6 +89,14 @@ const App = function()
     }
 
     ViewEvents.login.addListener(this, _login);
+    ViewEvents.setRoute.addListener
+    (
+        {},
+        function(path)
+        {
+            Router.setRoute(_state, path)
+        }
+    );
 
     _update
     (
