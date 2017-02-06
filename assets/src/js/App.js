@@ -21,10 +21,16 @@ const App = function()
         LocalStorage.writeState(_state);
     }
 
-    const _handleAPIError = function(e)
+
+    const _route = function(path)
     {
-        console.log('App._handleAPIError');
-        console.log(e);
+        Router.setRoute(_state, path).then
+        (
+            function(response)
+            {
+                _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: response }));
+            }
+        )
     }
 
     const _login = function(form)
@@ -40,7 +46,7 @@ const App = function()
         )
         .then
         (
-            _loadRecommendedAlbums
+            // _loadRecommendedAlbums
         )
     }
 
@@ -89,14 +95,7 @@ const App = function()
     }
 
     ViewEvents.login.addListener(this, _login);
-    ViewEvents.setRoute.addListener
-    (
-        {},
-        function(path)
-        {
-            Router.setRoute(_state, path)
-        }
-    );
+    ViewEvents.setRoute.addListener(this, _route);
 
     _update
     (

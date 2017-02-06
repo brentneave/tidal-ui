@@ -114,7 +114,7 @@ const View = function()
                     text: 'Favorites',
                     attributes:
                     {
-                        href: '/favorites/'
+                        href: '/favorites/artists/'
                     },
                     events:
                     {
