@@ -1,9 +1,6 @@
-const API = require('../api/API.js');
+const API = require('../api/API.js'),
+      Utils = require('../utils/Utils.js');
 
-const isNotEmptyString = function(s)
-{
-    return s != "";
-}
 module.exports = Object.freeze
 ({
     setRoute: function(state, path)
@@ -15,7 +12,7 @@ module.exports = Object.freeze
 
         history.pushState(state, null, path);
 
-        path = path.split('/').filter(isNotEmptyString);
+        path = Utils.pathToArray(path); //path.split('/').filter(Utils.isNotEmptyString);
 
         console.log(path);
 

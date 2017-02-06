@@ -2,9 +2,9 @@ const Action = require('./events/Action.js'),
 API = require('./api/API.js'),
 View = require('./view/View.js'),
 ViewEvents = require('./view/ViewEvents.js'),
+Router = require('./router/Router.js'),
 Reducer = require('./reducer/Reducer.js'),
-LocalStorage = require('./localstorage/LocalStorage.js'),
-Router = require('./router/Router.js');
+LocalStorage = require('./localstorage/LocalStorage.js');
 
 
 const App = function()
@@ -21,6 +21,19 @@ const App = function()
         LocalStorage.writeState(_state);
     }
 
+    const _login = function(form)
+    {
+        console.log('App._login');
+        return API.login(form)
+        .then
+        (
+            function(response)
+            {
+                _update(new Action(Reducer.actions.LOGIN, response));
+            }
+        )
+    }
+
 
     const _route = function(path)
     {
@@ -33,67 +46,6 @@ const App = function()
         )
     }
 
-    const _login = function(form)
-    {
-        console.log('App._login');
-        return API.login(form)
-        .then
-        (
-            function(response)
-            {
-                _update(new Action(Reducer.actions.LOGIN, response));
-            }
-        )
-        .then
-        (
-            // _loadRecommendedAlbums
-        )
-    }
-
-    const _loadFavoriteArtists = function()
-    {
-        return API.loadFavoriteArtists(_state.session)
-        .then
-        (
-            function(response)
-            {
-                _update(new Action(Reducer.actions.FAVORITE_ARTISTS, response));
-            }
-        )
-    }
-
-    const _loadRecommendedArtists = function()
-    {
-        return API.loadMultipleSimilarArtists(_state.session, _state.favorites.artists, 1)
-        .then
-        (
-            function(response)
-            {
-                _update(new Action(Reducer.actions.RECOMMENDED_ARTISTS, response));
-            }
-        )
-    }
-
-    const _loadRecommendedAlbums = function()
-    {
-        return _loadFavoriteArtists()
-        .then(_loadRecommendedArtists)
-        .then
-        (
-            function()
-            {
-                API.loadMultipleArtistAlbums(_state.session, _state.recommendations.artists, 1)
-                .then
-                (
-                    function(response)
-                    {
-                        _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, response));
-                    }
-                )
-            }
-        );
-    }
-
     ViewEvents.login.addListener(this, _login);
     ViewEvents.setRoute.addListener(this, _route);
 
@@ -102,10 +54,54 @@ const App = function()
         new Action(Reducer.actions.RESTORE_LOCAL_STATE, LocalStorage.readState())
     );
 
-    if(_state.session.id)
-    {
-        _loadRecommendedAlbums();
-    }
+    // const _loadFavoriteArtists = function()
+    // {
+    //     return API.loadFavoriteArtists(_state.session)
+    //     .then
+    //     (
+    //         function(response)
+    //         {
+    //             _update(new Action(Reducer.actions.FAVORITE_ARTISTS, response));
+    //         }
+    //     )
+    // }
+    //
+    // const _loadRecommendedArtists = function()
+    // {
+    //     return API.loadMultipleSimilarArtists(_state.session, _state.favorites.artists, 1)
+    //     .then
+    //     (
+    //         function(response)
+    //         {
+    //             _update(new Action(Reducer.actions.RECOMMENDED_ARTISTS, response));
+    //         }
+    //     )
+    // }
+    //
+    // const _loadRecommendedAlbums = function()
+    // {
+    //     return _loadFavoriteArtists()
+    //     .then(_loadRecommendedArtists)
+    //     .then
+    //     (
+    //         function()
+    //         {
+    //             API.loadMultipleArtistAlbums(_state.session, _state.recommendations.artists, 1)
+    //             .then
+    //             (
+    //                 function(response)
+    //                 {
+    //                     _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, response));
+    //                 }
+    //             )
+    //         }
+    //     );
+    // }
+
+    // if(_state.session.id)
+    // {
+    //     _loadRecommendedAlbums();
+    // }
 }
 
 module.exports = new App();

@@ -1,3 +1,5 @@
+const Router = require('../router/Router.js');
+
 const Reducer = function()
 {
     const _actions =
@@ -8,7 +10,8 @@ const Reducer = function()
         FAVORITE_ARTISTS : 'FAVORITE_ARTISTS',
         RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
         LATEST_ALBUMS : 'LATEST_ALBUMS',
-        RECOMMENDED_ALBUMS : 'RECOMMENDED_ALBUMS'
+        RECOMMENDED_ALBUMS : 'RECOMMENDED_ALBUMS',
+        SET_ROUTE : 'SET_ROUTE'
     }
 
     console.log('Reducer._actions');
@@ -22,6 +25,10 @@ const Reducer = function()
             user: {
                 id: null
             }
+        },
+        route: {
+            path: "",
+            data: null
         },
         favorites: {
             artists: [],
@@ -77,6 +84,10 @@ const Reducer = function()
                 )
                 ? _cloneState(action.payload)
                 : _cloneState(_defaultState);
+                break;
+
+            case _actions.SET_ROUTE:
+                newState.route = action.payload;
                 break;
 
             case _actions.FAVORITE_ARTISTS:
