@@ -9,7 +9,7 @@ module.exports = function(state)
         [
             {
                 tag: 'a',
-                text: 'Favorites',
+                text: 'Favorites ',
                 attributes:
                 {
                     href: '/favorites/artists/'
@@ -21,10 +21,10 @@ module.exports = function(state)
             },
             {
                 tag: 'a',
-                text: 'Recommended',
+                text: 'Recommended Albums ',
                 attributes:
                 {
-                    href: '/recommended/'
+                    href: '/recommended/albums/'
                 },
                 events:
                 {

@@ -85,64 +85,6 @@ const View = function()
         console.log('View._render');
         console.log(state);
         _updateDOM(main(state));
-
-        // const node = { tag: 'div', id:'app', children: [] }
-        //
-        // if(!state.session.id)
-        // {
-        //     node.children.push
-        //     (
-        //         LoginForm.render
-        //         (
-        //             {
-        //                 title: state.session.loginError ? state.session.loginError : 'Log in'
-        //             }
-        //         )
-        //     );
-        // }
-        // else
-        // {
-        //     node.children.push(navigation(state));
-        // }
-        // else if(state.recommendations.artists)
-        // {
-        //     node.children.push(ArtistList.render(state.recommendations.artists));
-        // }
-        // else if(state.recommendations.albums)
-        // {
-        //     node.children.push
-        //     (
-        //         {
-        //             tag: 'a',
-        //             text: 'Favorites',
-        //             attributes:
-        //             {
-        //                 href: '/favorites/artists/'
-        //             },
-        //             events:
-        //             {
-        //                 click: setRoute
-        //             }
-        //         }
-        //     );
-        //     node.children.push
-        //     (
-        //         {
-        //             tag: 'a',
-        //             text: 'Recommended',
-        //             attributes:
-        //             {
-        //                 href: '/recommended/'
-        //             },
-        //             events:
-        //             {
-        //                 click: setRoute
-        //             }
-        //         }
-        //     );
-        //     node.children.push(AlbumList.render(state.recommendations.albums));
-        // }
-
     }
 
 

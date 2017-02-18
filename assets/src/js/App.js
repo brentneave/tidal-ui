@@ -13,12 +13,13 @@ const App = function()
 
     var _state;
 
-    const _update = function(action, updateView)
+    const _update = function(action)
     {
         console.log('App._update');
         _state = Reducer.reduce(_state, action);
-        if(updateView != false) View.render(_state);
+        View.render(_state);
         LocalStorage.writeState(_state);
+        Router.updateCurrentRoute(_state);
     }
 
     const _login = function(form)
@@ -48,60 +49,16 @@ const App = function()
 
     ViewEvents.login.addListener(this, _login);
     ViewEvents.setRoute.addListener(this, _route);
+    window.onpopstate = function(event) {
+       _update(new Action(Reducer.actions.RESTORE_STATE, event.state));
+    };
 
-    _update
-    (
-        new Action(Reducer.actions.RESTORE_LOCAL_STATE, LocalStorage.readState())
-    );
+    // load state from cache
+    _update(new Action(Reducer.actions.RESTORE_STATE, LocalStorage.readState()));
 
-    // const _loadFavoriteArtists = function()
-    // {
-    //     return API.loadFavoriteArtists(_state.session)
-    //     .then
-    //     (
-    //         function(response)
-    //         {
-    //             _update(new Action(Reducer.actions.FAVORITE_ARTISTS, response));
-    //         }
-    //     )
-    // }
-    //
-    // const _loadRecommendedArtists = function()
-    // {
-    //     return API.loadMultipleSimilarArtists(_state.session, _state.favorites.artists, 1)
-    //     .then
-    //     (
-    //         function(response)
-    //         {
-    //             _update(new Action(Reducer.actions.RECOMMENDED_ARTISTS, response));
-    //         }
-    //     )
-    // }
-    //
-    // const _loadRecommendedAlbums = function()
-    // {
-    //     return _loadFavoriteArtists()
-    //     .then(_loadRecommendedArtists)
-    //     .then
-    //     (
-    //         function()
-    //         {
-    //             API.loadMultipleArtistAlbums(_state.session, _state.recommendations.artists, 1)
-    //             .then
-    //             (
-    //                 function(response)
-    //                 {
-    //                     _update(new Action(Reducer.actions.RECOMMENDED_ALBUMS, response));
-    //                 }
-    //             )
-    //         }
-    //     );
-    // }
+    // update history with state
+    Router.updateCurrentRoute(_state);
 
-    // if(_state.session.id)
-    // {
-    //     _loadRecommendedAlbums();
-    // }
 }
 
 module.exports = new App();

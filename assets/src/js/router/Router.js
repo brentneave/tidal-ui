@@ -8,13 +8,10 @@ module.exports = Object.freeze
         console.log('Router.setRoute');
         console.log(path);
         console.log(state);
-        console.log(API.loadFavoriteArtists);
 
         history.pushState(state, null, path);
 
-        path = Utils.pathToArray(path); //path.split('/').filter(Utils.isNotEmptyString);
-
-        console.log(path);
+        path = Utils.pathToArray(path);
 
         switch (path[0])
         {
@@ -36,13 +33,15 @@ module.exports = Object.freeze
                             function(artists)
                             {
                                 return API.loadMultipleSimilarArtists(state.session, artists, 1)
-                                .then(similarArtists)
-                                {
-                                    return API.loadMultipleArtistAlbums(state.session, artists.concat(similarArtists), 1);
-                                }
+                                .then
+                                (
+                                    function(similarArtists)
+                                    {
+                                        return API.loadMultipleArtistAlbums(state.session, artists.concat(similarArtists), 1);
+                                    }
+                                );
                             }
-                        )
-
+                        );
                         break;
                         case 'artists':
                             return API.loadFavoriteArtists(state.session)
@@ -52,8 +51,7 @@ module.exports = Object.freeze
                                 {
                                     return API.loadMultipleSimilarArtists(state.session, artists, 1);
                                 }
-                            )
-
+                            );
                         break;
                     default:
 
@@ -61,5 +59,10 @@ module.exports = Object.freeze
             default:
                 break;
         }
+    },
+    updateCurrentRoute: function(state)
+    {
+        history.replaceState(state, null, window.location.pathname);
+        return state;
     }
 });

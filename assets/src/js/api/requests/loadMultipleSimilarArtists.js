@@ -28,7 +28,7 @@ const reducePromiseResolutions = function(arrays)
 
 module.exports = function(session, artists, limit)
 {
-    console.log('API.loadRecommendedArtists:');
+    console.log('API.loadMultipleSimilarArtists:');
     console.log(session);
     console.log(artists);
     console.log(limit);

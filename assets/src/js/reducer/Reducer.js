@@ -6,7 +6,7 @@ const Reducer = function()
     {
         LOGOUT : 'LOGOUT',
         LOGIN : 'LOGIN',
-        RESTORE_LOCAL_STATE: 'RESTORE_LOCAL_STATE',
+        RESTORE_STATE: 'RESTORE_STATE',
         FAVORITE_ARTISTS : 'FAVORITE_ARTISTS',
         RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
         LATEST_ALBUMS : 'LATEST_ALBUMS',
@@ -72,7 +72,7 @@ const Reducer = function()
                 newState.session = action.payload;
                 break;
 
-            case _actions.RESTORE_LOCAL_STATE:
+            case _actions.RESTORE_STATE:
                 newState =
                 (
                     action.payload
