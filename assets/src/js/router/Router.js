@@ -28,33 +28,13 @@ module.exports = Object.freeze
                 switch (path[1])
                 {
                     case 'albums':
-                        return API.loadFavoriteArtists(state.session).then
-                        (
-                            function(artists)
-                            {
-                                return API.loadMultipleSimilarArtists(state.session, artists, 1)
-                                .then
-                                (
-                                    function(similarArtists)
-                                    {
-                                        return API.loadMultipleArtistAlbums(state.session, artists.concat(similarArtists), 1);
-                                    }
-                                );
-                            }
-                        );
+                        return API.loadRecommendedAlbums(state.session);
                         break;
-                        case 'artists':
-                            return API.loadFavoriteArtists(state.session)
-                            .then
-                            (
-                                function(artists)
-                                {
-                                    return API.loadMultipleSimilarArtists(state.session, artists, 1);
-                                }
-                            );
+                    case 'artists':
+                        return API.loadRecommendedArtists(state.session);
                         break;
                     default:
-
+                        break;
                 }
             default:
                 break;

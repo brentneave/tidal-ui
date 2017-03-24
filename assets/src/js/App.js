@@ -44,7 +44,8 @@ const App = function()
             {
                 _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: response }));
             }
-        )
+        );
+        _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: [] }));
     }
 
     ViewEvents.login.addListener(this, _login);

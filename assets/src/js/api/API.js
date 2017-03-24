@@ -4,5 +4,7 @@ module.exports = Object.freeze
     loadFavoriteArtists: require('./requests/loadFavoriteArtists'),
     loadMultipleSimilarArtists: require('./requests/loadMultipleSimilarArtists'),
     loadArtistAlbums: require('./requests/loadArtistAlbums'),
-    loadMultipleArtistAlbums: require('./requests/loadMultipleArtistAlbums')
+    loadMultipleArtistAlbums: require('./requests/loadMultipleArtistAlbums'),
+    loadRecommendedAlbums: require('./requests/loadRecommendedAlbums'),
+    loadRecommendedArtists: require('./requests/loadRecommendedArtists')
 });

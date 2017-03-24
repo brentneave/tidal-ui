@@ -16,11 +16,21 @@ module.exports = function(state)
                     return artistList(state.route.data);
                     break;
                 default:
-                    breakl
+                    break;
             }
             break;
         case 'recommended':
-            return albumList(state.route.data);
+            switch (path[1])
+            {
+                case 'artists':
+                    return artistList(state.route.data);
+                    break;
+                case 'albums':
+                    return albumList(state.route.data);
+                    break;
+                default:
+                    break;
+            }
             break;
         default:
             break;

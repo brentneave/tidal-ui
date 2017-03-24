@@ -9,10 +9,22 @@ module.exports = function(state)
         [
             {
                 tag: 'a',
-                text: 'Favorites ',
+                text: 'Favorite Artists ',
                 attributes:
                 {
                     href: '/favorites/artists/'
+                },
+                events:
+                {
+                    click: setRoute
+                }
+            },
+            {
+                tag: 'a',
+                text: 'Recommended Artists ',
+                attributes:
+                {
+                    href: '/recommended/artists/'
                 },
                 events:
                 {
