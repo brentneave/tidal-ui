@@ -33,6 +33,9 @@ module.exports = function(state)
             }
             break;
         default:
+            return  {
+                tag: 'div'
+            };
             break;
     }
 }

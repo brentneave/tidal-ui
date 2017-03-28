@@ -27,7 +27,7 @@ const Reducer = function()
             }
         },
         route: {
-            path: "",
+            path: "/",
             data: null
         },
         favorites: {
@@ -73,7 +73,8 @@ const Reducer = function()
                 break;
 
             case _actions.RESTORE_STATE:
-                newState =
+                newState = _cloneState(_defaultState);
+                if
                 (
                     action.payload
                     && action.payload.session
@@ -81,9 +82,9 @@ const Reducer = function()
                     && action.payload.session.countryCode
                     && action.payload.session.user
                     && action.payload.session.user.id
-                )
-                ? _cloneState(action.payload)
-                : _cloneState(_defaultState);
+                ){
+                    newState.session = action.payload.session;
+                }
                 break;
 
             case _actions.SET_ROUTE:
