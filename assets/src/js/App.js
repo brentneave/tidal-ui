@@ -16,14 +16,14 @@ const App = function()
     const _update = function(action)
     {
         console.log('App._update');
-        Reducer.reduce(_state, action).then
+        return Reducer.reduce(_state, action).then
         (
             function(state)
             {
                 _state = state;
-                View.render(_state);
                 LocalStorage.writeState(_state);
                 Router.updateCurrentRoute(_state);
+                View.render(_state);
             }
         );
     }
@@ -44,8 +44,14 @@ const App = function()
 
     const _route = function(path)
     {
-        _update(new Action(Reducer.actions.UNLOAD_CURRENT_ROUTE, { path: path }));
-        _update(new Action(Reducer.actions.SET_ROUTE, { path: path }));
+        // TODO: handle race conditions from promises
+        const unload = function() { return _update(new Action(Reducer.actions.UNLOAD_CURRENT_ROUTE)); },
+              getCache = function() { return _update(new Action(Reducer.actions.LOAD_ROUTE_FROM_CACHE, { path: path })) },
+              loadRemote = function() { return _update(new Action(Reducer.actions.LOAD_ROUTE, { path: path })) };
+
+        unload()
+        .then(getCache)
+        .then(loadRemote);
     }
 
     ViewEvents.login.addListener(this, _login);
@@ -57,7 +63,7 @@ const App = function()
     };
 
     // load state from cache
-    _update(new Action(Reducer.actions.RESTORE_STATE, LocalStorage.readState()));
+    _update(new Action(Reducer.actions.RESTORE_SESSION_FROM_LOCAL_STORAGE, LocalStorage.readState()));
 
     // update history with state
     Router.updateCurrentRoute(_state);

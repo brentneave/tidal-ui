@@ -7,11 +7,13 @@ const Reducer = function()
         LOGOUT : 'LOGOUT',
         LOGIN : 'LOGIN',
         RESTORE_STATE: 'RESTORE_STATE',
+        RESTORE_SESSION_FROM_LOCAL_STORAGE: 'RESTORE_SESSION_FROM_LOCAL_STORAGE',
         FAVORITE_ARTISTS : 'FAVORITE_ARTISTS',
         RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
         LATEST_ALBUMS : 'LATEST_ALBUMS',
         RECOMMENDED_ALBUMS : 'RECOMMENDED_ALBUMS',
-        SET_ROUTE : 'SET_ROUTE',
+        LOAD_ROUTE : 'LOAD_ROUTE',
+        LOAD_ROUTE_FROM_CACHE : 'LOAD_ROUTE_FROM_CACHE',
         UNLOAD_CURRENT_ROUTE : 'UNLOAD_CURRENT_ROUTE'
     }
 
@@ -31,6 +33,7 @@ const Reducer = function()
             path: "/",
             data: null
         },
+        cache: {},
         favorites: {
             artists: [],
             albums: []
@@ -74,7 +77,6 @@ const Reducer = function()
                 break;
 
             case _actions.RESTORE_STATE:
-                newState = _cloneState(_defaultState);
                 if
                 (
                     action.payload
@@ -89,20 +91,46 @@ const Reducer = function()
                 }
                 break;
 
-            case _actions.SET_ROUTE:
+            case _actions.RESTORE_SESSION_FROM_LOCAL_STORAGE:
+                newState = _cloneState(_defaultState);
+                if
+                (
+                    action.payload
+                    && action.payload.session
+                    && action.payload.session.id
+                    && action.payload.session.countryCode
+                    && action.payload.session.user
+                    && action.payload.session.user.id
+                )
+                {
+                    newState.session = _cloneState(action.payload.session);
+                }
+                break;
+
+            case _actions.UNLOAD_CURRENT_ROUTE:
+                newState.route.data = [];
+                break;
+
+            case _actions.LOAD_ROUTE_FROM_CACHE:
+                if(state.cache[action.payload.path])
+                {
+                    console.log('Getting cached route');
+                    console.log(state.cache[action.payload.path]);
+                    newState.route = _cloneState(state.cache[action.payload.path]);
+                }
+                break;
+
+            case _actions.LOAD_ROUTE:
                 return Router.setRoute(newState, action.payload.path).then
                 (
                     function(response)
                     {
                         newState.route.path = action.payload.path;
                         newState.route.data = response;
+                        newState.cache[action.payload.path] = _cloneState(newState.route);
                         return newState;
                     }
                 );
-                break;
-
-            case _actions.UNLOAD_CURRENT_ROUTE:
-                newState.route.data = [];
                 break;
 
             case _actions.FAVORITE_ARTISTS:

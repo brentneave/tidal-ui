@@ -8,7 +8,7 @@ module.exports = function(state)
     const path = Utils.pathToArray(state.route.path),
           data = state.route.data;
 
-    if(!data.length)
+    if(!data || !data.length)
     {
         return loadingIndicator();
     }
