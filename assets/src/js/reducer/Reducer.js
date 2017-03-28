@@ -82,13 +82,22 @@ const Reducer = function()
                     && action.payload.session.countryCode
                     && action.payload.session.user
                     && action.payload.session.user.id
-                ){
-                    newState.session = action.payload.session;
+                )
+                {
+                    newState = _cloneState(action.payload);
                 }
                 break;
 
             case _actions.SET_ROUTE:
-                newState.route = action.payload;
+                return Router.setRoute(newState, action.payload.path).then
+                (
+                    function(response)
+                    {
+                        newState.route.path = action.payload.path;
+                        newState.route.data = response;
+                        return newState;
+                    }
+                );
                 break;
 
             case _actions.FAVORITE_ARTISTS:
@@ -111,7 +120,7 @@ const Reducer = function()
         }
 
         console.log(newState);
-        return newState;
+        return Promise.resolve(newState);
     }
 
     Object.defineProperty(this, 'reduce', { value: _reduce });

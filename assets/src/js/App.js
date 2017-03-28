@@ -16,10 +16,16 @@ const App = function()
     const _update = function(action)
     {
         console.log('App._update');
-        _state = Reducer.reduce(_state, action);
-        View.render(_state);
-        LocalStorage.writeState(_state);
-        Router.updateCurrentRoute(_state);
+        Reducer.reduce(_state, action).then
+        (
+            function(state)
+            {
+                _state = state;
+                View.render(_state);
+                LocalStorage.writeState(_state);
+                Router.updateCurrentRoute(_state);
+            }
+        );
     }
 
     const _login = function(form)
@@ -38,19 +44,22 @@ const App = function()
 
     const _route = function(path)
     {
-        Router.setRoute(_state, path).then
-        (
-            function(response)
-            {
-                _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: response }));
-            }
-        );
-        _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: [] }));
+        _update(new Action(Reducer.actions.SET_ROUTE, { path: path }));
+        // Router.setRoute(_state, path).then
+        // (
+        //     function(response)
+        //     {
+        //         _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: response }));
+        //     }
+        // );
+        // _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: [] }));
     }
 
     ViewEvents.login.addListener(this, _login);
     ViewEvents.setRoute.addListener(this, _route);
     window.onpopstate = function(event) {
+        console.log('window.onpopstate');
+        console.log(event.state)
        _update(new Action(Reducer.actions.RESTORE_STATE, event.state));
     };
 
