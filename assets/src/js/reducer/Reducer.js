@@ -11,7 +11,8 @@ const Reducer = function()
         RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
         LATEST_ALBUMS : 'LATEST_ALBUMS',
         RECOMMENDED_ALBUMS : 'RECOMMENDED_ALBUMS',
-        SET_ROUTE : 'SET_ROUTE'
+        SET_ROUTE : 'SET_ROUTE',
+        UNLOAD_CURRENT_ROUTE : 'UNLOAD_CURRENT_ROUTE'
     }
 
     console.log('Reducer._actions');
@@ -98,6 +99,10 @@ const Reducer = function()
                         return newState;
                     }
                 );
+                break;
+
+            case _actions.UNLOAD_CURRENT_ROUTE:
+                newState.route.data = [];
                 break;
 
             case _actions.FAVORITE_ARTISTS:

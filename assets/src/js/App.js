@@ -44,15 +44,8 @@ const App = function()
 
     const _route = function(path)
     {
+        _update(new Action(Reducer.actions.UNLOAD_CURRENT_ROUTE, { path: path }));
         _update(new Action(Reducer.actions.SET_ROUTE, { path: path }));
-        // Router.setRoute(_state, path).then
-        // (
-        //     function(response)
-        //     {
-        //         _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: response }));
-        //     }
-        // );
-        // _update(new Action(Reducer.actions.SET_ROUTE, { path: path, data: [] }));
     }
 
     ViewEvents.login.addListener(this, _login);
