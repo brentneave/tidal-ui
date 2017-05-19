@@ -1,10 +1,8 @@
 const API = require('../api/API.js'),
-      Utils = require('../utils/Utils.js');
+    Utils = require('../utils/Utils.js');
 
-module.exports = Object.freeze
-({
-    setRoute: function(state, path)
-    {
+module.exports = Object.freeze({
+    setRoute: function(state, path) {
         console.log('Router.setRoute');
         console.log(path);
         console.log(state);
@@ -13,20 +11,18 @@ module.exports = Object.freeze
 
         path = Utils.pathToArray(path);
 
-        switch (path[0])
-        {
+        switch (path[0]) {
             case 'favorites':
-                switch (path[1])
-                {
+                switch (path[1]) {
                     case 'artists':
                         console.log(state.session.user.id);
                         return API.loadFavoriteArtists(state.session);
-                    default: break;
+                    default:
+                        break;
                 }
                 break;
             case 'recommended':
-                switch (path[1])
-                {
+                switch (path[1]) {
                     case 'albums':
                         return API.loadRecommendedAlbums(state.session);
                         break;
@@ -40,8 +36,7 @@ module.exports = Object.freeze
                 break;
         }
     },
-    updateCurrentRoute: function(state)
-    {
+    updateCurrentRoute: function(state) {
         history.replaceState(state, null, window.location.pathname);
         return state;
     }

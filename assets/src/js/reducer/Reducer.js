@@ -1,20 +1,19 @@
 const Router = require('../router/Router.js');
 
-const Reducer = function()
-{
-    const _actions =
-    {
-        LOGOUT : 'LOGOUT',
-        LOGIN : 'LOGIN',
+const Reducer = function() {
+    const _actions = {
+        INIT: 'INIT',
+        LOGOUT: 'LOGOUT',
+        LOGIN: 'LOGIN',
         RESTORE_STATE: 'RESTORE_STATE',
         RESTORE_SESSION_FROM_LOCAL_STORAGE: 'RESTORE_SESSION_FROM_LOCAL_STORAGE',
-        FAVORITE_ARTISTS : 'FAVORITE_ARTISTS',
-        RECOMMENDED_ARTISTS : 'RECOMMENDED_ARTISTS',
-        LATEST_ALBUMS : 'LATEST_ALBUMS',
-        RECOMMENDED_ALBUMS : 'RECOMMENDED_ALBUMS',
-        LOAD_ROUTE : 'LOAD_ROUTE',
-        LOAD_ROUTE_FROM_CACHE : 'LOAD_ROUTE_FROM_CACHE',
-        UNLOAD_CURRENT_ROUTE : 'UNLOAD_CURRENT_ROUTE'
+        FAVORITE_ARTISTS: 'FAVORITE_ARTISTS',
+        RECOMMENDED_ARTISTS: 'RECOMMENDED_ARTISTS',
+        LATEST_ALBUMS: 'LATEST_ALBUMS',
+        RECOMMENDED_ALBUMS: 'RECOMMENDED_ALBUMS',
+        UNLOAD_CURRENT_ROUTE: 'UNLOAD_CURRENT_ROUTE',
+        UPDATE_ROUTE_DATA: 'UPDATE_ROUTE_DATA',
+        SET_CURRENT_ROUTE: 'SET_CURRENT_ROUTE'
     }
 
     console.log('Reducer._actions');
@@ -29,11 +28,19 @@ const Reducer = function()
                 id: null
             }
         },
-        route: {
-            path: "/",
+        routeCache: [{
+            path: '/',
             data: null
-        },
-        cache: {},
+        }],
+        currentRoute: [{
+            path: '/',
+            data: null
+        }],
+        // route: {
+        //     path: "/",
+        //     data: null
+        // },
+        // cache: {},
         favorites: {
             artists: [],
             albums: []
@@ -47,26 +54,25 @@ const Reducer = function()
         }
     };
 
-    const _cloneState = function(state)
-    {
+    const _cloneState = function(state) {
         return JSON.parse(JSON.stringify(state));
     }
 
-    const _reduce = function(state, action)
-    {
+    const _reduce = function(action, state) {
         console.log('Reducer._reduce');
         console.log(state);
         console.log(action);
         var newState = state ? _cloneState(state) : _cloneState(_defaultState);
 
-        if(!action)
-        {
+        if (!action) {
             console.log(newState);
             return newState;
         }
 
-        switch(action.type)
-        {
+        switch (action.type) {
+            case _actions.INIT:
+                break;
+
             case _actions.LOGOUT:
                 newState = _cloneState(_defaultState);
                 break;
@@ -77,60 +83,46 @@ const Reducer = function()
                 break;
 
             case _actions.RESTORE_STATE:
-                if
-                (
-                    action.payload
-                    && action.payload.session
-                    && action.payload.session.id
-                    && action.payload.session.countryCode
-                    && action.payload.session.user
-                    && action.payload.session.user.id
-                )
-                {
+                if (
+                    action.payload &&
+                    action.payload.session &&
+                    action.payload.session.id &&
+                    action.payload.session.countryCode &&
+                    action.payload.session.user &&
+                    action.payload.session.user.id
+                ) {
                     newState = _cloneState(action.payload);
                 }
                 break;
 
             case _actions.RESTORE_SESSION_FROM_LOCAL_STORAGE:
                 newState = _cloneState(_defaultState);
-                if
-                (
-                    action.payload
-                    && action.payload.session
-                    && action.payload.session.id
-                    && action.payload.session.countryCode
-                    && action.payload.session.user
-                    && action.payload.session.user.id
-                )
-                {
+                if (
+                    action.payload &&
+                    action.payload.session &&
+                    action.payload.session.id &&
+                    action.payload.session.countryCode &&
+                    action.payload.session.user &&
+                    action.payload.session.user.id
+                ) {
                     newState.session = _cloneState(action.payload.session);
                 }
                 break;
 
-            case _actions.UNLOAD_CURRENT_ROUTE:
-                newState.route.data = [];
+            case UNLOAD_CURRENT_ROUTE:
+                newState.currentRoute[action.payload.path].data = null;
                 break;
 
-            case _actions.LOAD_ROUTE_FROM_CACHE:
-                if(state.cache[action.payload.path])
-                {
-                    console.log('Getting cached route');
-                    console.log(state.cache[action.payload.path]);
-                    newState.route = _cloneState(state.cache[action.payload.path]);
-                }
+            case UPDATE_ROUTE_DATA:
+                newState.routeCache[action.payload.path].path = action.payload.path;
+                newState.routeCache[action.payload.path].data = action.payload.data;
                 break;
 
-            case _actions.LOAD_ROUTE:
-                return Router.setRoute(newState, action.payload.path).then
-                (
-                    function(response)
-                    {
-                        newState.route.path = action.payload.path;
-                        newState.route.data = response;
-                        newState.cache[action.payload.path] = _cloneState(newState.route);
-                        return newState;
-                    }
-                );
+            case SET_CURRENT_ROUTE:
+                newState.routeCache[action.payload.path].path = action.payload.path;
+                newState.routeCache[action.payload.path].data = action.payload.data;
+                newState.currentRoute[action.payload.path].path = action.payload.path;
+                newState.currentRoute[action.payload.path].data = action.payload.data;
                 break;
 
             case _actions.FAVORITE_ARTISTS:
@@ -156,8 +148,13 @@ const Reducer = function()
         return Promise.resolve(newState);
     }
 
-    Object.defineProperty(this, 'reduce', { value: _reduce });
-    Object.defineProperty(this, 'actions', { value: Object.freeze(_actions) });
+    Object.defineProperty(this, 'reduce', {
+        value: _reduce
+    });
+
+    Object.defineProperty(this, 'actions', {
+        value: Object.freeze(_actions)
+    });
 }
 
 module.exports = new Reducer();
