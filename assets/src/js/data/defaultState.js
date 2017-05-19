@@ -13,14 +13,14 @@ module.exports = {
         data: null
     },
     favorites: {
-        artists: null,
-        albums: null
+        artists: [],
+        albums: []
     },
     latest: {
-        albums: null
+        albums: []
     },
     recommended: {
-        artists: null,
-        albums: null
+        artists: [],
+        albums: []
     }
 };

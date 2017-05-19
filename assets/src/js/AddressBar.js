@@ -2,11 +2,13 @@ const Actions = require('./Actions');
 
 
 
-const AddressBar = function({ onPopState }) {
+const AddressBar = function({ actions, popState }) {
 
 
 
-    window.onpopstate = onPopState;
+    window.onpopstate = function(event) {
+        actions.popState(event);
+    }
 
 
 

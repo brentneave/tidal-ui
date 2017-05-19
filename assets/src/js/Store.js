@@ -1,7 +1,7 @@
 const
     clone = require('./utils/clone'),
-    defaultState = require('./data/defaultState'),
-    routes = require('./data/routes');
+    isNotEmptyString = require('./utils/isNotEmptyString'),
+    defaultState = require('./data/defaultState');
 
 
 
@@ -10,44 +10,6 @@ const Store = function() {
 
 
     var _state = clone(defaultState);
-
-
-
-    const _getRoute = function({ state, routes, path }) {
-
-        const clean = path.replace(/^.*\/\/[^\/]+/, ''),
-            segments = clean.split('/').filter(isNotEmptyString);
-
-        var
-            route = routes,
-            data = {},
-            i = 0;
-
-        segments.map(function(segment) {
-
-            if (route.routes) {
-                route = route.routes[segment] ?
-                    route.routes[segment] :
-                    route.routes['default'];
-            } else {
-                route = route;
-            }
-
-            if (route.getParams !== undefined) {
-                data = route.getParams(state, segments.slice(i));
-            }
-
-            i++;
-
-        });
-
-        return {
-            path: clean,
-            component: route.component,
-            data: data
-        };
-
-    }
 
 
 
@@ -90,18 +52,21 @@ const Store = function() {
 
 
 
-        SET_ROUTE: function(state, { path }) {
-
-            const route = _getRoute({
-                state: state,
-                routes: routes,
-                path: path
-            });
-
-            state.route = route;
-
+        SET_ROUTE: function(state, { path, route }) {
+            console.log('SET_ROUTE', state);
+            state.route = {
+                path: path,
+                component: route.component,
+                data: {}
+            }
             return state;
+        },
 
+
+
+        DISPLAY_ERROR: function(state, { error }) {
+            state.route.data = { error: error };
+            return state;
         },
 
 
@@ -137,19 +102,21 @@ const Store = function() {
 
 
 
-    return Object.freeze({
+    this.apply = function({ action, payload }) {
 
-        apply: function({ action, payload }) {
+        console.log('Store.apply(', action, payload, ')');
+        _state = clone(_state);
+        return _mutators[action] ?
+            _mutators[action](_state, payload) :
+            new Error('Invalid action type');
 
-            console.log('Store.apply(', action, payload, ')');
+    };
 
-            return _mutators[action] ?
-                _mutators[action](clone(_state), payload) :
-                new Error('Invalid action type');
 
-        }
 
-    });
+    this.getCurrentState = function() {
+        return clone(_state);
+    };
 
 
 

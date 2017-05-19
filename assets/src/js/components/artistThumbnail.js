@@ -8,7 +8,10 @@
 }
 */
 
-module.exports = function(artist) {
+const artistThumbnail = function(state, { artist }, actions) {
+
+
+
     const _getImgSrc = function(serial, w, h) {
         if (!serial) return undefined;
         if (!w) w = 640;
@@ -17,20 +20,27 @@ module.exports = function(artist) {
         return 'http://resources.tidal.com/images/' + serial.split('-').join('/') + '/' + w + 'x' + h + '.jpg';
     }
 
+
+
     return {
         tagName: 'div',
         className: 'c-thumbnail',
         childNodes: [{
-                tagName: 'img',
-                className: 'c-thumbnail__img',
-                attributes: {
-                    src: artist.picture ? _getImgSrc(artist.picture) : ""
-                }
-            },
-            {
-                tagName: 'p',
-                text: artist.name
-            }
-        ]
+            tagName: 'img',
+            className: 'c-thumbnail__img',
+            attributes: artist.picture ? {
+                src: _getImgSrc(artist.picture)
+            } : null
+        }, {
+            tagName: 'p',
+            textContent: artist.name
+        }]
     };
+
+
+
 };
+
+
+
+module.exports = artistThumbnail;

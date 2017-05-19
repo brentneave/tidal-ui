@@ -1,7 +1,5 @@
 const createHTMLElement = function(o) {
 
-    console.log('createHTMLElement:', o);
-
     if (!o.tagName) throw new Error('Supply a value for tagName');
 
     var node = document.createElement(o.tagName);

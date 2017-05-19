@@ -1,5 +1,4 @@
-module.exports = Object.freeze
-({
+module.exports = Object.freeze({
     login: require('./requests/login'),
     loadFavoriteArtists: require('./requests/loadFavoriteArtists'),
     loadMultipleSimilarArtists: require('./requests/loadMultipleSimilarArtists'),

@@ -1,21 +1,37 @@
 const artistThumbnail = require('./artistThumbnail');
 
-module.exports = function(artists) {
-    const el = {
-        tagName: 'div',
-        className: 'l-thumbnail-grid',
-        childNodes: []
-    };
 
-    for (var i = 0; i < artists.length; i++) {
-        el.children.push({
+
+const artistList = function({ state, props, actions }) {
+
+
+
+    const makeArtistThumbnail = function(artist) {
+        return {
             tagName: 'div',
             className: 'l-thumbnail-grid__item',
-            childNodes: [
-                artistThumbnail(artists[i])
-            ]
-        })
-    }
+            childNodes: artistThumbnail(state, { artist }, props)
+        }
+    };
 
-    return el;
+
+
+    const
+        artists = props.artists,
+        artistThumbnails = artists.map(makeArtistThumbnail);
+
+
+
+    return {
+        tagName: 'div',
+        className: 'l-thumbnail-grid',
+        childNodes: artistThumbnails
+    };
+
+
+
 };
+
+
+
+module.exports = artistList;
