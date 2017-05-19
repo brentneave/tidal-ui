@@ -47,7 +47,11 @@ const Store = function() {
 
 
         LOAD_STATE: function(state, { newState }) {
-            return clone(newState);
+            if (newState.session.id) state.session = newState.session;
+            state.favorites = clone(newState.favorites);
+            state.recommended = clone(newState.recommended);
+            state.route = clone(newState.route);
+            return state;
         },
 
 
