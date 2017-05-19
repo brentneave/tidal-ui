@@ -1,50 +1,36 @@
 const apiRequest = require('../apiRequest'),
-      APIConfig = require('../APIConfig');
+    config = require('../config');
 
-const resolve = function(response)
-{
+const resolve = function(response) {
     console.log('API.login.resolve')
     console.log(response)
     return {
-        countryCode: response.body.countryCode,
-        id: response.body.sessionId,
-        user:
-        {
-            id: response.body.userId,
-        },
-        loginError: null
+        session: {
+            countryCode: response.body.countryCode,
+            id: response.body.sessionId,
+            user: {
+                id: response.body.userId,
+            }
+        }
     }
 }
 
-const reject = function(response)
-{
+const reject = function(error) {
     console.log('API.login.reject')
-    console.log(response)
+    console.log(error)
     return {
-        user: null,
-        countryCode: null,
-        id: null,
-        loginError: 'Login failed'
+        error: error
     }
 }
 
-module.exports = function(credentials)
-{
+module.exports = function(credentials) {
     console.log('API.login');
     console.log(credentials);
-    return apiRequest
-    ({
-        url: APIConfig.URLs.login,
-        header: APIConfig.tokenHeader,
-        method: APIConfig.method.post,
-        parameters: credentials
-    })
-    .catch
-    (
-        reject
-    )
-    .then
-    (
-        resolve, reject
-    )
+    return apiRequest({
+            url: config.URLs.login,
+            header: config.tokenHeader,
+            method: config.method.post,
+            parameters: credentials
+        })
+        .then(resolve, reject);
 }

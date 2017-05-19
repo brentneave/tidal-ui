@@ -1,22 +1,23 @@
 const request = require('request'),
-    APIConfig = require('./APIConfig');
+    config = require('./config');
 
 const callback = function(response, resolve, reject) {
     (!response.error && response.response.statusCode == 200) ? resolve(response): reject(response);
 }
 
 const send = function(options, resolve, reject) {
+
     var requestOptions;
 
     switch (options.method) {
-        case APIConfig.method.get:
+        case config.method.get:
             requestOptions = {
                 url: options.url,
                 headers: options.header,
                 qs: options.parameters
             }
             break;
-        case APIConfig.method.post:
+        case config.method.post:
             requestOptions = {
                 url: options.url,
                 headers: options.header,
@@ -41,12 +42,15 @@ const send = function(options, resolve, reject) {
             )
         }
     );
+
 }
 
-module.exports = function(options) {
+const apiRequest = function(options) {
     return new Promise(
         function(resolve, reject) {
             send(options, resolve, reject);
         }
     );
 }
+
+module.exports = apiRequest;

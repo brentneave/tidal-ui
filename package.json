@@ -8,10 +8,11 @@
         "flac.js": "latest",
         "ogg.js": "latest",
         "request": "latest",
-        "skatejs-dom-diff": "latest"
+        "skatejs-dom-diff": "0.4.2"
     },
     "devDependencies":
     {
+        "local-web-server": "1.2.7",
         "autoprefixer": "latest",
         "watchify": "latest",
         "node-sass": "latest",
@@ -23,6 +24,8 @@
     },
     "scripts":
     {
+        "server": "ws --spa index.html",
+
         "scss": "node-sass --output-style compressed -o assets/dist/css assets/src/scss/index.scss",
         "autoprefixer": "postcss -u autoprefixer assets/dist/css/index.css",
         "uglify": "uglifyjs assets/dist/js/App.js -c dead_code -m -o assets/dist/js/App.js",
