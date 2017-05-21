@@ -11,9 +11,12 @@ const favoriteArtists = function({ state, props, actions }) {
     const content = {
         tagName: 'div',
         childNodes: [{
+
                 tagName: 'h1',
                 textContent: 'Favorite Artists'
+
             },
+
             artistList({
                 state: state,
                 props: {
@@ -21,6 +24,7 @@ const favoriteArtists = function({ state, props, actions }) {
                 },
                 actions: actions
             })
+
         ]
     }
 

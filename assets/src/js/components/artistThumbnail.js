@@ -26,14 +26,18 @@ const artistThumbnail = function(state, { artist }, actions) {
         tagName: 'div',
         className: 'c-thumbnail',
         childNodes: [{
+
             tagName: 'img',
             className: 'c-thumbnail__img',
             attributes: artist.picture ? {
                 src: _getImgSrc(artist.picture)
             } : null
+
         }, {
+
             tagName: 'p',
             textContent: artist.name
+
         }]
     };
 

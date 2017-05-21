@@ -49,6 +49,7 @@ const Actions = function({ store, callback, routes }) {
     this.loadState = function(newState) {
 
         _do('LOAD_STATE', { newState });
+        _that.route(newState.route.path);
 
     };
 

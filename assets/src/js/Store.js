@@ -1,6 +1,5 @@
 const
     clone = require('./utils/clone'),
-    isNotEmptyString = require('./utils/isNotEmptyString'),
     defaultState = require('./data/defaultState');
 
 
