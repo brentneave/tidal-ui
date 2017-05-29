@@ -14,7 +14,6 @@ const App = function() {
     console.log(Store());
     const
         _store = new Store(),
-        _routes = Routes(),
         _local = Local,
         _renderView = renderView,
         _localState = _local.read(),
@@ -24,6 +23,7 @@ const App = function() {
             _addressBar.update(state);
             _local.write(state);
         },
+        _routes = new Routes(),
         _actions = new Actions({
             store: _store,
             callback: _update,

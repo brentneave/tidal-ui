@@ -40,7 +40,7 @@ const Actions = function({ store, callback, routes }) {
 
         console.log('popState', this);
         const path = event.state.route.path;
-        this.route(path);
+        _that.route(path);
 
     };
 
@@ -49,7 +49,7 @@ const Actions = function({ store, callback, routes }) {
     this.loadState = function(newState) {
 
         _do('LOAD_STATE', { newState });
-        _that.route(newState.route.path);
+        this.route(newState.route.path);
 
     };
 
@@ -79,10 +79,11 @@ const Actions = function({ store, callback, routes }) {
 
     this.route = function(path) {
 
-        const route = clone(routes.get(path));
+        const route = routes.get(path);
+        console.log('Actions.route', path, route, route.init);
         _do('SET_ROUTE', { path, route });
-        console.log('Action:', _that[route.action]);
-        if (route.action && _that[route.action]) _that[route.action](_store.getCurrentState());
+
+        if (route.init) route.init();
 
     };
 
