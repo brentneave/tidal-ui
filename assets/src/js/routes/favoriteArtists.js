@@ -1,4 +1,5 @@
 const
+    loading = require('../components/loading'),
     artistList = require('../components/artistList'),
     loginCheck = require('../components/loginCheck');
 
@@ -8,7 +9,12 @@ const favoriteArtists = function({ state, props, actions }) {
 
 
 
+    const artists = state.favorites.artists ? state.favorites.artists : [];
+
+
+
     const content = {
+
         tagName: 'div',
         childNodes: [{
 
@@ -20,7 +26,7 @@ const favoriteArtists = function({ state, props, actions }) {
             artistList({
                 state: state,
                 props: {
-                    artists: state.favorites.artists
+                    artists: artists
                 },
                 actions: actions
             })

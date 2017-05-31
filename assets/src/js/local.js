@@ -1,19 +1,19 @@
-const Local = Object.freeze({
+const local = Object.freeze({
 
 
 
     read: function() {
         const state = JSON.parse(localStorage.getItem("state"));
-        console.log('Local.read', state);
+        console.log('local.read', state);
         return state;
     },
 
 
 
     write: function(state) {
-        console.log('Local.write', state);
+        console.log('local.write', state);
         localStorage.setItem("state", JSON.stringify(state));
-        return this.read();
+        return state;
     }
 
 
@@ -21,4 +21,4 @@ const Local = Object.freeze({
 });
 
 
-module.exports = Local;
+module.exports = local;

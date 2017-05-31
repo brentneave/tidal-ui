@@ -6,7 +6,7 @@ const artistList = function({ state, props, actions }) {
 
 
 
-    const makeArtistThumbnail = function(artist) {
+    const makeThumb = function(artist) {
         return {
             tagName: 'div',
             className: 'l-thumbnail-grid__item',
@@ -18,14 +18,14 @@ const artistList = function({ state, props, actions }) {
 
     const
         artists = props.artists,
-        artistThumbnails = artists.map(makeArtistThumbnail);
+        thumbs = artists.map(makeThumb);
 
 
 
     return {
         tagName: 'div',
         className: 'l-thumbnail-grid',
-        childNodes: artistThumbnails
+        childNodes: thumbs
     };
 
 

@@ -18,8 +18,8 @@ const home = function({ state, props, actions }) {
                 attributes: {
                     href: '/favorites/artists'
                 },
-                eventHandlers: {
-                    click: actions.routerLink
+                on: {
+                    click: actions.link
                 }
 
             }
@@ -31,7 +31,7 @@ const home = function({ state, props, actions }) {
 
                 tagName: 'button',
                 textContent: 'Log Out',
-                eventHandlers: {
+                on: {
                     click: actions.logout
                 }
 

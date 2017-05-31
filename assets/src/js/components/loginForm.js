@@ -31,27 +31,17 @@ const loginForm = function({ state, props, actions }) {
 
 
 
-    const
-        loginError = (
-            state.route.data &&
-            state.route.data.loginError
-        ) ?
-        state.route.data.loginError :
-        null;
-
-
-
     return {
 
         tagName: 'form',
         className: 'js-login-form',
-        attributes: { action: state.route.path, },
-        eventHandlers: { submit: _submit },
+        attributes: { action: state.path.str, },
+        on: { submit: _submit },
         childNodes: [{
 
                 tagName: 'p',
-                className: loginError ? 'is-error' : '',
-                textContent: loginError ? loginError : 'Log in to Tidal'
+                className: state.errors ? 'is-error' : '',
+                textContent: state.errors ? state.errors : 'Log in to Tidal'
 
             }, {
 

@@ -28,11 +28,11 @@
 
         "scss": "node-sass --output-style compressed -o assets/dist/css assets/src/scss/index.scss",
         "autoprefixer": "postcss -u autoprefixer assets/dist/css/index.css",
-        "uglify": "uglifyjs assets/dist/js/App.js -c dead_code -m -o assets/dist/js/App.js",
+        "uglify": "uglifyjs assets/dist/js/index.js -c dead_code -m -o assets/dist/js/index.js",
 
-        "watchify": "watchify assets/src/js/App.js -o assets/dist/js/App.js -v -d",
-        "browserify:dev": "browserify assets/src/js/App.js > assets/dist/js/App.js --debug",
-        "browserify:dist": "browserify assets/src/js/App.js > assets/dist/js/App.js",
+        "watchify": "watchify assets/src/js/index.js -o assets/dist/js/index.js -v -d",
+        "browserify:dev": "browserify assets/src/js/index.js > assets/dist/js/index.js --debug",
+        "browserify:dist": "browserify assets/src/js/index.js > assets/dist/js/index.js",
 
         "build:css": "npm run scss && npm run autoprefixer",
         "build:js-dev": "npm run browserify:dev",
