@@ -9,20 +9,15 @@ const Actions = function({ store, callback, routes }) {
 
 
     const
-        _store = store,
-        _callback = callback,
-        _routes = routes,
-        _that = this;
+        _events = Object.freeze({
+            createAction: new Broadcaster()
+        })
 
 
 
     const _do = function(action, payload) {
-        _callback({
-            state: _store.apply({
-                action,
-                payload
-            })
-        });
+
+        _events.createAction.broadcast({ action, payload });
 
     };
 
@@ -111,6 +106,14 @@ const Actions = function({ store, callback, routes }) {
         api.loadFavoriteArtists(state.session).then(handleResponse);
 
     };
+
+
+
+    Object.defineProperties(this, {
+        'events': {
+            value: _events
+        }
+    });
 
 
 

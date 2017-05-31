@@ -11,35 +11,58 @@ const
 const App = function() {
 
 
-    console.log(Store());
+
     const
+        _actions = new Actions(),
         _store = new Store(),
-        _local = Local,
-        _renderView = renderView,
-        _localState = _local.read(),
-        _update = function({ state }) {
-            console.log('state', state);
-            _renderView({ state: state, actions: _actions });
-            _addressBar.update(state);
-            _local.write(state);
-        },
-        _routes = new Routes(),
-        _actions = new Actions({
-            store: _store,
-            callback: _update,
-            routes: _routes
-        }),
-        _addressBar = AddressBar({ actions: _actions, popState: _actions.popState });
+        _router = new Router(),
+        _local = new Local(),
+        _view = new View();
 
 
 
-    _localState ?
-        _actions.loadState(_localState) :
-        _actions.init();
+    _actions.events.createAction.addListener({
+        scope: Store,
+        handler: Store.onCreateAction
+    });
 
 
 
-    return this;
+    _store.events.stateChange.addListeners({
+        scope: View,
+        handler: View.onStateChange
+    }, {
+        scope: Local,
+        handler: Local.onStateChange
+    });
+
+
+
+    _view.events.routerLinkClick.addListener({
+        scope: Router,
+        handler: Router.onRouterLinkClick
+    });
+
+
+
+    _view.events.submitLogin.addListener({
+        scope: Actions,
+        handler: Actions.onSubmitLogin
+    });
+
+
+
+    _router.events.routeChange.addListeners({
+        scope: View,
+        handler: View.onRouteChange
+    }, {
+        scope: Local,
+        handler: Local.onRouteChange
+    });
+
+
+
+    Store.init();
 
 
 

@@ -1,10 +1,17 @@
 const
+    Broadcaster = require('./utils/Broadcaster'),
     clone = require('./utils/clone'),
     defaultState = require('./data/defaultState');
 
 
 
 const Store = function() {
+
+
+
+    const _events = Object.freeze({
+        onStateChange: new Broadcaster()
+    });
 
 
 
@@ -105,21 +112,33 @@ const Store = function() {
 
 
 
-    this.apply = function({ action, payload }) {
+    const _applyAction = function({ action, payload }) {
 
-        console.log('Store.apply(', action, payload, ')');
-        _state = clone(_state);
-        return _mutators[action] ?
-            _mutators[action](_state, payload) :
-            new Error('Invalid action type');
+        console.log('Store.onDispatchAction(', action, payload, ')');
+
+        if (_mutators[action]) {
+
+            _state = _mutators[action](_state, payload);
+            _events.onStateChange.broadcast(clone(_state));
+
+        } else {
+
+            throw new Error('Invalid action type');
+
+        }
 
     };
 
 
 
-    this.getCurrentState = function() {
-        return clone(_state);
-    };
+    Object.defineProperties(this, {
+        'events': {
+            value: _events
+        },
+        'onCreateAction': {
+            value: _applyAction
+        }
+    });
 
 
 
