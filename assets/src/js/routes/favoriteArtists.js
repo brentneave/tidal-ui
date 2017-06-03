@@ -10,7 +10,7 @@ const favoriteArtists = function({ state, props, actions }) {
 
 
 
-    const artists = state.favorites.artists ? state.favorites.artists : [];
+    const artists = state.route.data || [];
 
 
 

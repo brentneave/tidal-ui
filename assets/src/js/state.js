@@ -13,14 +13,10 @@ module.exports = {
             arr: []
         },
         errors: null,
-        current: {
-            artist: {
-                details: null,
-                albums: null,
-                similar: null
-            },
-            album: null
+        route: {
+            data: null
         },
+        cache: {},
         favorites: {
             artists: null,
             albums: null

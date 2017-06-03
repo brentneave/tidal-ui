@@ -19,7 +19,7 @@ const artist = function({ state, props, actions }) {
             artistProfile({
                 state: state,
                 props: {
-                    artist: state.current.artist
+                    artist: state.route.data
                 },
                 actions: actions
             })

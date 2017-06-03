@@ -19,23 +19,24 @@ const artistProfile = function({ state, props, actions }) {
 
     console.log('artistProfile', props);
 
+    if (!props.artist) return { tagName: 'div' }
+
     const { details, albums, similar } = props.artist;
 
     return {
         tagName: 'div',
-        childNodes: [
-
-            {
+        childNodes: [{
                 tagName: 'h1',
                 textContent: details.name
             },
-
             artistImage({
                 state: state,
                 props: { artist: details, width: 960 },
                 actions: actions
-            }),
-
+            }), {
+                tagName: 'h2',
+                textContent: 'Similar Artists'
+            },
             artistList({
                 state: state,
                 props: { artists: similar },

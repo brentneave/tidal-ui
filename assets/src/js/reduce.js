@@ -8,7 +8,7 @@ const
 
 const reduce = function({ state, action, payload }) {
 
-    console.log('reduce', state, action, payload);
+    console.log('reduce', payload, state, action);
 
     return Promise.resolve(
         _mutate[action](clone(state), payload)
@@ -54,6 +54,15 @@ const _mutate = {
     ROUTE: function(state, { path }) {
         state.path.str = path.replace(/^.*\/\/[^\/]+/, '');
         state.path.arr = state.path.str.split('/').filter(isNotEmptyString);
+        state.route.data = state.cache[state.path.str] || null;
+        return state;
+    },
+
+
+
+    SET_ROUTE_DATA: function(state, { data }) {
+        state.route.data = clone(data);
+        state.cache[state.path.str] = clone(data);
         return state;
     },
 
@@ -68,6 +77,14 @@ const _mutate = {
 
     SET_CURRENT_ARTIST: function(state, { details, albums, similar }) {
         state.current.artist = { details, albums, similar };
+        console.log('SET_CURRENT_ARTIST', { details, albums, similar });
+        return state;
+    },
+
+
+
+    CACHE_ARTIST: function(state, { artist }) {
+        state.cache.artists[artist.id] = artist
         return state;
     }
 

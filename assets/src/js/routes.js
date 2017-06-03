@@ -8,19 +8,14 @@ const
 
 const _loadFavouriteArtists = function({ state, subpath }) {
 
-    return api.loadFavoriteArtists(state.session).then(
-
-        function(response) {
-            return reduce({
+    return api.loadFavoriteArtists(state.session)
+        .then(
+            (response) => reduce({
                 state: state,
-                action: 'SET_FAVORITE_ARTISTS',
-                payload: {
-                    artists: response
-                }
-            });
-        }
-
-    );
+                action: 'SET_ROUTE_DATA',
+                payload: { data: response }
+            })
+        );
 
 }
 
@@ -32,13 +27,13 @@ const _loadArtistProfile = function({ state, subpath }) {
     console.log('_loadArtistProfile', state, subpath);
 
     return api.loadArtistProfile(state.session, { id: subpath[0] })
-        .then(function(response) {
-            return reduce({
+        .then(
+            (response) => reduce({
                 state: state,
-                action: 'SET_CURRENT_ARTIST',
-                payload: response
-            });
-        });
+                action: 'SET_ROUTE_DATA',
+                payload: { data: response }
+            })
+        );
 
 }
 
