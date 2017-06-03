@@ -4,8 +4,17 @@ const routes = require('./routes');
 
 const load = function(state) {
 
-    return routes.get(state).load ?
-        routes.get(state).load(state) :
+    console.log('load', state);
+
+    const route = routes.get(state);
+
+    // console.log('route:', route);
+
+    return route.load ?
+        route.load({
+            state: state,
+            subpath: route.subpath
+        }) :
         state;
 
 }

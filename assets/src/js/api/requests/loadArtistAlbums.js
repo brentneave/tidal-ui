@@ -15,11 +15,11 @@ module.exports = function(session, artist, limit) {
     console.log(artist);
     console.log(limit);
 
-    limit = limit ? limit : 99;
+    limit = limit ? limit : 999;
 
     return apiRequest({
             method: config.method.get,
-            url: config.URLs.artistAlbums(artist.id),
+            url: config.urls.artistAlbums(artist.id),
             header: config.sessionHeader(session.id),
             parameters: {
                 countryCode: session.countryCode,

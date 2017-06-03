@@ -32,13 +32,14 @@ const actions = function(state) {
 
         link: function(event) {
             event.preventDefault();
-            const path = event.target.getAttribute('href');
+            const path = event.target.closest('a[href]').getAttribute('href');
             update({
                 state: state,
                 action: 'ROUTE',
                 payload: { path }
             })
         }
+
     }
 
 }

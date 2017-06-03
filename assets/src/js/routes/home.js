@@ -1,4 +1,6 @@
-const loginCheck = require('../components/loginCheck');
+const
+    nav = require('../components/nav'),
+    loginCheck = require('../components/loginCheck');
 
 
 
@@ -8,36 +10,25 @@ const home = function({ state, props, actions }) {
 
         tagName: 'div',
         textContent: 'Homepage',
-        childNodes: [{
+        childNodes: [
 
-            tagName: 'p',
-            childNodes: {
+            nav({
+                state: state,
+                actions: actions
+            }),
 
-                tagName: 'a',
-                textContent: 'Artists',
-                attributes: {
-                    href: '/favorites/artists'
-                },
-                on: {
-                    click: actions.link
+            {
+                tagName: 'p',
+                childNodes: {
+
+                    tagName: 'button',
+                    textContent: 'Log Out',
+                    on: {
+                        click: actions.logout
+                    }
                 }
-
             }
-
-        }, {
-
-            tagName: 'p',
-            childNodes: {
-
-                tagName: 'button',
-                textContent: 'Log Out',
-                on: {
-                    click: actions.logout
-                }
-
-            }
-
-        }]
+        ]
 
     }
 

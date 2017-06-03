@@ -1,4 +1,5 @@
 const
+    nav = require('../components/nav'),
     loading = require('../components/loading'),
     artistList = require('../components/artistList'),
     loginCheck = require('../components/loginCheck');
@@ -16,11 +17,16 @@ const favoriteArtists = function({ state, props, actions }) {
     const content = {
 
         tagName: 'div',
-        childNodes: [{
+        childNodes: [
 
+            nav({
+                state: state,
+                actions: actions
+            }),
+
+            {
                 tagName: 'h1',
                 textContent: 'Favorite Artists'
-
             },
 
             artistList({

@@ -1,14 +1,14 @@
 const
-    API = require('./api/API'),
+    api = require('./api/api'),
     reduce = require('./reduce'),
     components = require('./routes/_all'),
     clone = require('./utils/clone');
 
 
 
-const _loadFavouriteArtists = function(state) {
+const _loadFavouriteArtists = function({ state, subpath }) {
 
-    return API.loadFavoriteArtists(state.session).then(
+    return api.loadFavoriteArtists(state.session).then(
 
         function(response) {
             return reduce({
@@ -25,19 +25,46 @@ const _loadFavouriteArtists = function(state) {
 }
 
 
+
+
+const _loadArtistProfile = function({ state, subpath }) {
+
+    console.log('_loadArtistProfile', state, subpath);
+
+    return api.loadArtistProfile(state.session, { id: subpath[0] })
+        .then(function(response) {
+            return reduce({
+                state: state,
+                action: 'SET_CURRENT_ARTIST',
+                payload: response
+            });
+        });
+
+}
+
+
 const _routes = {
 
     component: components.home,
-
     routes: {
 
         'default': {
             component: components.home
         },
 
+        'artist': {
+            routes: {
+
+                'default': {
+                    component: components.artist,
+                    load: _loadArtistProfile
+                }
+
+            }
+        },
+
         'favorites': {
             component: 'favorites',
-
             routes: {
 
                 'artists': {
@@ -65,30 +92,38 @@ const _routes = {
 
 const get = function(state) {
 
+    // console.log('routes.get', state, state.path.arr);
+
     const path = state.path.arr;
 
     var
         route = _routes,
+        subpath = path,
         data = {},
         i = 0;
 
     path.map(function(segment) {
 
         if (route.routes) {
-            route = route.routes[segment] ?
-                route.routes[segment] :
-                route.routes['default'];
-        } else {
-            route = route;
+            subpath = path.slice(i);
+            route = route.routes[segment] || route.routes['default'] || route;
+            // console.log('segment:', segment, 'i:', i, 'subpath:', subpath, 'route:', route);
         }
 
         i++;
 
     });
 
+    // console.log('route:', {
+    //     load: route.load,
+    //     component: route.component,
+    //     subpath: subpath
+    // })
+
     return {
         load: route.load,
-        component: route.component
+        component: route.component,
+        subpath: subpath
     };
 }
 

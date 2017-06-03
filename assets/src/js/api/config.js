@@ -1,52 +1,59 @@
-const config = {}
+const base = 'https://api.tidalhifi.com/v1';
 
-Object.defineProperty(config, 'baseURL', { value: 'https://api.tidalhifi.com/v1' });
+const urls = {
 
-Object.defineProperty(config, 'URLs', {
-    value: Object.freeze({
-        login: config.baseURL + '/login/username?countryCode=NZ',
-        user: config.baseURL + '/users',
-        albums: function(sessionId) {
-            return config.baseURL + '/users/' + sessionId + '/favorites/albums';
-        },
-        artists: function(userId) {
-            return config.baseURL + '/users/' + userId + '/favorites/artists';
-        },
-        similarArtists: function(artistId) {
-            return config.baseURL + '/artists/' + artistId + '/similar';
-        },
-        tracks: function(sessionId) {
-            return config.baseURL + '/users/' + sessionId + '/favorites/tracks';
-        },
-        artistAlbums: function(artistId) {
-            return config.baseURL + '/artists/' + artistId + '/albums';
-        }
-    })
-});
+    login: base + '/login/username?countryCode=NZ',
 
-Object.defineProperty(config, 'token', {
-    value: 'wdgaB1CilGA-S_s2'
-});
+    user: base + '/users',
 
-Object.defineProperty(config, 'tokenHeader', {
-    value: Object.freeze({
-        'X-Tidal-Token': 'wdgaB1CilGA-S_s2'
-    })
-});
+    albums: function(sessionId) {
+        return base + '/users/' + sessionId + '/favorites/albums';
+    },
 
-Object.defineProperty(config, 'sessionHeader', {
-    value: function(sessionId) {
-        return {
-            'X-Tidal-SessionId': sessionId
-        }
+    artists: function(userId) {
+        return base + '/users/' + userId + '/favorites/artists';
+    },
+
+    artist: function(artistId) {
+        return base + '/artists/' + artistId;
+    },
+
+    similarArtists: function(artistId) {
+        return base + '/artists/' + artistId + '/similar';
+    },
+
+    artistAlbums: function(artistId) {
+        return base + '/artists/' + artistId + '/albums';
+    },
+
+    tracks: function(sessionId) {
+        return base + '/users/' + sessionId + '/favorites/tracks';
     }
-});
+}
 
-Object.defineProperty(config, 'method', {
-    value: Object.freeze({
-        get: 'get',
-        post: 'post',
-    })
-});
+const token = 'wdgaB1CilGA-S_s2';
+
+const tokenHeader = {
+    'X-Tidal-Token': token
+};
+
+const sessionHeader = function(sessionId) {
+    return {
+        'X-Tidal-SessionId': sessionId
+    }
+}
+
+const method = {
+    get: 'get',
+    post: 'post',
+};
+
+const config = {
+    urls,
+    token,
+    tokenHeader,
+    sessionHeader,
+    method
+};
 
 module.exports = config;

@@ -14,7 +14,11 @@ module.exports = {
         },
         errors: null,
         current: {
-            artist: null,
+            artist: {
+                details: null,
+                albums: null,
+                similar: null
+            },
             album: null
         },
         favorites: {

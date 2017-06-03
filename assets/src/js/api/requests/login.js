@@ -27,10 +27,12 @@ module.exports = function(credentials) {
     console.log('API.login');
     console.log(credentials);
     return apiRequest({
-            url: config.URLs.login,
-            header: config.tokenHeader,
-            method: config.method.post,
-            parameters: credentials
-        })
-        .then(resolve, reject);
+        url: config.urls.login,
+        header: config.tokenHeader,
+        method: config.method.post,
+        parameters: credentials
+    }).then(
+        resolve,
+        reject
+    );
 }

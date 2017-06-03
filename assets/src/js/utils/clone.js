@@ -1,5 +1,5 @@
 const clone = function(obj) {
-    return obj ? JSON.parse(JSON.stringify(obj)) : obj;
+    return JSON.parse(JSON.stringify(obj));
 }
 
 module.exports = clone;

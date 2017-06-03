@@ -11,14 +11,14 @@
 
 
 const update = function({ state, action, payload }) {
-    reduce({ action, state, payload }) //1
-        .then(hist) //2
-        .then(render) //3
-        .then(write) //4
-        .then(load) //5
-        .then(hist) //6
-        .then(render)
-        .then(write);
+    reduce({ action, state, payload })
+        .then(hist) // 2
+        .then(render) // 3
+        .then(write) // 4
+        .then(load) // 5
+        .then(hist) // 6
+        .then(render) // 6
+        .then(write); // 6
 }
 
 

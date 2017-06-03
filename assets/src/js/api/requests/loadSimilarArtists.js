@@ -1,25 +1,5 @@
-// const
-//     config = require('../config'),
-//     APIRequest = require('../APIRequest');
-//
-// const SimilarArtistsRequest = function(session, artist)
-// {
-//     APIRequest.prototype.constructor.call(this);
-//     this.url = config.URLs.similarArtists(artist.id);
-//     this.header = config.sessionHeader(session.id);
-//     this.method = APIRequest.method.get;
-//     this.form =
-//     {
-//         countryCode: session.countryCode,
-//         limit: 99
-//     };
-// }
-//
-// SimilarArtistsRequest.prototype = new APIRequest();
-//
-// module.exports = SimilarArtistsRequest;
-
-const apiRequest = require('../apiRequest'),
+const
+    apiRequest = require('../apiRequest'),
     config = require('../config');
 
 const resolve = function(response) {
@@ -44,7 +24,7 @@ module.exports = function(session, artist, limit) {
 
     return apiRequest({
             method: config.method.get,
-            url: config.URLs.similarArtists(artist.id),
+            url: config.urls.similarArtists(artist.id),
             header: config.sessionHeader(session.id),
             parameters: {
                 countryCode: session.countryCode,
@@ -58,4 +38,4 @@ module.exports = function(session, artist, limit) {
             resolve,
             reject
         );
-}
+};

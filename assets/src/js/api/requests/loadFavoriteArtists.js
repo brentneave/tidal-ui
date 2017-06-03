@@ -18,7 +18,7 @@ module.exports = function(session) {
     console.log('loadFavoriteArtists:', session);
     return apiRequest({
             method: config.method.get,
-            url: config.URLs.artists(session.user.id),
+            url: config.urls.artists(session.user.id),
             header: config.sessionHeader(session.id),
             parameters: {
                 countryCode: session.countryCode,

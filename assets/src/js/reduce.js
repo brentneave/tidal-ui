@@ -8,19 +8,21 @@ const
 
 const reduce = function({ state, action, payload }) {
 
+    console.log('reduce', state, action, payload);
+
     return Promise.resolve(
         _mutate[action](clone(state), payload)
     );
 
-}
+};
 
 
 const _mutate = {
 
 
 
-    INIT: function(state) {
-        return state;
+    INIT: function(state, { localState }) {
+        return localState || state;
     },
 
 
@@ -59,6 +61,13 @@ const _mutate = {
 
     SET_FAVORITE_ARTISTS: function(state, { artists }) {
         state.favorites.artists = clone(artists);
+        return state;
+    },
+
+
+
+    SET_CURRENT_ARTIST: function(state, { details, albums, similar }) {
+        state.current.artist = { details, albums, similar };
         return state;
     }
 
