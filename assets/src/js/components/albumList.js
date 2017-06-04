@@ -1,21 +1,25 @@
-const albumThumbnail = require('./albumThumbnail');
+const albumThumb = require('./albumThumb');
 
-module.exports = function(albums) {
-    const el = {
+
+
+const albumList = function({ state, props, actions }) {
+
+    const { albums } = props;
+
+    return {
         tagName: 'div',
         className: 'l-thumbnail-grid',
-        childNodes: []
-    };
-
-    for (var i = 0; i < albums.length; i++) {
-        el.children.push({
-            tagName: 'div',
-            className: 'l-thumbnail-grid__item',
-            childNodes: [
-                albumThumbnail(albums[i])
-            ]
-        })
+        childNodes: albums.map((album) =>
+            albumThumb({
+                state: state,
+                props: { album },
+                actions
+            })
+        )
     }
 
-    return el;
 };
+
+
+
+module.exports = albumList;

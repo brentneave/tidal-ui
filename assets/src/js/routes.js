@@ -7,35 +7,34 @@ const
 
 
 const _loadFavouriteArtists = function({ state, subpath }) {
-
-    return api.loadFavoriteArtists(state.session)
-        .then(
-            (response) => reduce({
-                state: state,
-                action: 'SET_ROUTE_DATA',
-                payload: { data: response }
-            })
-        );
-
+    console.log('_loadFavouriteArtists', arguments);
+    return api.loadFavoriteArtists(state.session);
 }
-
 
 
 
 const _loadArtistProfile = function({ state, subpath }) {
-
-    console.log('_loadArtistProfile', state, subpath);
-
-    return api.loadArtistProfile(state.session, { id: subpath[0] })
-        .then(
-            (response) => reduce({
-                state: state,
-                action: 'SET_ROUTE_DATA',
-                payload: { data: response }
-            })
-        );
-
+    return api.loadArtistProfile(state.session, { id: subpath[0] });
 }
+
+
+
+const _loadRecommendedArtists = function({ state, subpath }) {
+    return api.loadRecommendedArtists(state.session, 5);
+}
+
+
+
+const _loadRecommendedAlbums = function({ state, subpath }) {
+    return api.loadRecommendedAlbums(state.session);
+}
+
+
+
+const _loadFavoriteAlbums = function({ state, subpath }) {
+    return api.loadFavoriteAlbums(state.session);
+}
+
 
 
 const _routes = {
@@ -56,6 +55,7 @@ const _routes = {
                 }
 
             }
+
         },
 
         'favorites': {
@@ -68,26 +68,36 @@ const _routes = {
                 },
 
                 'albums': {
-                    component: components.favoriteAlbums
+                    component: components.favoriteAlbums,
+                    load: _loadFavoriteAlbums
                 }
-
             }
+
         },
 
         'recommended': {
-            component: components.recommended
+            routes: {
+
+                'artists': {
+                    component: components.recommendedArtists,
+                    load: _loadRecommendedArtists
+                },
+
+                'albums': {
+                    component: components.recommendedAlbums,
+                    load: _loadRecommendedAlbums
+                }
+
+            }
+
         }
-
     }
-
-};
+}
 
 
 
 
 const get = function(state) {
-
-    // console.log('routes.get', state, state.path.arr);
 
     const path = state.path.arr;
 
@@ -97,29 +107,25 @@ const get = function(state) {
         data = {},
         i = 0;
 
-    path.map(function(segment) {
+    path.map((segment) => {
 
         if (route.routes) {
             subpath = path.slice(i);
             route = route.routes[segment] || route.routes['default'] || route;
-            // console.log('segment:', segment, 'i:', i, 'subpath:', subpath, 'route:', route);
         }
+        // console.log('route:', route);
 
         i++;
 
     });
 
-    // console.log('route:', {
-    //     load: route.load,
-    //     component: route.component,
-    //     subpath: subpath
-    // })
 
     return {
         load: route.load,
         component: route.component,
         subpath: subpath
     };
+
 }
 
 

@@ -4,6 +4,8 @@ const artistThumb = require('./artistThumb');
 
 const artistList = function({ state, props, actions }) {
 
+    console.log('artistList', props);
+
     const makeThumb = function(artist) {
         return {
             tagName: 'div',

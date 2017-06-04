@@ -14,6 +14,7 @@ module.exports = {
         },
         errors: null,
         route: {
+            fresh: false,
             data: null
         },
         cache: {},

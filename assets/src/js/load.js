@@ -1,4 +1,6 @@
-const routes = require('./routes');
+const
+    routes = require('./routes'),
+    update = require('./update');
 
 
 
@@ -6,16 +8,27 @@ const load = function(state) {
 
     console.log('load', state);
 
-    const route = routes.get(state);
+    const { load, subpath } = routes.get(state);
 
-    // console.log('route:', route);
-
-    return route.load ?
-        route.load({
-            state: state,
-            subpath: route.subpath
-        }) :
-        state;
+    if (load && !state.route.fresh) {
+        update(
+            load({
+                state: state,
+                subpath: subpath
+            }).then(
+                (response) => ({
+                    state: state,
+                    action: 'SET_ROUTE_DATA',
+                    payload: {
+                        path: state.path.str,
+                        data: response
+                    }
+                })
+            ).then(
+                update
+            )
+        );
+    }
 
 }
 
