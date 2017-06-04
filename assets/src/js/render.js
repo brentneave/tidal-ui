@@ -10,20 +10,17 @@ const render = function(state) {
 
     console.log('render', state);
 
-    const
-        act = actions(state),
-        component = routes.get(state).component,
-        then = document.querySelector('#app'),
-        props = {},
-        now = element({
+    diff.merge({
+        source: document.querySelector('#app'),
+        destination: element({
             tagName: 'div',
             id: 'app',
-            childNodes: component({ state: state, props: props, actions: act })
-        });
-
-    diff.merge({
-        source: then,
-        destination: now
+            childNodes: routes.get(state).component({
+                state: state,
+                props: {},
+                actions: actions
+            })
+        })
     });
 
     return state;

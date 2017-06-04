@@ -47,8 +47,10 @@ const albumThumb = function({ state, props, actions }) {
     const { album } = props;
 
     return {
-        tagName: 'div',
+        tagName: 'a',
         className: 'c-thumbnail',
+        attributes: { href: '/album/' + album.id },
+        on: { click: actions.link },
         childNodes: [
             albumImage({
                 state: state,

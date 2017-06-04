@@ -2,47 +2,39 @@ const update = require('./update');
 
 
 
-const actions = function(state) {
+const actions = Object.freeze({
 
-    return {
+    login: function(credentials) {
+        update({
+            action: 'LOGIN',
+            payload: credentials
+        })
+    },
 
-        login: function(credentials) {
-            update({
-                state: state,
-                action: 'LOGIN',
-                payload: credentials
-            })
-        },
+    logout: function() {
+        update({
+            action: 'LOGOUT',
+            payload: null
+        })
+    },
 
-        logout: function(credentials) {
-            update({
-                state: state,
-                action: 'LOGOUT',
-                payload: null
-            })
-        },
+    route: function(path) {
+        update({
+            action: 'ROUTE',
+            payload: { path }
+        })
+    },
 
-        route: function(path) {
-            update({
-                state: state,
-                action: 'ROUTE',
-                payload: { path }
-            })
-        },
-
-        link: function(event) {
-            event.preventDefault();
-            const path = event.target.closest('a[href]').getAttribute('href');
-            update({
-                state: state,
-                action: 'ROUTE',
-                payload: { path }
-            })
-        }
-
+    link: function(event) {
+        event.preventDefault();
+        update({
+            action: 'ROUTE',
+            payload: {
+                path: event.target.closest('a[href]').getAttribute('href')
+            }
+        })
     }
-
-}
+});
 
 
 

@@ -1,5 +1,6 @@
 module.exports = Object.freeze({
     artist: require('./artist'),
+    album: require('./album'),
     favoriteArtists: require('./favoriteArtists'),
     favoriteAlbums: require('./favoriteAlbums'),
     recommendedArtists: require('./recommendedArtists'),

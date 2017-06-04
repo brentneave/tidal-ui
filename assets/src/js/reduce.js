@@ -6,15 +6,20 @@ const
 
 
 
-const reduce = function({ state, action, payload }) {
+var _state = defaultState;
 
-    console.log('reduce', payload, state, action);
 
-    return (action && payload) ?
-        Promise.resolve(
-            _mutate[action](clone(state), payload)
-        ) :
-        Promise.resolve(state);
+
+const reduce = function({ action, payload }) {
+
+    console.log('reduce', ...arguments);
+
+    return Promise.resolve(
+        _mutate[action](clone(_state), payload)
+    ).then((state) => {
+        _state = state;
+        return state;
+    });
 
 };
 

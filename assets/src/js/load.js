@@ -10,25 +10,20 @@ const load = function(state) {
 
     const { load, subpath } = routes.get(state);
 
-    if (load && !state.route.fresh) {
-        update(
-            load({
-                state: state,
-                subpath: subpath
-            }).then(
-                (response) => ({
-                    state: state,
-                    action: 'SET_ROUTE_DATA',
-                    payload: {
-                        path: state.path.str,
-                        data: response
-                    }
-                })
-            ).then(
-                update
-            )
+    if (load && !state.route.fresh)
+        return load({
+            state: state,
+            subpath: subpath
+        }).then(
+            (response) => ({
+                action: 'SET_ROUTE_DATA',
+                payload: {
+                    path: state.path.str,
+                    data: response
+                }
+            })
         );
-    }
+
 
 }
 

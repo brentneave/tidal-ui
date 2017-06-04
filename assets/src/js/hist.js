@@ -9,7 +9,7 @@ const hist = function(state) {
     if (state.path.str != location.pathname)
         history.pushState(null, null, state.path.str);
 
-    window.onpopstate = () => actions(state).route(location.pathname);
+    window.onpopstate = () => actions.route(location.pathname);
 
     return state;
 

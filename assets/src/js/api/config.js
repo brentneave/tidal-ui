@@ -10,6 +10,14 @@ const urls = {
         return base + '/users/' + sessionId + '/favorites/albums';
     },
 
+    album: function(albumId) {
+        return base + '/albums/' + albumId;
+    },
+
+    albumTracks: function(albumId) {
+        return base + '/albums/' + albumId + '/items/';
+    },
+
     artists: function(userId) {
         return base + '/users/' + userId + '/favorites/artists';
     },

@@ -11,6 +11,7 @@ details: {
 
 const
     artistImage = require('./artistImage'),
+    albumList = require('./albumList'),
     artistList = require('./artistList');
 
 
@@ -32,6 +33,14 @@ const artistProfile = function({ state, props, actions }) {
             artistImage({
                 state: state,
                 props: { artist: details, width: 960 },
+                actions: actions
+            }), {
+                tagName: 'h2',
+                textContent: 'Albums'
+            },
+            albumList({
+                state: state,
+                props: { albums },
                 actions: actions
             }), {
                 tagName: 'h2',

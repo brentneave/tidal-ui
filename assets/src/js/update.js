@@ -5,22 +5,18 @@
     3. render ui
     4. write state to local storage
     5. fetch data required for current route, if any, create new state with that data
-    6. once data fetched, update address bar, ui, and local storage once more with new state
+    6. once data fetched, update again with new data
 
 */
 
-
-const update = function({ state, action, payload }) {
+const update = function({ action, payload }) {
     console.log('update', ...arguments);
-    reduce({ action, state, payload })
+    reduce({ action, payload })
         .then(hist) // 2
         .then(render) // 3
         .then(write) // 4
         .then(load) // 5
-    // .then(update)
-    // .then(hist) // 6
-    // .then(render) // 6
-    // .then(write); // 6
+        .then(update)
 }
 
 
