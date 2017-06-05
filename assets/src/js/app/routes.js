@@ -1,8 +1,8 @@
 const
-    api = require('./api/api'),
+    api = require('../api/api'),
     reduce = require('./reduce'),
-    components = require('./routes/_all'),
-    clone = require('./utils/clone');
+    components = require('../routes/_all'),
+    clone = require('../utils/clone');
 
 
 

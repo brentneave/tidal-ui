@@ -1,10 +1,8 @@
 const
-    state = require('./state'),
-    local = require('./local'),
-    update = require('./update');
+    local = require('./app/local'),
+    update = require('./app/update');
 
 update({
     action: 'INIT',
-    state: state.default,
     payload: { localState: local.read() }
 });

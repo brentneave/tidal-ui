@@ -1,6 +1,6 @@
 const
     diff = require('skatejs-dom-diff').default,
-    element = require('./utils/element'),
+    element = require('../utils/element'),
     actions = require('./actions'),
     routes = require('./routes');
 
