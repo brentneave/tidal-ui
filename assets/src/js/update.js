@@ -11,12 +11,13 @@
 
 const update = function({ action, payload }) {
     console.log('update', ...arguments);
+    /* 1 */
     reduce({ action, payload })
-        .then(hist) // 2
-        .then(render) // 3
-        .then(write) // 4
-        .then(load) // 5
-        .then(update)
+        .then(hist)
+        .then(render)
+        .then(write)
+        .then(load)
+        .then(update, () => {})
 }
 
 

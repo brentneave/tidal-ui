@@ -1,6 +1,7 @@
 const
     albumImage = require('./albumImage'),
-    trackList = require('./trackList');
+    trackList = require('./trackList'),
+    albumList = require('./albumList');
 
 
 
@@ -10,31 +11,39 @@ const albumDetails = function({ state, props, actions }) {
 
     if (!props.album) return { tagName: 'div' }
 
-    const { album, tracks } = props;
-
-    console.log('trackList:', trackList({
-        state,
-        props: { tracks },
-        actions
-    }))
+    const { album, tracks, similar } = props;
 
     return {
         tagName: 'div',
         childNodes: [{
-            tagName: 'h1',
-            textContent: album.title
-        }, {
-            tagName: 'p',
-            textContent: album.artist.name
-        }, albumImage({
-            state,
-            props: { album: album, width: 640 },
-            actions
-        }), trackList({
-            state,
-            props: { tracks },
-            actions
-        })]
+                tagName: 'h1',
+                textContent: album.title
+            }, {
+                tagName: 'p',
+                childNodes: {
+                    tagName: 'a',
+                    textContent: album.artist.name,
+                    attributes: { href: '/artist/' + album.artist.id },
+                    on: { click: actions.link }
+                }
+            }, albumImage({
+                state,
+                props: { album: album, width: 640 },
+                actions
+            }), trackList({
+                state,
+                props: { tracks },
+                actions
+            }), similar.length ? {
+                tagName: 'h2',
+                textContent: 'Similar Albums'
+            } : null,
+            similar.length ? albumList({
+                state,
+                props: { albums: similar },
+                actions
+            }) : null
+        ]
     }
 
 }

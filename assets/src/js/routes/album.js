@@ -23,7 +23,8 @@ const album = function({ state, props, actions }) {
                         state: state,
                         props: {
                             album: state.route.data.album,
-                            tracks: state.route.data.tracks
+                            tracks: state.route.data.tracks,
+                            similar: state.route.data.similar
                         },
                         actions: actions
                     }) : {

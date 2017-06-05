@@ -29,7 +29,9 @@ const _mutate = {
 
 
     INIT: function(state, { localState }) {
-        return localState || state;
+        state = localState || state;
+        if (state.route.data) state.route.data.fresh = false;
+        return state;
     },
 
 

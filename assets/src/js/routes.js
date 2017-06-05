@@ -6,43 +6,6 @@ const
 
 
 
-// const _loadFavouriteArtists = function({ state, subpath }) {
-//     console.log('_loadFavouriteArtists', arguments);
-//     return api.loadFavoriteArtists(state.session);
-// }
-
-
-
-// const _loadArtistProfile = function({ state, subpath }) {
-//     return api.loadArtistProfile(state.session, { id: subpath[0] });
-// }
-
-
-
-// const _loadRecommendedArtists = function({ state, subpath }) {
-//     return api.loadRecommendedArtists(state.session, 2);
-// }
-
-
-
-// const _loadRecommendedAlbums = function({ state, subpath }) {
-//     return api.loadRecommendedAlbums(state.session);
-// }
-
-
-
-// const _loadFavoriteAlbums = function({ state, subpath }) {
-//     return api.loadFavoriteAlbums(state.session);
-// }
-
-
-
-// const _loadAlbum = function({ state, subpath }) {
-//     return api.loadAlbum(state.session, { id: subpath[0] });
-// }
-
-
-
 const _routes = {
 
     component: components.home,
@@ -75,6 +38,17 @@ const _routes = {
             }
         },
 
+        'latest': {
+            routes: {
+
+                'albums': {
+                    component: components.latestAlbums,
+                    load: ({ state, subpath }) => api.loadLatestAlbums(state.session)
+                }
+
+            }
+        },
+
         'favorites': {
             component: 'favorites',
             routes: {
@@ -97,12 +71,12 @@ const _routes = {
 
                 'artists': {
                     component: components.recommendedArtists,
-                    load: ({ state, subpath }) => api.loadRecommendedArtists(state.session, 2)
+                    load: ({ state, subpath }) => api.loadRecommendedArtists(state.session, 1)
                 },
 
                 'albums': {
                     component: components.recommendedAlbums,
-                    load: ({ state, subpath }) => api.loadRecommendedAlbums(state.session)
+                    load: ({ state, subpath }) => api.loadRecommendedAlbums(state.session, 1, 1)
                 }
 
             }

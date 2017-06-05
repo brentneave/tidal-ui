@@ -4,9 +4,11 @@ const albumThumb = require('./albumThumb');
 
 const albumList = function({ state, props, actions }) {
 
+    console.log('albumList', ...arguments);
+
     const { albums } = props;
 
-    return {
+    return albums.length ? {
         tagName: 'div',
         className: 'l-thumbnail-grid',
         childNodes: albums.map((album) =>
@@ -16,6 +18,8 @@ const albumList = function({ state, props, actions }) {
                 actions
             })
         )
+    } : {
+        tagName: 'div'
     }
 
 };

@@ -10,8 +10,8 @@ const load = function(state) {
 
     const { load, subpath } = routes.get(state);
 
-    if (load && !state.route.fresh)
-        return load({
+    return (load && !state.route.fresh) ?
+        load({
             state: state,
             subpath: subpath
         }).then(
@@ -22,8 +22,8 @@ const load = function(state) {
                     data: response
                 }
             })
-        );
-
+        ) :
+        Promise.reject()
 
 }
 

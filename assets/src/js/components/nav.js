@@ -26,7 +26,8 @@ const nav = function({ state, actions }) {
             _item('Favorite Artists', '/favorites/artists'),
             _item('Favorite Albums', '/favorites/albums'),
             _item('Recommended Artists', '/recommended/artists'),
-            _item('Recommended Albums', '/recommended/albums')
+            _item('Recommended Albums', '/recommended/albums'),
+            _item('Latest Albums', '/latest/albums')
         ]
     }
 

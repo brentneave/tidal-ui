@@ -1,50 +1,41 @@
 {
-    "name": "tidal-ui",
-    "version": "0.0.1",
-    "dependencies":
-    {
-        "lodash": "latest",
-        "av": "latest",
-        "flac.js": "latest",
-        "ogg.js": "latest",
-        "request": "latest",
-        "skatejs-dom-diff": "0.4.2"
-    },
-    "devDependencies":
-    {
-        "local-web-server": "1.2.7",
-        "autoprefixer": "latest",
-        "watchify": "latest",
-        "node-sass": "latest",
-        "uglify-js": "latest",
-        "onchange": "latest",
-        "browserify": "latest",
-        "postcss-cli": "latest",
-        "npm-run-all": "latest"
-    },
-    "scripts":
-    {
-        "server": "ws --spa index.html",
-
-        "scss": "node-sass --output-style compressed -o assets/dist/css assets/src/scss/index.scss",
-        "autoprefixer": "postcss -u autoprefixer assets/dist/css/index.css",
-        "uglify": "uglifyjs assets/dist/js/index.js -c dead_code -m -o assets/dist/js/index.js",
-
-        "watchify": "watchify assets/src/js/index.js -o assets/dist/js/index.js -v -d",
-        "browserify:dev": "browserify assets/src/js/index.js > assets/dist/js/index.js --debug",
-        "browserify:dist": "browserify assets/src/js/index.js > assets/dist/js/index.js",
-
-        "build:css": "npm run scss && npm run autoprefixer",
-        "build:js-dev": "npm run browserify:dev",
-        "build:js-dist": "npm run browserify:dist && npm run uglify",
-
-        "watch:css": "onchange \"assets/src/scss/**/*\" -- npm run build:css",
-        "watch:js": "npm run watchify",
-
-        "build": "npm run build:css && npm run build:js-dev",
-        "watch": "npm-run-all -p watch:css watch:js",
-
-        "dev": "npm run build:css && npm run build:js-dev && npm run watch",
-        "dist": "npm run build:css && npm run build:js-dist"
-    }
+  "name": "tidal-ui",
+  "version": "0.0.1",
+  "dependencies": {
+    "lodash": "latest",
+    "av": "latest",
+    "flac.js": "latest",
+    "ogg.js": "latest",
+    "request": "latest",
+    "skatejs-dom-diff": "0.4.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "latest",
+    "browserify": "latest",
+    "local-web-server": "1.2.7",
+    "node-sass": "latest",
+    "npm-run-all": "latest",
+    "onchange": "latest",
+    "postcss-cli": "latest",
+    "uglify-es": "github:mishoo/UglifyJS2#harmony",
+    "watchify": "latest"
+  },
+  "scripts": {
+    "server": "ws --spa index.html",
+    "scss": "node-sass --output-style compressed -o assets/dist/css assets/src/scss/index.scss",
+    "autoprefixer": "postcss -u autoprefixer assets/dist/css/index.css",
+    "uglify": "uglifyjs assets/dist/js/index.js -c dead_code -m -o assets/dist/js/index.js",
+    "watchify": "watchify assets/src/js/index.js -o assets/dist/js/index.js -v -d",
+    "browserify:dev": "browserify assets/src/js/index.js > assets/dist/js/index.js --debug",
+    "browserify:dist": "browserify assets/src/js/index.js > assets/dist/js/index.js",
+    "build:css": "npm run scss && npm run autoprefixer",
+    "build:js-dev": "npm run browserify:dev",
+    "build:js-dist": "npm run browserify:dist && npm run uglify",
+    "watch:css": "onchange \"assets/src/scss/**/*\" -- npm run build:css",
+    "watch:js": "npm run watchify",
+    "build": "npm run build:css && npm run build:js-dev",
+    "watch": "npm-run-all -p watch:css watch:js",
+    "dev": "npm run build:css && npm run build:js-dev && npm run watch",
+    "dist": "npm run build:css && npm run build:js-dist"
+  }
 }

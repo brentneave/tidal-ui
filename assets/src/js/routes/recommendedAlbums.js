@@ -27,9 +27,7 @@ const recommendedAlbums = function({ state, props, actions }) {
                 state: state,
                 props: { albums: state.route.data },
                 actions: actions
-            }) : {
-                tagName: 'div'
-            }
+            }) : null
 
         ]
 

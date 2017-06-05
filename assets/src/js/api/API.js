@@ -10,5 +10,6 @@ module.exports = Object.freeze({
     loadRecommendedArtists: require('./requests/loadRecommendedArtists'),
     loadAlbum: require('./requests/loadAlbum'),
     loadAlbumTracks: require('./requests/loadAlbumTracks'),
-    loadAlbumDetails: require('./requests/loadAlbumDetails')
+    loadAlbumDetails: require('./requests/loadAlbumDetails'),
+    loadLatestAlbums: require('./requests/loadLatestAlbums')
 });

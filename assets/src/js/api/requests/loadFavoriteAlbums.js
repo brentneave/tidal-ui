@@ -5,7 +5,7 @@ const resolve = function(response) {
     const extractItem = function(o) {
         return o.item;
     }
-    return response.body.items.map(extractItem);
+    return response.body.items.map(extractItem).reverse();
 }
 
 const reject = function(response) {
