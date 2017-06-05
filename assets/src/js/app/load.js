@@ -8,22 +8,21 @@ const load = function(state) {
 
     console.log('load', state);
 
-    const { load, subpath } = routes.get(state);
+    const route = routes.get(state);
 
-    return (load && !state.route.fresh) ?
-        load({
+    if (route.load && !state.route.fresh)
+        route.load({
             state: state,
-            subpath: subpath
-        }).then(
-            (response) => ({
+            subpath: route.subpath
+        }).then((response) =>
+            update({
                 action: 'SET_ROUTE_DATA',
                 payload: {
                     path: state.path.str,
                     data: response
                 }
             })
-        ) :
-        Promise.reject()
+        );
 
 }
 

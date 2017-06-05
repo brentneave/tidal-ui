@@ -10,14 +10,14 @@
 */
 
 const update = function({ action, payload }) {
+
     console.log('update', ...arguments);
-    /* 1 */
+
     reduce({ action, payload })
         .then(hist)
         .then(render)
         .then(write)
         .then(load)
-        .then(update, () => {})
 }
 
 
