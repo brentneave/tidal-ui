@@ -1,29 +1,25 @@
 const request = require('request'),
-      APIConfig = require('./APIConfig');
+    config = require('./config');
 
-const callback = function(response, resolve, reject)
-{
-    (!response.error && response.response.statusCode == 200) ? resolve(response) : reject(response);
+const callback = function(response, resolve, reject) {
+    (!response.error && response.response.statusCode == 200) ? resolve(response): reject(response);
 }
 
-const send = function(options, resolve, reject)
-{
+const send = function(options, resolve, reject) {
+
     var requestOptions;
 
-    switch(options.method)
-    {
-        case APIConfig.method.get:
-            requestOptions =
-            {
-                url : options.url,
+    switch (options.method) {
+        case config.method.get:
+            requestOptions = {
+                url: options.url,
                 headers: options.header,
                 qs: options.parameters
             }
             break;
-        case APIConfig.method.post:
-            requestOptions =
-            {
-                url : options.url,
+        case config.method.post:
+            requestOptions = {
+                url: options.url,
                 headers: options.header,
                 form: options.parameters
             }
@@ -32,15 +28,11 @@ const send = function(options, resolve, reject)
             break;
     }
 
-    request[options.method]
-    (
+    request[options.method](
         requestOptions,
-        function(error, response, body)
-        {
+        function(error, response, body) {
             body = JSON.parse(body);
-            callback
-            (
-                {
+            callback({
                     error: error,
                     response: response,
                     body: body
@@ -50,14 +42,15 @@ const send = function(options, resolve, reject)
             )
         }
     );
+
 }
 
-module.exports = function(options)
-{
+const apiRequest = function(options) {
     return new Promise(
-        function(resolve, reject)
-        {
+        function(resolve, reject) {
             send(options, resolve, reject);
         }
     );
 }
+
+module.exports = apiRequest;
