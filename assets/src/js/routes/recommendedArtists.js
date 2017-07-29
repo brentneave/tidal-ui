@@ -7,9 +7,9 @@ const
 
 
 
-const load = ({ state, subpath }) =>
-    api.loadRecommendedArtists(state.session, 1)
-
+const load = ({ state, subpath }) => ({
+    artists: api.loadRecommendedArtists(state.session, 1)
+})
 
 
 const component = function({ state, props, actions }) {
@@ -31,7 +31,7 @@ const component = function({ state, props, actions }) {
 
             artistList({
                 state: state,
-                props: { artists: state.route.data || [] },
+                props: state.route.data,
                 actions: actions
             })
 

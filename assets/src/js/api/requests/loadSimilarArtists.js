@@ -18,9 +18,9 @@ module.exports = function(session, artist, limit) {
     limit = limit ? limit : 99;
 
     console.log('API.loadSimilarArtists:');
-    console.log(session);
-    console.log(artist);
-    console.log(limit);
+    // console.log(session);
+    // console.log(artist);
+    // console.log(limit);
 
     return apiRequest({
             method: config.method.get,

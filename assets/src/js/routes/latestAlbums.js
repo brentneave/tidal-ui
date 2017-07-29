@@ -7,9 +7,9 @@ const
 
 
 
-const load = ({ state, subpath }) =>
-    api.loadLatestAlbums(state.session);
-
+const load = ({ state, subpath }) => ({
+    albums: api.loadLatestAlbums(state.session)
+});
 
 
 const component = function({ state, props, actions }) {
@@ -31,11 +31,9 @@ const component = function({ state, props, actions }) {
 
             state.route.data ? albumList({
                 state: state,
-                props: { albums: state.route.data },
+                props: state.route.data,
                 actions: actions
-            }) : {
-                tagName: 'div'
-            }
+            }) : null
 
         ]
 

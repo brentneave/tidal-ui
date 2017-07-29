@@ -14,6 +14,10 @@ const update = function({ action, payload }) {
     console.log('update', ...arguments);
 
     reduce({ action, payload })
+        .then((state) => {
+            console.log('**update', action, payload, state);
+            return state;
+        })
         .then(hist)
         .then(render)
         .then(write)

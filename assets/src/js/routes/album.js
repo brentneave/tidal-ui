@@ -6,8 +6,19 @@ const
 
 
 
-const load = ({ state, subpath }) =>
-    api.loadAlbum(state.session, { id: subpath[0] });
+const load = function({ state, subpath }) {
+
+    const
+        session = state.session,
+        id = subpath[0];
+
+    return {
+        details: api.loadAlbumDetails(session, { id }),
+        tracks: api.loadAlbumTracks(session, { id }),
+        similar: api.loadSimilarAlbums(session, { id })
+    }
+
+}
 
 
 
@@ -28,7 +39,7 @@ const component = function({ state, props, actions }) {
                     state.route.data ? albumDetails({
                         state: state,
                         props: {
-                            album: state.route.data.album,
+                            details: state.route.data.details,
                             tracks: state.route.data.tracks,
                             similar: state.route.data.similar
                         },

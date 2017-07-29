@@ -7,17 +7,14 @@ const
 
 
 
-const load = ({ state, subpath }) =>
-    api.loadFavoriteArtists(state.session);
+const load = ({ state, subpath }) => ({
 
+    artists: api.loadFavoriteArtists(state.session)
+
+});
 
 
 const component = function({ state, props, actions }) {
-
-
-
-    const artists = state.route.data || [];
-
 
 
     const content = {
@@ -38,7 +35,7 @@ const component = function({ state, props, actions }) {
             artistList({
                 state: state,
                 props: {
-                    artists: artists
+                    artists: state.route.data.artists || []
                 },
                 actions: actions
             })

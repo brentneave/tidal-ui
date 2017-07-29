@@ -3,8 +3,8 @@ const apiRequest = require('../apiRequest'),
     _array = require('lodash/array');
 
 const reducePromiseResolutions = function(arrays) {
-    console.log('reduce:');
-    console.log(arrays);
+    // console.log('reduce:');
+    // console.log(arrays);
     if (arrays.length) {
         return _array.uniqBy(
             arrays.reduce(
@@ -20,7 +20,7 @@ const reducePromiseResolutions = function(arrays) {
 }
 
 module.exports = function(session, artists, limit) {
-    console.log('API.loadMultipleSimilarArtists:', ...arguments);
+    // console.log('API.loadMultipleSimilarArtists:', ...arguments);
 
     limit = limit ? limit : 1;
 

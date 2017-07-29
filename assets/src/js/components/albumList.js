@@ -8,7 +8,7 @@ const albumList = function({ state, props, actions }) {
 
     const { albums } = props;
 
-    return albums.length ? {
+    return albums && albums.length ? {
         tagName: 'div',
         className: 'l-thumbnail-grid',
         childNodes: albums.map((album) =>
@@ -18,9 +18,7 @@ const albumList = function({ state, props, actions }) {
                 actions
             })
         )
-    } : {
-        tagName: 'div'
-    }
+    } : null;
 
 };
 

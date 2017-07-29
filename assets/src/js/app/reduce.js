@@ -31,7 +31,7 @@ const _mutate = {
 
     INIT: function(state, { localState }) {
         state = localState || state;
-        if (state.route.data) state.route.data.fresh = false;
+        if (state.route.data) state.route.fresh = false;
         return state;
     },
 
@@ -66,8 +66,8 @@ const _mutate = {
         state.path.arr = state.path.str.split('/').filter(isNotEmptyString);
         state.route.fresh = false;
         state.route.data = state.cache[state.path.str] ?
-            clone(state.cache[state.path.str]) :
-            null;
+            clone(state.cache[state.path.str]) : {};
+        console.log('**ROUTE', path, state);
         return state;
     },
 
@@ -84,13 +84,14 @@ const _mutate = {
 
 
 
-
-    ADD_ROUTE_DATA: function(state, { path, key, value }) {
+    APPEND_ROUTE_DATA: function(state, { path, key, value }) {
+        state.cache[path] = state.cache[path] || {};
+        state.cache[path][key] = clone(value);
         if (path === state.path.str) {
             state.route.fresh = true;
-            state.route.data[key] = clone(value); // only update route data if it’s still the active route
+            state.route.data = clone(state.cache[path]);
         }
-        state.cache[path] = clone(state.route.data);
+        console.log('**APPEND_ROUTE_DATA', path === state.path.str, path, key, value, state);
         return state;
     },
 

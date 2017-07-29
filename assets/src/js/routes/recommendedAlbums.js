@@ -7,8 +7,9 @@ const
 
 
 
-const load = ({ state, subpath }) =>
-    api.loadRecommendedAlbums(state.session, 1, 1)
+const load = ({ state, subpath }) => ({
+    albums: api.loadRecommendedAlbums(state.session, 1, 1)
+})
 
 
 
@@ -31,7 +32,7 @@ const component = function({ state, props, actions }) {
 
             state.route.data ? albumList({
                 state: state,
-                props: { albums: state.route.data },
+                props: state.route.data,
                 actions: actions
             }) : null
 

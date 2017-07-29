@@ -7,8 +7,11 @@ const
 
 
 
-const load = ({ state, subpath }) =>
-    api.loadFavoriteAlbums(state.session);
+const load = ({ state, subpath }) => ({
+
+    albums: api.loadFavoriteAlbums(state.session)
+
+});
 
 
 
@@ -29,13 +32,11 @@ const component = function({ state, props, actions }) {
                 textContent: 'Favorite Albums'
             },
 
-            state.route.data ? albumList({
+            state.route.data.albums ? albumList({
                 state: state,
-                props: { albums: state.route.data },
+                props: { albums: state.route.data.albums },
                 actions: actions
-            }) : {
-                tagName: 'div'
-            }
+            }) : null
 
         ]
 

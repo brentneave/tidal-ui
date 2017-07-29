@@ -8,7 +8,7 @@ const
 
 
 const resolve = function(response) {
-    console.log('api.loadArtistProfile.resolve', response);
+    // console.log('api.loadArtistProfile.resolve', response);
     return {
         details: response[0],
         albums: response[1],
@@ -19,7 +19,7 @@ const resolve = function(response) {
 
 
 const reject = function(response) {
-    console.error('api.loadArtistProfile.reject', response);
+    // console.error('api.loadArtistProfile.reject', response);
     return Error();
 }
 

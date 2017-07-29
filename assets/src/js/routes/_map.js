@@ -1,5 +1,4 @@
 const
-    api = require('../api/api'),
     artist = require('./artist'),
     album = require('./album'),
     favoriteArtists = require('./favoriteArtists'),
@@ -13,7 +12,8 @@ const
 
 module.exports = {
 
-    component: home,
+    component: home.component,
+
     routes: {
 
         'default': {
