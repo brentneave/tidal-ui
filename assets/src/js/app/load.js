@@ -20,38 +20,41 @@ const load = function(state) {
         subpath: route.subpath
     });
 
-    Object.keys(requests).map(
-        (key) => (
-            requests[key].then(
-                (response) => update({
-                    action: 'APPEND_ROUTE_DATA',
-                    payload: {
-                        path: state.path.str,
-                        key,
-                        value: response
-                    }
-                })
-            )
-        )
-    );
-    // const loadIncremental = function(keys) {
-    //     if (keys.length) {
-    //         requests[keys[0]].then(
+    // PARALLEL:
+    // Object.keys(requests).map(
+    //     (key) => (
+    //         requests[key].then(
     //             (response) => update({
     //                 action: 'APPEND_ROUTE_DATA',
     //                 payload: {
     //                     path: state.path.str,
-    //                     key: keys[0],
+    //                     key,
     //                     value: response
     //                 }
     //             })
-    //         ).then(
-    //             loadIncremental(keys.slice(1))
     //         )
-    //     }
-    // };
-    //
-    // loadIncremental(Object.keys(requests));
+    //     )
+    // );
+
+    // SERIAL:
+    const loadIncremental = function(keys) {
+        if (keys.length) {
+            requests[keys[0]].then(
+                (response) => update({
+                    action: 'APPEND_ROUTE_DATA',
+                    payload: {
+                        path: state.path.str,
+                        key: keys[0],
+                        value: response
+                    }
+                })
+            ).then(
+                loadIncremental(keys.slice(1))
+            )
+        }
+    };
+
+    loadIncremental(Object.keys(requests));
 
 
 }
