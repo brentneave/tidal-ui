@@ -2,7 +2,7 @@ const
     diff = require('skatejs-dom-diff').default,
     element = require('../utils/element'),
     actions = require('./actions'),
-    routes = require('./routes');
+    router = require('./router');
 
 
 
@@ -15,7 +15,7 @@ const render = function(state) {
         destination: element({
             tagName: 'div',
             id: 'app',
-            childNodes: routes.get(state).component({
+            childNodes: router.get(state).component({
                 state: state,
                 props: {},
                 actions: actions

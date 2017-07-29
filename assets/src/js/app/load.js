@@ -1,6 +1,7 @@
 const
-    routes = require('./routes'),
-    update = require('./update');
+    router = require('./router'),
+    update = require('./update'),
+    { setRouteData } = require('./actions');
 
 
 
@@ -8,14 +9,14 @@ const load = function(state) {
 
     console.log('load', state);
 
-    const route = routes.get(state);
+    const route = router.get(state);
 
     if (route.load && !state.route.fresh)
         route.load({
             state: state,
             subpath: route.subpath
-        }).then((response) =>
-            update({
+        }).then(
+            (response) => update({
                 action: 'SET_ROUTE_DATA',
                 payload: {
                     path: state.path.str,
@@ -23,6 +24,7 @@ const load = function(state) {
                 }
             })
         );
+
 
 }
 
