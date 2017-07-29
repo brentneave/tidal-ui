@@ -13,6 +13,8 @@ const reducePromiseResolutions = function(arrays) {
     return _array.uniqBy(
         arrays.reduce(
             function(a, b) {
+                a = a instanceof Array ? a : [];
+                b = b instanceof Array ? b : [];
                 return a.concat(b);
             }
         ),

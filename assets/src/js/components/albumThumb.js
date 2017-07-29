@@ -61,10 +61,11 @@ const albumThumb = function({ state, props, actions }) {
             }), {
                 tagName: 'p',
                 textContent: album.title
-            }, {
+            },
+            album.artists ? {
                 tagName: 'p',
                 textContent: album.artists.map((artist) => artist.name).join(', ')
-            }
+            } : null
         ]
     }
 };

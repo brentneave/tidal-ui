@@ -1,4 +1,5 @@
 const
+    loadLatestAlbums = require('./loadLatestAlbums'),
     loadFavoriteArtists = require('./loadFavoriteArtists'),
     loadMultipleSimilarArtists = require('./loadMultipleSimilarArtists'),
     loadMultipleArtistAlbums = require('./loadMultipleArtistAlbums'),
@@ -23,25 +24,25 @@ const
 // }
 
 
-const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit) {
-
-    artistsLimit = artistsLimit ? artistsLimit : 2;
-    albumsLimit = albumsLimit ? albumsLimit : 1;
-
-    return loadFavoriteArtists(session).then((artists) => (
-        loadMultipleSimilarArtists(
-            session,
-            artists,
-            artistsLimit
-        )
-    )).then((similarArtists) => (
-        loadMultipleArtistAlbums(
-            session,
-            artists.concat(similarArtists),
-            albumsLimit
-        )
-    ))
-}
+// const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit) {
+//
+//     artistsLimit = artistsLimit ? artistsLimit : 2;
+//     albumsLimit = albumsLimit ? albumsLimit : 1;
+//
+//     return loadFavoriteArtists(session).then((artists) => (
+//         loadMultipleSimilarArtists(
+//             session,
+//             artists,
+//             artistsLimit
+//         )
+//     )).then((similarArtists) => (
+//         loadMultipleArtistAlbums(
+//             session,
+//             artists.concat(similarArtists),
+//             albumsLimit
+//         )
+//     ))
+// }
 
 
 // const loadRecommendedAlbums = function(session, numberOfFavoriteAlbums, artistsLimit, albumsLimit) {
@@ -95,7 +96,7 @@ const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit) {
 
 
 
-//
+
 // const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit) {
 //
 //     artistsLimit = artistsLimit || 1;
@@ -117,6 +118,34 @@ const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit) {
 //     ))
 //
 // }
+
+
+
+
+const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit) {
+
+    artistsLimit = artistsLimit || 1;
+    albumsLimit = albumsLimit ? albumsLimit : 1;
+
+    return loadFavoriteAlbums(session).then(
+
+        (albums) => (
+            Promise.all(
+                albums.map((album) => loadSimilarAlbums(session, album, artistsLimit, albumsLimit))
+            )
+        )
+
+    ).then(
+
+        (responses) => _array.uniqBy(
+            responses.reduce((a, b) => a.concat(b)),
+            'id'
+        )
+
+    )
+
+}
+
 
 
 
