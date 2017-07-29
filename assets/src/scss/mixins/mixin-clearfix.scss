@@ -1,0 +1,18 @@
+@mixin clearfix {
+    /**
+     * For IE 6/7 only
+     * Include this rule to trigger hasLayout and contain floats.
+     */
+    *zoom: 1;
+
+    &:before {
+        content: " "; /* 1 */
+        display: table; /* 2 */
+    }
+
+    &:after {
+        clear: both;
+        content: " "; /* 1 */
+        display: table; /* 2 */
+    }
+}

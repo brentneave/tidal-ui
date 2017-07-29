@@ -1,0 +1,5 @@
+@mixin ratio-box($ratio) {
+    display: block;
+    height: 0;
+    padding-top: percentage($ratio);
+}
