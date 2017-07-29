@@ -1,4 +1,5 @@
 const
+    api = require('../api/api'),
     artist = require('./artist'),
     album = require('./album'),
     favoriteArtists = require('./favoriteArtists'),
