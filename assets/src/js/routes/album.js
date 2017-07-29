@@ -1,11 +1,17 @@
 const
+    api = require('../api/api'),
     nav = require('../components/nav'),
     loginCheck = require('../components/loginCheck'),
     albumDetails = require('../components/albumDetails');
 
 
 
-const album = function({ state, props, actions }) {
+const load = ({ state, subpath }) =>
+    api.loadAlbum(state.session, { id: subpath[0] });
+
+
+
+const component = function({ state, props, actions }) {
 
     return loginCheck({
         state,
@@ -40,4 +46,4 @@ const album = function({ state, props, actions }) {
 
 
 
-module.exports = album;
+module.exports = { load, component };

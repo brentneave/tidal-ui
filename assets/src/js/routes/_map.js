@@ -17,16 +17,15 @@ module.exports = {
     routes: {
 
         'default': {
-            component: home
+            component: home.component
         },
 
         'artist': {
             routes: {
 
                 'default': {
-                    component: artist,
-                    load: ({ state, subpath }) =>
-                        api.loadArtistProfile(state.session, { id: subpath[0] })
+                    component: artist.component,
+                    load: artist.load
                 }
 
             }
@@ -37,9 +36,8 @@ module.exports = {
             routes: {
 
                 'default': {
-                    component: album,
-                    load: ({ state, subpath }) =>
-                        api.loadAlbum(state.session, { id: subpath[0] })
+                    component: album.component,
+                    load: album.load
                 }
 
             }
@@ -49,9 +47,8 @@ module.exports = {
             routes: {
 
                 'albums': {
-                    component: latestAlbums,
-                    load: ({ state, subpath }) =>
-                        api.loadLatestAlbums(state.session)
+                    component: latestAlbums.component,
+                    load: latestAlbums.load
                 }
 
             }
@@ -62,15 +59,13 @@ module.exports = {
             routes: {
 
                 'artists': {
-                    component: favoriteArtists,
-                    load: ({ state, subpath }) =>
-                        api.loadFavoriteArtists(state.session)
+                    component: favoriteArtists.component,
+                    load: favoriteArtists.load
                 },
 
                 'albums': {
-                    component: favoriteAlbums,
-                    load: ({ state, subpath }) =>
-                        api.loadFavoriteAlbums(state.session)
+                    component: favoriteAlbums.component,
+                    load: favoriteAlbums.load
                 }
 
             }
@@ -80,15 +75,13 @@ module.exports = {
             routes: {
 
                 'artists': {
-                    component: recommendedArtists,
-                    load: ({ state, subpath }) =>
-                        api.loadRecommendedArtists(state.session, 1)
+                    component: recommendedArtists.component,
+                    load: recommendedArtists.load
                 },
 
                 'albums': {
-                    component: recommendedAlbums,
-                    load: ({ state, subpath }) =>
-                        api.loadRecommendedAlbums(state.session, 1, 1)
+                    component: recommendedAlbums.component,
+                    load: recommendedAlbums.load
                 }
 
             }

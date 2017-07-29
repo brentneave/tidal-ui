@@ -1,11 +1,17 @@
 const
+    api = require('../api/api'),
     nav = require('../components/nav'),
     loginCheck = require('../components/loginCheck'),
     artistProfile = require('../components/artistProfile');
 
 
 
-const artist = function({ state, props, actions }) {
+const load = ({ state, subpath }) =>
+    api.loadArtistProfile(state.session, { id: subpath[0] })
+
+
+
+const component = function({ state, props, actions }) {
 
     const content = {
         tagName: 'div',
@@ -42,4 +48,4 @@ const artist = function({ state, props, actions }) {
 
 
 
-module.exports = artist;
+module.exports = { load, component };

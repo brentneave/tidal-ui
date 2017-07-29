@@ -1,4 +1,5 @@
 const
+    api = require('../api/api'),
     nav = require('../components/nav'),
     loading = require('../components/loading'),
     albumList = require('../components/albumList'),
@@ -6,7 +7,12 @@ const
 
 
 
-const latestAlbums = function({ state, props, actions }) {
+const load = ({ state, subpath }) =>
+    api.loadLatestAlbums(state.session);
+
+
+
+const component = function({ state, props, actions }) {
 
     const content = {
 
@@ -45,4 +51,4 @@ const latestAlbums = function({ state, props, actions }) {
 
 
 
-module.exports = latestAlbums;
+module.exports = { load, component };

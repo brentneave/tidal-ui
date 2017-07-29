@@ -84,6 +84,18 @@ const _mutate = {
 
 
 
+
+    ADD_ROUTE_DATA: function(state, { path, key, value }) {
+        if (path === state.path.str) {
+            state.route.fresh = true;
+            state.route.data[key] = clone(value); // only update route data if it’s still the active route
+        }
+        state.cache[path] = clone(state.route.data);
+        return state;
+    },
+
+
+
     SET_FAVORITE_ARTISTS: function(state, { artists }) {
         state.favorites.artists = clone(artists);
         return state;

@@ -1,4 +1,5 @@
 const
+    api = require('../api/api'),
     nav = require('../components/nav'),
     loading = require('../components/loading'),
     albumList = require('../components/albumList'),
@@ -6,7 +7,12 @@ const
 
 
 
-const recommendedAlbums = function({ state, props, actions }) {
+const load = ({ state, subpath }) =>
+    api.loadRecommendedAlbums(state.session, 1, 1)
+
+
+
+const component = function({ state, props, actions }) {
 
     const content = {
 
@@ -43,4 +49,4 @@ const recommendedAlbums = function({ state, props, actions }) {
 
 
 
-module.exports = recommendedAlbums;
+module.exports = { load, component };
