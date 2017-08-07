@@ -12,14 +12,11 @@ var _state = defaultState;
 
 const reduce = function({ action, payload }) {
 
-    console.log('reduce', ...arguments);
+    _state = _mutate[action](_state, payload);
 
     return Promise.resolve(
-        _mutate[action](clone(_state), payload)
-    ).then((state) => {
-        _state = state;
-        return state;
-    });
+        clone(_state)
+    );
 
 };
 
@@ -67,18 +64,6 @@ const _mutate = {
         state.route.fresh = false;
         state.route.data = state.cache[state.path.str] ?
             clone(state.cache[state.path.str]) : {};
-        console.log('**ROUTE', path, state);
-        return state;
-    },
-
-
-
-    SET_ROUTE_DATA: function(state, { path, data }) {
-        if (path === state.path.str) {
-            state.route.fresh = true;
-            state.route.data = clone(data); // only update route data if it’s still the active route
-        }
-        state.cache[path] = clone(data);
         return state;
     },
 
@@ -91,7 +76,6 @@ const _mutate = {
             state.route.fresh = true;
             state.route.data = clone(state.cache[path]);
         }
-        console.log('**APPEND_ROUTE_DATA', path === state.path.str, path, key, value, state);
         return state;
     },
 
