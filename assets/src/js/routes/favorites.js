@@ -1,4 +1,4 @@
-const favorites = function() {
+const component = function() {
     return {
         tagName: 'div',
         textContent: 'Favorites'
@@ -7,4 +7,4 @@ const favorites = function() {
 
 
 
-module.exports = favorites;
+module.exports = component;

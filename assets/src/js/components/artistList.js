@@ -15,7 +15,7 @@ const artistList = function({ state, props, actions }) {
     };
 
     const
-        artists = props.artists,
+        artists = props.artists || [],
         thumbs = artists.map(makeThumb);
 
     return {

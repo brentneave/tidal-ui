@@ -9,36 +9,39 @@ const albumDetails = function({ state, props, actions }) {
 
     console.log('albumDetails', ...arguments);
 
-    if (!props.album) return { tagName: 'div' }
-
-    const { album, tracks, similar } = props;
+    const { details, tracks, similar } = props;
 
     return {
         tagName: 'div',
-        childNodes: [{
+        childNodes: [
+            details ? {
                 tagName: 'h1',
-                textContent: album.title
-            }, {
+                textContent: details.title
+            } : null,
+            details && details.artist ? {
                 tagName: 'p',
                 childNodes: {
                     tagName: 'a',
-                    textContent: album.artist.name,
-                    attributes: { href: '/artist/' + album.artist.id },
+                    textContent: details.artist.name,
+                    attributes: { href: '/artist/' + details.artist.id },
                     on: { click: actions.link }
                 }
-            }, albumImage({
+            } : null,
+            details ? albumImage({
                 state,
-                props: { album: album, width: 640 },
+                props: { album: details, width: 640 },
                 actions
-            }), trackList({
+            }) : null,
+            tracks && tracks.length ? trackList({
                 state,
                 props: { tracks },
                 actions
-            }), similar.length ? {
+            }) : null,
+            similar && similar.length ? {
                 tagName: 'h2',
                 textContent: 'Similar Albums'
             } : null,
-            similar.length ? albumList({
+            similar && similar.length ? albumList({
                 state,
                 props: { albums: similar },
                 actions

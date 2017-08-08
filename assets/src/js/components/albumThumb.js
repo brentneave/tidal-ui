@@ -55,7 +55,7 @@ const albumThumb = function({ state, props, actions }) {
             albumImage({
                 state: state,
                 props: {
-                    album: album,
+                    album,
                     width: 640
                 }
             }), {

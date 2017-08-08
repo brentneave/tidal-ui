@@ -1,11 +1,28 @@
 const
+    api = require('../api/api'),
     nav = require('../components/nav'),
     loginCheck = require('../components/loginCheck'),
     albumDetails = require('../components/albumDetails');
 
 
 
-const album = function({ state, props, actions }) {
+const load = function({ state, subpath }) {
+
+    const
+        session = state.session,
+        id = subpath[0];
+
+    return {
+        details: api.loadAlbumDetails(session, { id }),
+        tracks: api.loadAlbumTracks(session, { id }),
+        similar: api.loadSimilarAlbums(session, { id })
+    }
+
+}
+
+
+
+const component = function({ state, props, actions }) {
 
     return loginCheck({
         state,
@@ -22,7 +39,7 @@ const album = function({ state, props, actions }) {
                     state.route.data ? albumDetails({
                         state: state,
                         props: {
-                            album: state.route.data.album,
+                            details: state.route.data.details,
                             tracks: state.route.data.tracks,
                             similar: state.route.data.similar
                         },
@@ -40,4 +57,4 @@ const album = function({ state, props, actions }) {
 
 
 
-module.exports = album;
+module.exports = { load, component };
