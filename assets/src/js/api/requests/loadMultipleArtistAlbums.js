@@ -5,8 +5,8 @@ const apiRequest = require('../apiRequest'),
 
 
 const reducePromiseResolutions = function(arrays) {
-    console.log('reduce:');
-    console.log(arrays);
+    // console.log('reduce:');
+    // console.log(arrays);
 
     arrays = arrays || [];
 
@@ -31,17 +31,17 @@ const reducePromiseResolutions = function(arrays) {
 
 
 const reject = function(response) {
-    console.error('API.loadMultipleArtistAlbums.reject', response);
+    // console.error('API.loadMultipleArtistAlbums.reject', response);
     return Error(response);
 }
 
 
 
 module.exports = function(session, artists, limit) {
-    console.log('API.loadMultipleArtistAlbums:');
-    console.log(session);
-    console.log(artists);
-    console.log(limit);
+    // console.log('API.loadMultipleArtistAlbums:');
+    // console.log(session);
+    // console.log(artists);
+    // console.log(limit);
 
     limit = limit ? limit : 1;
     artists = artists || [];

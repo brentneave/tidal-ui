@@ -1,4 +1,4 @@
-const recommended = function() {
+const component = function() {
     return {
         tagName: 'div',
         textContent: 'Recommended'
@@ -7,4 +7,4 @@ const recommended = function() {
 
 
 
-module.exports = recommended;
+module.exports = { component };

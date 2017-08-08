@@ -1,10 +1,11 @@
 const
+    api = require('../api/api'),
     nav = require('../components/nav'),
     loginCheck = require('../components/loginCheck');
 
 
 
-const home = function({ state, props, actions }) {
+const component = function({ state, props, actions }) {
 
     const content = {
 
@@ -48,4 +49,4 @@ const home = function({ state, props, actions }) {
 
 
 
-module.exports = home;
+module.exports = { component };

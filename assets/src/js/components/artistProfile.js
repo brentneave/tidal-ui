@@ -20,38 +20,38 @@ const artistProfile = function({ state, props, actions }) {
 
     console.log('artistProfile', props);
 
-    if (!props.artist) return { tagName: 'div' }
-
-    const { details, albums, similar } = props.artist;
+    const { details, albums, similar } = props;
 
     return {
         tagName: 'div',
-        childNodes: [{
+        childNodes: [
+            details ? {
                 tagName: 'h1',
                 textContent: details.name
-            },
-            artistImage({
+            } : null,
+            details ? artistImage({
                 state: state,
                 props: { artist: details, width: 960 },
                 actions: actions
-            }), {
+            }) : null,
+            albums ? {
                 tagName: 'h2',
                 textContent: 'Albums'
-            },
-            albumList({
+            } : null,
+            albums ? albumList({
                 state: state,
                 props: { albums },
                 actions: actions
-            }), {
+            }) : null,
+            similar ? {
                 tagName: 'h2',
                 textContent: 'Similar Artists'
-            },
-            artistList({
+            } : null,
+            similar ? artistList({
                 state: state,
                 props: { artists: similar },
                 actions: actions
-            })
-
+            }) : null
         ]
     }
 

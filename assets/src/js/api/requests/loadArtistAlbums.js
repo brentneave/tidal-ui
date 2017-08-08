@@ -10,10 +10,10 @@ const reject = function(response) {
 }
 
 module.exports = function(session, artist, limit) {
-    console.log('API.loadArtistAlbums:');
-    console.log(session);
-    console.log(artist);
-    console.log(limit);
+    // console.log('API.loadArtistAlbums:');
+    // console.log(session);
+    // console.log(artist);
+    // console.log(limit);
 
     limit = limit ? limit : 999;
 
