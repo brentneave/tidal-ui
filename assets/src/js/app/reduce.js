@@ -34,20 +34,16 @@ const _mutate = {
 
 
 
-    LOGIN: function(state, credentials) {
+    LOGIN: function(state, { session }) {
+        state.session = clone(session);
+        return state;
+    },
 
-        const handleResponse = function(response) {
-            console.log('handleResponse', response)
-            if (response.error) {
-                state = clone(defaultState);
-                state.errors = ['Please check your login details and try again.'];
-            } else {
-                state.session = response.session;
-            }
-            return state;
-        }
 
-        return api.login(credentials).then(handleResponse);
+
+    ERROR: function(state, { error }) {
+        // TODO
+        return state;
     },
 
 
