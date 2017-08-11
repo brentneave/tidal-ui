@@ -8,7 +8,7 @@ const
 
 
 const load = ({ state, subpath }) => ({
-    albums: api.loadRecommendedAlbums(state.session, 1, 1)
+    albums: api.loadRecommendedAlbums(state.session, 2, 1, 12)
 })
 
 
