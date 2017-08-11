@@ -17,6 +17,7 @@
     "npm-run-all": "latest",
     "onchange": "latest",
     "postcss-cli": "latest",
+    "tachyons-sass": "4.7.4",
     "uglify-es": "github:mishoo/UglifyJS2#harmony",
     "watchify": "latest"
   },
