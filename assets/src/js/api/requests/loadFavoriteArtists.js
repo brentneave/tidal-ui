@@ -2,10 +2,14 @@ const apiRequest = require('../apiRequest'),
     config = require('../config');
 
 const resolve = function(response) {
-    const extractItem = function(o) {
-        return o.item;
-    }
-    return response.body.items.map(extractItem);
+    return response.body.items
+        .sort(
+            (a, b) =>
+            Date.parse(a.created.slice(0, 10)) >
+            Date.parse(b.created.slice(0, 10)) ?
+            -1 : 1
+        )
+        .map(obj => obj.item)
 }
 
 const reject = function(response) {
