@@ -1,15 +1,30 @@
-const update = require('./update');
+const
+    api = require('../api/API'),
+    update = require('./update');
 
 
 
 const actions = Object.freeze({
 
     login: function(credentials) {
-        update({
-            action: 'LOGIN',
-            payload: credentials
-        })
+
+        api.login(credentials)
+            .then(
+                (response) => (
+                    response.error ?
+                    update({
+                        action: 'ERROR',
+                        payload: { message: 'Please check your login details and try again.' }
+                    }) :
+                    update({
+                        action: 'LOGIN',
+                        payload: { session: response.session }
+                    })
+                )
+            )
+
     },
+
 
     logout: function() {
         update({

@@ -19,26 +19,28 @@ const reducePromiseResolutions = function(arrays) {
             }
         ),
         'id'
+    ).filter(
+        album => album.releaseDate != null
     ).sort(
-        function(a, b) {
-            a = Date.parse(a.releaseDate.slice(0, 10));
-            b = Date.parse(b.releaseDate.slice(0, 10));
-            return a > b ? -1 : 1;
-        }
+        (a, b) => (
+            Date.parse(a.releaseDate.slice(0, 10)) >
+            Date.parse(b.releaseDate.slice(0, 10)) ?
+            -1 : 1
+        )
     )
 }
 
 
 
 const reject = function(response) {
-    // console.error('API.loadMultipleArtistAlbums.reject', response);
+    console.error('loadMultipleArtistAlbums.reject', response);
     return Error(response);
 }
 
 
 
 module.exports = function(session, artists, limit) {
-    // console.log('API.loadMultipleArtistAlbums:');
+    console.log('loadMultipleArtistAlbums', ...arguments);
     // console.log(session);
     // console.log(artists);
     // console.log(limit);
