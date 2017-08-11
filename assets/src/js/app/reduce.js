@@ -1,5 +1,4 @@
 const
-    api = require('../api/API'),
     clone = require('../utils/clone'),
     defaultState = require('./state').default,
     isNotEmptyString = require('../utils/isNotEmptyString');
