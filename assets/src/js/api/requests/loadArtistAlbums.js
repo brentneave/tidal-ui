@@ -10,7 +10,7 @@ const reject = function(response) {
 }
 
 module.exports = function(session, artist, limit) {
-    // console.log('API.loadArtistAlbums:');
+    console.log('loadArtistAlbums', ...arguments);
     // console.log(session);
     // console.log(artist);
     // console.log(limit);

@@ -122,16 +122,21 @@ const
 
 
 
-const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit) {
+const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit, numAlbums) {
 
     artistsLimit = artistsLimit || 1;
-    albumsLimit = albumsLimit ? albumsLimit : 1;
+    albumsLimit = albumsLimit || 1;
+    numAlbums = numAlbums || 32;
 
     return loadFavoriteAlbums(session).then(
 
         (albums) => (
             Promise.all(
-                albums.map((album) => loadSimilarAlbums(session, album, artistsLimit, albumsLimit))
+                albums
+                .slice(0, numAlbums)
+                .map(
+                    (album) => loadSimilarAlbums(session, album, artistsLimit, albumsLimit)
+                )
             )
         )
 
