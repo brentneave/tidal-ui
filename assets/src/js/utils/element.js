@@ -8,6 +8,10 @@ const element = function(o) {
 
     if (o.className) node.setAttribute('class', o.className);
 
+    if (o.classList) {
+        node.setAttribute('class', o.className + ' ' + o.classList.join(' '))
+    };
+
     if (o.attributes) {
         for (var s in o.attributes) {
             node.setAttribute(s, o.attributes[s]);

@@ -1,6 +1,7 @@
 const
     api = require('../api/api'),
     nav = require('../components/nav'),
+    page = require('../components/page'),
     loginCheck = require('../components/loginCheck');
 
 
@@ -31,18 +32,25 @@ const component = function({ state, props, actions }) {
             }
         ]
 
-    }
+    };
 
 
 
-    return loginCheck({
+    const login = loginCheck({
         state,
-        props: {
-            content: content
-        },
+        props: { content },
         actions
     });
 
+
+
+    return page({
+        state,
+        props: {
+            content: login
+        },
+        actions
+    })
 
 
 }

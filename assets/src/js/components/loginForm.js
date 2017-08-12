@@ -1,3 +1,10 @@
+const
+    inputMinimal = require('./inputMinimal'),
+    buttonMinimal = require('./buttonMinimal');
+
+
+
+
 const loginForm = function({ state, props, actions }) {
 
 
@@ -34,42 +41,66 @@ const loginForm = function({ state, props, actions }) {
     return {
 
         tagName: 'form',
-        className: 'js-login-form',
+        className: 'js-login-form pv5 ph4 ph5-ns tc center mw6',
         attributes: { action: state.path.str, },
         on: { submit: _submit },
         childNodes: [{
-
-                tagName: 'p',
-                className: state.errors ? 'is-error' : '',
-                textContent: state.errors ? state.errors : 'Log in to Tidal'
-
-            }, {
-
-                tagName: 'input',
+                tagName: 'img',
+                className: 'mb3',
                 attributes: {
-                    type: 'email',
-                    name: 'username',
-                    placeholder: 'Email'
+                    src: '/assets/dist/svg/tidal-mark.svg',
+                    width: 66,
+                    height: 44
                 }
-
+            },
+            state.errors ? {
+                tagName: 'div',
+                className: 'mt4',
+                childNodes: state.errors.map(
+                    (error) => ({
+                        tagName: 'p',
+                        textContent: error
+                    })
+                )
+            } : null, {
+                tagName: 'div',
+                className: 'mt4',
+                childNodes: inputMinimal({
+                    props: {
+                        attributes: {
+                            type: 'email',
+                            name: 'username',
+                            placeholder: 'Email'
+                        }
+                    }
+                }),
             }, {
-
-                tagName: 'input',
-                attributes: {
-                    type: 'password',
-                    name: 'password',
-                    placeholder: 'Password'
-                }
-
+                tagName: 'div',
+                className: 'mt4',
+                childNodes: inputMinimal({
+                    props: {
+                        attributes: {
+                            type: 'password',
+                            name: 'password',
+                            placeholder: 'Password'
+                        }
+                    }
+                })
             }, {
-
-                tagName: 'button',
-                textContent: 'Log in',
-                attributes: {
-                    type: 'submit'
-                }
-
-            }
+                tagName: 'div',
+                className: 'mt4',
+                childNodes: buttonMinimal({
+                    props: {
+                        label: 'Log In',
+                        attributes: {
+                            type: 'submit'
+                        }
+                    },
+                    classList: [
+                        'mt3'
+                    ]
+                })
+            },
 
         ]
 
