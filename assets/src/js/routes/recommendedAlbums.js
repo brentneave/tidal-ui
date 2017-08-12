@@ -14,49 +14,22 @@ const load = ({ state, subpath }) => ({
 
 
 
-const component = function({ state, props, actions }) {
+const component = ({ state, props, actions }) => (
 
-    const content = {
-
-        tagName: 'div',
-        childNodes: [
-
-            pageHeader({
-                props: {
-                    title: 'Recommended Albums'
-                },
-                actions
-            }),
-
-            state.route.data ? albumList({
+    page({
+        state,
+        props: {
+            title: 'Recommended Albums',
+            content: state.route.data ? albumList({
                 state: state,
                 props: state.route.data,
                 actions: actions
             }) : null
-
-        ]
-
-    }
-
-
-
-    const login = loginCheck({
-        state,
-        props: { content },
-        actions
-    });
-
-
-
-    return page({
-        state,
-        props: {
-            content: login
         },
         actions
     })
 
-}
+)
 
 
 

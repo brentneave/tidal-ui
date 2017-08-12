@@ -5,48 +5,34 @@
 
 
 
-const _src = function({ picture, width, height }) {
+const _src = function({ picture, width }) {
 
     if (!picture) return '';
 
-    const size = _constrain({ width, height });
-
     return 'http://resources.tidal.com/images/' +
         picture.split('-').join('/') + '/' +
-        size.width + 'x' +
-        size.height + '.jpg';
+        '640x428.jpg';
 }
 
 
 
-const _constrain = function({ width, height }) {
 
-    const
-        max = 640,
-        ratio = (428 / 640);
+const artistImage = function({ props, actions }) {
 
-    width = Math.round(Math.min(max, width || max));
-    height = Math.round(width * ratio);
-
-    return { width, height }
-
-}
-
-
-
-const artistImage = function({ state, props, actions }) {
-
-    var { artist, width, height } = props;
+    var { artist, width } = props;
 
     return {
-        tagName: 'img',
-        attributes: {
-            src: _src({
-                picture: artist.picture,
-                width: width,
-                height: height
-            }),
-            alt: artist.name
+        tagName: 'div',
+        className: 'aspect-ratio aspect-ratio--8x5 overflow-hidden bg-dark-gray',
+        childNodes: {
+            tagName: 'img',
+            className: 'db absolute w-100 h-auto',
+            attributes: {
+                src: _src({
+                    picture: artist.picture
+                }),
+                alt: ''
+            }
         }
     }
 }

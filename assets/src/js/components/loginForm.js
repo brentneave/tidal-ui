@@ -95,10 +95,7 @@ const loginForm = function({ state, props, actions }) {
                         attributes: {
                             type: 'submit'
                         }
-                    },
-                    classList: [
-                        'mt3'
-                    ]
+                    }
                 })
             },
 

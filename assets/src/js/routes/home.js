@@ -6,18 +6,15 @@ const
 
 
 
-const component = function({ state, props, actions }) {
+const component = ({ state, props, actions }) => (
 
-    const content = {
-
-        tagName: 'div',
-        textContent: 'Homepage',
-        childNodes: [
-
-            {
+    page({
+        state,
+        props: {
+            title: 'HI',
+            content: {
                 tagName: 'p',
                 childNodes: {
-
                     tagName: 'button',
                     textContent: 'Log Out',
                     on: {
@@ -25,30 +22,11 @@ const component = function({ state, props, actions }) {
                     }
                 }
             }
-        ]
-
-    };
-
-
-
-    const login = loginCheck({
-        state,
-        props: { content },
-        actions
-    });
-
-
-
-    return page({
-        state,
-        props: {
-            content: login
         },
         actions
     })
 
-
-}
+)
 
 
 

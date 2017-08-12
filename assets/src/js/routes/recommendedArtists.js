@@ -3,7 +3,9 @@ const
     nav = require('../components/nav'),
     loading = require('../components/loading'),
     artistList = require('../components/artistList'),
-    loginCheck = require('../components/loginCheck');
+    loginCheck = require('../components/loginCheck'),
+    pageHeader = require('../components/pageHeader'),
+    page = require('../components/page');
 
 
 
@@ -12,41 +14,23 @@ const load = ({ state, subpath }) => ({
 })
 
 
-const component = function({ state, props, actions }) {
 
-    const content = {
+const component = ({ state, props, actions }) => (
 
-        tagName: 'div',
-        childNodes: [
-
-            nav({
-                state: state,
-                actions: actions
-            }),
-
-            {
-                tagName: 'h1',
-                textContent: 'Recommended Artists'
-            },
-
-            artistList({
+    page({
+        state,
+        props: {
+            title: 'Recommended Artists',
+            content: artistList({
                 state: state,
                 props: state.route.data,
                 actions: actions
             })
-
-        ]
-    }
-
-    return loginCheck({
-        state,
-        props: {
-            content: content
         },
         actions
-    });
+    })
 
-}
+)
 
 
 

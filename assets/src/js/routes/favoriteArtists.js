@@ -1,9 +1,8 @@
 const
     api = require('../api/api'),
-    nav = require('../components/nav'),
     loading = require('../components/loading'),
     artistList = require('../components/artistList'),
-    loginCheck = require('../components/loginCheck');
+    page = require('../components/page');
 
 
 
@@ -14,49 +13,25 @@ const load = ({ state, subpath }) => ({
 });
 
 
-const component = function({ state, props, actions }) {
 
+const component = ({ state, props, actions }) => (
 
-    const content = {
-
-        tagName: 'div',
-        childNodes: [
-
-            nav({
-                state: state,
-                actions: actions
-            }),
-
-            {
-                tagName: 'h1',
-                textContent: 'Favorite Artists'
-            },
-
-            artistList({
+    page({
+        state,
+        props: {
+            title: 'Favorite Artists',
+            content: state.route.data ? artistList({
                 state: state,
                 props: {
                     artists: state.route.data.artists || []
                 },
                 actions: actions
-            })
-
-        ]
-    }
-
-
-
-    return loginCheck({
-        state,
-        props: {
-            content: content
+            }) : null
         },
         actions
-    });
+    })
 
-
-
-}
-
+)
 
 
 module.exports = { load, component };
