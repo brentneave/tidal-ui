@@ -13,7 +13,8 @@ const
     artistImage = require('./artistImage'),
     albumList = require('./albumList'),
     artistList = require('./artistList'),
-    pageHeader = require('./pageHeader');
+    pageHeader = require('./pageHeader'),
+    sectionHeader = require('./sectionHeader');
 
 
 
@@ -50,29 +51,17 @@ const artistProfile = function({ state, props, actions }) {
                     }
                 ]
             },
-            albums && albums.length ? {
-                tagName: 'div',
-                className: 'pt0 pb4 ph4 ph5-l',
-                childNodes: {
-                    tagName: 'h2',
-                    className: 'f3 antialiased legibility',
-                    textContent: 'Albums'
-                }
-            } : null,
+            albums && albums.length ? sectionHeader({
+                props: { title: 'Albums' }
+            }) : null,
             albums && albums.length ? albumList({
                 state: state,
                 props: { albums },
                 actions: actions
             }) : null,
-            similar && similar.length ? {
-                tagName: 'div',
-                className: 'pt5 pb4 ph4 ph5-l',
-                childNodes: {
-                    tagName: 'h2',
-                    className: 'f3 antialiased legibility',
-                    textContent: 'Similar Artists'
-                }
-            } : null,
+            similar && similar.length ? sectionHeader({
+                props: { title: 'Similar Artists' }
+            }) : null,
             similar && similar.length ? artistList({
                 state: state,
                 props: { artists: similar },

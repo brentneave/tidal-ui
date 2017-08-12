@@ -1,7 +1,8 @@
 const
     albumImage = require('./albumImage'),
     trackList = require('./trackList'),
-    albumList = require('./albumList');
+    albumList = require('./albumList'),
+    sectionHeader = require('./sectionHeader');
 
 
 
@@ -31,7 +32,7 @@ const albumDetails = function({ props, actions }) {
                     childNodes: [{
                             /* album title */
                             tagName: 'h1',
-                            className: 'f2 f1-m lh-title antialiased legibility',
+                            className: 'f3 f2-ns lh-title antialiased legibility',
                             childNodes: [{
                                 tagName: 'span',
                                 className: 'db',
@@ -52,15 +53,9 @@ const albumDetails = function({ props, actions }) {
                     ]
                 }]
             },
-            similar && similar.length ? {
-                tagName: 'div',
-                className: 'pt5 pb4 ph4 ph5-l',
-                childNodes: {
-                    tagName: 'h2',
-                    className: 'f3 antialiased legibility',
-                    textContent: 'Similar Albums'
-                }
-            } : null,
+            similar && similar.length ? sectionHeader({
+                props: { title: 'Similar Albums' }
+            }) : null,
             similar && similar.length ? albumList({
                 props: { albums: similar },
                 actions
