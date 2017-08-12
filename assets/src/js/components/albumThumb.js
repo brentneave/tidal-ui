@@ -42,30 +42,43 @@ const albumImage = require('./albumImage');
 
 
 
-const albumThumb = function({ state, props, actions }) {
+const albumThumb = function({ props, actions }) {
 
     const { album } = props;
 
     return {
         tagName: 'a',
-        className: 'c-thumbnail',
+        className: 'db no-underline',
         attributes: { href: '/album/' + album.id },
         on: { click: actions.link },
         childNodes: [
-            albumImage({
-                state: state,
-                props: {
-                    album,
-                    width: 640
-                }
-            }), {
-                tagName: 'p',
-                textContent: album.title
+
+            {
+                tagName: 'div',
+                className: 'grow',
+                childNodes: albumImage({
+                    props: {
+                        album,
+                        width: 640
+                    }
+                })
             },
-            album.artists ? {
+
+            {
                 tagName: 'p',
-                textContent: album.artists.map((artist) => artist.name).join(', ')
-            } : null
+                className: 'ma0 pt3 pb4 f6 bg-near-black',
+                childNodes: [{
+                        tagName: 'span',
+                        className: 'db white',
+                        textContent: album.title
+                    },
+                    album.artists ? {
+                        tagName: 'span',
+                        className: 'db light-silver',
+                        textContent: album.artists.map((artist) => artist.name).join(', ')
+                    } : null
+                ]
+            }
         ]
     }
 };

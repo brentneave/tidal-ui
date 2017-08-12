@@ -1,36 +1,36 @@
-const artistThumb = function(state, { artist }, actions) {
+const artistImage = require('./artistImage');
 
-    const _getImgSrc = function(serial, w, h) {
-        if (!serial) return undefined;
-        if (!w) w = 640;
-        if (!h) h = 428;
-        //http://resources.tidal.com/images/14e5fcd9/25fc/4d61/9c3f/8f88770a8188/640x428.jpg
-        return 'http://resources.tidal.com/images/' + serial.split('-').join('/') + '/' + w + 'x' + h + '.jpg';
-    }
+
+
+const artistThumb = function({ props, actions }) {
+
+    const { artist } = props;
 
     return {
         tagName: 'a',
-        className: 'c-thumbnail',
+        className: 'db dim no-underline',
         attributes: {
             href: '/artist/' + artist.id
         },
         on: {
             click: actions.link
         },
-        childNodes: [{
-
-            tagName: 'img',
-            className: 'c-thumbnail__img',
-            attributes: artist.picture ? {
-                src: _getImgSrc(artist.picture)
-            } : null
-
-        }, {
-
-            tagName: 'p',
-            textContent: artist.name
-
-        }]
+        childNodes: [
+            artistImage({
+                props: {
+                    artist
+                }
+            }),
+            {
+                tagName: 'p',
+                className: 'ma0 pt3 pb4 f6 bg-near-black',
+                childNodes: [{
+                    tagName: 'span',
+                    className: 'db white',
+                    textContent: artist.name
+                }]
+            }
+        ]
     };
 
 };

@@ -12,7 +12,9 @@ details: {
 const
     artistImage = require('./artistImage'),
     albumList = require('./albumList'),
-    artistList = require('./artistList');
+    artistList = require('./artistList'),
+    pageHeader = require('./pageHeader'),
+    sectionHeader = require('./sectionHeader');
 
 
 
@@ -24,35 +26,61 @@ const artistProfile = function({ state, props, actions }) {
 
     return {
         tagName: 'div',
+        className: 'mw9 center',
         childNodes: [
-            details ? {
-                tagName: 'h1',
-                textContent: details.name
-            } : null,
-            details ? artistImage({
-                state: state,
-                props: { artist: details, width: 960 },
-                actions: actions
+
+            {
+                tagName: 'div',
+                className: 'flex flex-wrap flex-row pv4 pv5-l ph3 ph4-l',
+                childNodes: [
+
+                    {
+                        /* album image */
+                        tagName: 'div',
+                        className: 'w-100 w-50-l ph3 ph4-l',
+                        childNodes: artistImage({
+                            props: { artist: details },
+                            actions
+                        })
+                    },
+
+                    {
+                        tagName: 'div',
+                        className: 'w-100 w-50-l ph3 ph4-l',
+                        childNodes: {
+                            /* album title */
+                            tagName: 'h1',
+                            className: 'f2 f1-ns lh-title antialiased legibility',
+                            textContent: details && details.name ? details.name : '—'
+                        }
+                    }
+
+                ]
+
+            },
+
+            albums && albums.length ? sectionHeader({
+                props: { title: 'Albums' }
             }) : null,
-            albums ? {
-                tagName: 'h2',
-                textContent: 'Albums'
-            } : null,
-            albums ? albumList({
+
+            albums && albums.length ? albumList({
                 state: state,
                 props: { albums },
                 actions: actions
             }) : null,
-            similar ? {
-                tagName: 'h2',
-                textContent: 'Similar Artists'
-            } : null,
-            similar ? artistList({
+
+            similar && similar.length ? sectionHeader({
+                props: { title: 'Similar Artists' }
+            }) : null,
+
+            similar && similar.length ? artistList({
                 state: state,
                 props: { artists: similar },
                 actions: actions
             }) : null
+
         ]
+
     }
 
 }

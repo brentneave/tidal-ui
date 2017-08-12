@@ -5,9 +5,11 @@ const trackList = function({ state, props, actions }) {
     if (!props.tracks) return { tagName: 'div' }
 
     return {
-        tagName: 'div',
+        tagName: 'ol',
+        className: 'pl0 list',
         childNodes: props.tracks.map(track => ({
-            tagName: 'p',
+            tagName: 'li',
+            className: 'f5 pv2 bb b--dark-gray',
             textContent: track.item.title
         }))
     }

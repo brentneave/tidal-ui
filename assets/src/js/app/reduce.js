@@ -40,8 +40,9 @@ const _mutate = {
 
 
 
-    ERROR: function(state, { error }) {
-        // TODO
+    ERROR: function(state, { errors }) {
+        errors = errors instanceof Array ? errors : [errors];
+        state.errors = clone(errors);
         return state;
     },
 

@@ -13,11 +13,13 @@ const
 module.exports = {
 
     component: home.component,
+    load: home.load,
 
     routes: {
 
         'default': {
-            component: home.component
+            component: home.component,
+            load: home.load
         },
 
         'artist': {
@@ -72,7 +74,15 @@ module.exports = {
         },
 
         'recommended': {
+            component: recommended.component,
+            load: recommended.load,
+
             routes: {
+
+                'default': {
+                    component: recommended.component,
+                    load: recommended.load
+                },
 
                 'artists': {
                     component: recommendedArtists.component,

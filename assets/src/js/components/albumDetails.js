@@ -1,11 +1,12 @@
 const
     albumImage = require('./albumImage'),
     trackList = require('./trackList'),
-    albumList = require('./albumList');
+    albumList = require('./albumList'),
+    sectionHeader = require('./sectionHeader');
 
 
 
-const albumDetails = function({ state, props, actions }) {
+const albumDetails = function({ props, actions }) {
 
     console.log('albumDetails', ...arguments);
 
@@ -13,41 +14,110 @@ const albumDetails = function({ state, props, actions }) {
 
     return {
         tagName: 'div',
+        className: 'mw9 center',
         childNodes: [
-            details ? {
-                tagName: 'h1',
-                textContent: details.title
-            } : null,
-            details && details.artist ? {
-                tagName: 'p',
-                childNodes: {
-                    tagName: 'a',
-                    textContent: details.artist.name,
-                    attributes: { href: '/artist/' + details.artist.id },
-                    on: { click: actions.link }
-                }
-            } : null,
-            details ? albumImage({
-                state,
-                props: { album: details, width: 640 },
-                actions
+
+            {
+                tagName: 'div',
+                className: 'flex flex-wrap flex-row pv4 pv5-l ph3 ph4-l',
+                childNodes: [
+
+                    {
+                        /* album image */
+                        tagName: 'div',
+                        className: 'w-100 w-50-l ph3 ph4-l',
+                        childNodes: albumImage({
+                            props: { album: details, width: 1280 },
+                            actions
+                        })
+                    },
+
+                    {
+                        tagName: 'div',
+                        className: 'w-100 w-50-l pt3 pt0-l ph3 ph4-l',
+                        childNodes: [{
+                                /* album title */
+                                tagName: 'h1',
+                                className: 'f3 f2-ns lh-title antialiased legibility',
+                                childNodes: [{
+                                    tagName: 'span',
+                                    className: 'db',
+                                    textContent: details && details.title ? details.title : '_'
+                                }, details && details.artist ? {
+                                    tagName: 'a',
+                                    className: 'db gray no-underline dim',
+                                    textContent: details.artist.name,
+                                    attributes: { href: '/artist/' + details.artist.id },
+                                    on: { click: actions.link }
+                                } : null]
+                            },
+                            /* tracklist */
+                            tracks && tracks.length ? trackList({
+                                props: { tracks },
+                                actions
+                            }) : null,
+                        ]
+                    }
+
+                ]
+
+            },
+
+            similar && similar.length ? sectionHeader({
+                props: { title: 'Similar Albums' }
             }) : null,
-            tracks && tracks.length ? trackList({
-                state,
-                props: { tracks },
-                actions
-            }) : null,
-            similar && similar.length ? {
-                tagName: 'h2',
-                textContent: 'Similar Albums'
-            } : null,
+
             similar && similar.length ? albumList({
-                state,
                 props: { albums: similar },
                 actions
             }) : null
+
         ]
     }
+
+
+
+
+
+
+
+    // return {
+    //     tagName: 'div',
+    //     childNodes: [
+    //         details ? {
+    //             tagName: 'h1',
+    //             textContent: details.title
+    //         } : null,
+    //         details && details.artist ? {
+    //             tagName: 'p',
+    //             childNodes: {
+    //                 tagName: 'a',
+    //                 textContent: details.artist.name,
+    //                 attributes: { href: '/artist/' + details.artist.id },
+    //                 on: { click: actions.link }
+    //             }
+    //         } : null,
+    //         details ? albumImage({
+    //             state,
+    //             props: { album: details, width: 1280 },
+    //             actions
+    //         }) : null,
+    //         tracks && tracks.length ? trackList({
+    //             state,
+    //             props: { tracks },
+    //             actions
+    //         }) : null,
+    //         similar && similar.length ? {
+    //             tagName: 'h2',
+    //             textContent: 'Similar Albums'
+    //         } : null,
+    //         similar && similar.length ? albumList({
+    //             state,
+    //             props: { albums: similar },
+    //             actions
+    //         }) : null
+    //     ]
+    // }
 
 }
 

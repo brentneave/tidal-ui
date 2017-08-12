@@ -13,6 +13,8 @@ const load = function(state) {
 
     const route = router.get(state);
 
+    console.log('route.load: ', route.load);
+
     if (!route.load) return;
 
     const requests = route.load({

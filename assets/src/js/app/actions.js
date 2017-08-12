@@ -14,7 +14,7 @@ const actions = Object.freeze({
                     response.error ?
                     update({
                         action: 'ERROR',
-                        payload: { message: 'Please check your login details and try again.' }
+                        payload: { errors: 'Please check your login details and try again.' }
                     }) :
                     update({
                         action: 'LOGIN',

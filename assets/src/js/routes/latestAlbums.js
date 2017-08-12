@@ -1,9 +1,8 @@
 const
     api = require('../api/api'),
-    nav = require('../components/nav'),
     loading = require('../components/loading'),
     albumList = require('../components/albumList'),
-    loginCheck = require('../components/loginCheck');
+    page = require('../components/page');
 
 
 
@@ -12,40 +11,23 @@ const load = ({ state, subpath }) => ({
 });
 
 
-const component = function({ state, props, actions }) {
 
-    const content = {
+const component = ({ state, props, actions }) => (
 
-        tagName: 'div',
-        childNodes: [
-
-            nav({
-                state: state,
-                actions: actions
-            }),
-
-            {
-                tagName: 'h1',
-                textContent: 'Latest Albums'
-            },
-
-            state.route.data ? albumList({
+    page({
+        state,
+        props: {
+            title: 'Recent Releases',
+            content: state.route.data ? albumList({
                 state: state,
                 props: state.route.data,
                 actions: actions
             }) : null
-
-        ]
-
-    }
-
-    return loginCheck({
-        state,
-        props: { content },
+        },
         actions
-    });
+    })
 
-}
+)
 
 
 

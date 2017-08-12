@@ -1,9 +1,10 @@
 const
     api = require('../api/api'),
-    nav = require('../components/nav'),
+    page = require('../components/page'),
     loading = require('../components/loading'),
     albumList = require('../components/albumList'),
-    loginCheck = require('../components/loginCheck');
+    loginCheck = require('../components/loginCheck'),
+    pageHeader = require('../components/pageHeader');
 
 
 
@@ -15,40 +16,22 @@ const load = ({ state, subpath }) => ({
 
 
 
-const component = function({ state, props, actions }) {
+const component = ({ state, props, actions }) => (
 
-    const content = {
-
-        tagName: 'div',
-        childNodes: [
-
-            nav({
-                state: state,
-                actions: actions
-            }),
-
-            {
-                tagName: 'h1',
-                textContent: 'Favorite Albums'
-            },
-
-            state.route.data.albums ? albumList({
+    page({
+        state,
+        props: {
+            title: 'Favorite Albums',
+            content: state.route.data.albums ? albumList({
                 state: state,
                 props: { albums: state.route.data.albums },
                 actions: actions
             }) : null
-
-        ]
-
-    }
-
-    return loginCheck({
-        state,
-        props: { content },
+        },
         actions
-    });
+    })
 
-}
+)
 
 
 

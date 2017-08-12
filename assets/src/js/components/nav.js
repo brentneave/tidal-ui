@@ -1,39 +1,51 @@
-const nav = function({ state, actions }) {
+const nav = ({ props, actions }) => ({
 
+    tagName: 'div',
+    className: 'fixed top-0 left-0 right-0 bg-near-black',
+    childNodes: [
 
+        {
+            tagName: 'div',
+            className: 'pv3 ph4 ph5-l mw9 center tl f7 f6-ns white flex justify-start items-center',
+            childNodes: [
 
-    const { link } = actions;
+                {
+                    tagName: 'a',
+                    className: 'db white no-underline',
+                    attributes: { href: '/' },
+                    on: { click: actions.link },
+                    childNodes: {
+                        tagName: 'img',
+                        className: 'db',
+                        attributes: {
+                            src: '/assets/dist/svg/tidal-mark.svg',
+                            width: 36,
+                            height: 24
+                        }
+                    }
+                },
 
+                ...[
+                    { title: 'Albums', href: '/favorites/albums' },
+                    { title: 'Artists', href: '/favorites/artists' },
+                    { title: 'Recommended', href: '/recommended' }
+                ].map(
+                    (item) => ({
+                        tagName: 'a',
+                        className: 'db ml4 near-white no-underline',
+                        textContent: item.title,
+                        attributes: { href: item.href },
+                        on: { click: actions.link }
+                    })
+                )
 
+            ]
 
-    const _item = function(text, href) {
-
-        return {
-            tagName: 'a',
-            textContent: text + ' ',
-            attributes: { href },
-            on: { click: link }
         }
 
-    }
+    ]
 
-
-
-    return {
-        tagName: 'div',
-        childNodes: [
-            _item('Home', '/'),
-            _item('Favorite Artists', '/favorites/artists'),
-            _item('Favorite Albums', '/favorites/albums'),
-            _item('Recommended Artists', '/recommended/artists'),
-            _item('Recommended Albums', '/recommended/albums'),
-            _item('Latest Albums', '/latest/albums')
-        ]
-    }
-
-
-
-}
+})
 
 
 

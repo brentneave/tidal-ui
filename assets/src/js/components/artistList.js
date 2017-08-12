@@ -2,29 +2,22 @@ const artistThumb = require('./artistThumb');
 
 
 
-const artistList = function({ state, props, actions }) {
-
-    console.log('artistList', props);
-
-    const makeThumb = function(artist) {
-        return {
-            tagName: 'div',
-            className: 'l-thumbnail-grid__item',
-            childNodes: artistThumb(state, { artist }, actions)
-        }
-    };
-
-    const
-        artists = props.artists || [],
-        thumbs = artists.map(makeThumb);
-
-    return {
+const artistList = ({ props, actions }) => (
+    props.artists ? {
         tagName: 'div',
-        className: 'l-thumbnail-grid',
-        childNodes: thumbs
-    };
-
-};
+        className: 'flex flex-wrap flex-row ph3 ph4-l mw9 center',
+        childNodes: props.artists.map(
+            (artist) => ({
+                tagName: 'div',
+                className: 'w-50 w-25-l ph3 ph4-l',
+                childNodes: artistThumb({
+                    props: { artist },
+                    actions
+                })
+            })
+        )
+    } : null
+)
 
 
 
