@@ -13,11 +13,13 @@ const
 module.exports = {
 
     component: home.component,
+    load: home.load,
 
     routes: {
 
         'default': {
-            component: home.component
+            component: home.component,
+            load: home.load
         },
 
         'artist': {
