@@ -8,7 +8,7 @@ const artistThumb = function({ props, actions }) {
 
     return {
         tagName: 'a',
-        className: 'db',
+        className: 'db dim no-underline',
         attributes: {
             href: '/artist/' + artist.id
         },

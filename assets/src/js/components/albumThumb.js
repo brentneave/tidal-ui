@@ -48,7 +48,7 @@ const albumThumb = function({ props, actions }) {
 
     return {
         tagName: 'a',
-        className: 'db  no-underline',
+        className: 'db no-underline',
         attributes: { href: '/album/' + album.id },
         on: { click: actions.link },
         childNodes: [

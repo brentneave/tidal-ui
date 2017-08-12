@@ -12,7 +12,8 @@ details: {
 const
     artistImage = require('./artistImage'),
     albumList = require('./albumList'),
-    artistList = require('./artistList');
+    artistList = require('./artistList'),
+    pageHeader = require('./pageHeader');
 
 
 
@@ -24,30 +25,38 @@ const artistProfile = function({ state, props, actions }) {
 
     return {
         tagName: 'div',
+        className: 'mw9 center',
         childNodes: [
-            details ? {
-                tagName: 'h1',
-                textContent: details.name
+            pageHeader({
+                props: {
+                    title: details && details.name ? details.name : '—'
+                },
+                actions
+            }),
+            albums && albums.length ? {
+                tagName: 'div',
+                className: 'pt0 pb4 ph4 ph5-l',
+                childNodes: {
+                    tagName: 'h2',
+                    className: 'f3 antialiased legibility',
+                    textContent: 'Albums'
+                }
             } : null,
-            details ? artistImage({
-                state: state,
-                props: { artist: details, width: 960 },
-                actions: actions
-            }) : null,
-            albums ? {
-                tagName: 'h2',
-                textContent: 'Albums'
-            } : null,
-            albums ? albumList({
+            albums && albums.length ? albumList({
                 state: state,
                 props: { albums },
                 actions: actions
             }) : null,
-            similar ? {
-                tagName: 'h2',
-                textContent: 'Similar Artists'
+            similar && similar.length ? {
+                tagName: 'div',
+                className: 'pt5 pb4 ph4 ph5-l',
+                childNodes: {
+                    tagName: 'h2',
+                    className: 'f3 antialiased legibility',
+                    textContent: 'Similar Artists'
+                }
             } : null,
-            similar ? artistList({
+            similar && similar.length ? artistList({
                 state: state,
                 props: { artists: similar },
                 actions: actions

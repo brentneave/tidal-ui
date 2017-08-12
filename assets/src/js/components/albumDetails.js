@@ -36,7 +36,7 @@ const albumDetails = function({ props, actions }) {
                                 tagName: 'span',
                                 className: 'db',
                                 textContent: details && details.title ? details.title : '_'
-                            }, details ? {
+                            }, details && details.artist ? {
                                 tagName: 'a',
                                 className: 'db gray no-underline dim',
                                 textContent: details.artist.name,
