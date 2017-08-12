@@ -5,8 +5,7 @@ const apiRequest = require('../apiRequest'),
 
 
 const reducePromiseResolutions = function(arrays) {
-    // console.log('reduce:');
-    // console.log(arrays);
+    console.log('reduce multipleArtistAlbums:', arrays);
 
     arrays = arrays || [];
 
@@ -33,17 +32,14 @@ const reducePromiseResolutions = function(arrays) {
 
 
 const reject = function(response) {
-    console.error('loadMultipleArtistAlbums.reject', response);
-    return Error(response);
+    // fail silently if there are no similar albums
+    return []
 }
 
 
 
 module.exports = function(session, artists, limit) {
     console.log('loadMultipleArtistAlbums', ...arguments);
-    // console.log(session);
-    // console.log(artists);
-    // console.log(limit);
 
     limit = limit ? limit : 1;
     artists = artists || [];
