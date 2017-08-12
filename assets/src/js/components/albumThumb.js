@@ -42,18 +42,17 @@ const albumImage = require('./albumImage');
 
 
 
-const albumThumb = function({ state, props, actions }) {
+const albumThumb = function({ props, actions }) {
 
     const { album } = props;
 
     return {
         tagName: 'a',
-        className: 'db',
+        className: 'db  no-underline',
         attributes: { href: '/album/' + album.id },
         on: { click: actions.link },
         childNodes: [
             albumImage({
-                state: state,
                 props: {
                     album,
                     width: 640

@@ -2,7 +2,7 @@ const albumThumb = require('./albumThumb');
 
 
 
-const albumList = function({ state, props, actions }) {
+const albumList = function({ props, actions }) {
 
     console.log('albumList', ...arguments);
 
@@ -10,13 +10,12 @@ const albumList = function({ state, props, actions }) {
 
     return albums && albums.length ? {
         tagName: 'div',
-        className: 'flex flex-wrap flex-row ph3 ph4-l',
+        className: 'flex flex-wrap flex-row ph3 ph4-l mw9',
         childNodes: albums.map(
             (album) => ({
                 tagName: 'div',
                 className: 'w-50 w-third-ns w-25-l ph3 ph4-l',
                 childNodes: albumThumb({
-                    state: state,
                     props: { album },
                     actions
                 })

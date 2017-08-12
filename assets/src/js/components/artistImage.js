@@ -23,7 +23,7 @@ const artistImage = function({ props, actions }) {
 
     return {
         tagName: 'div',
-        className: 'aspect-ratio aspect-ratio--8x5 overflow-hidden bg-dark-gray',
+        className: 'aspect-ratio aspect-ratio--8x5 overflow-hidden bg-dark-gray br1',
         childNodes: {
             tagName: 'img',
             className: 'db absolute w-100 h-auto',
