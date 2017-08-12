@@ -48,7 +48,7 @@ const albumThumb = function({ state, props, actions }) {
 
     return {
         tagName: 'a',
-        className: 'c-thumbnail',
+        className: 'db',
         attributes: { href: '/album/' + album.id },
         on: { click: actions.link },
         childNodes: [
@@ -58,14 +58,22 @@ const albumThumb = function({ state, props, actions }) {
                     album,
                     width: 640
                 }
-            }), {
+            }),
+            {
                 tagName: 'p',
-                textContent: album.title
-            },
-            album.artists ? {
-                tagName: 'p',
-                textContent: album.artists.map((artist) => artist.name).join(', ')
-            } : null
+                className: 'ma0 pt3 pb4 f6 bg-near-black',
+                childNodes: [{
+                        tagName: 'span',
+                        className: 'db white',
+                        textContent: album.title
+                    },
+                    album.artists ? {
+                        tagName: 'span',
+                        className: 'db light-silver',
+                        textContent: album.artists.map((artist) => artist.name).join(', ')
+                    } : null
+                ]
+            }
         ]
     }
 };

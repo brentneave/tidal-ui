@@ -1,39 +1,25 @@
-const nav = function({ state, actions }) {
+const nav = ({ props, actions }) => ({
 
-
-
-    const { link } = actions;
-
-
-
-    const _item = function(text, href) {
-
-        return {
+    tagName: 'div',
+    className: 'fixed bottom-0 left-0 right-0 bg-near-black near-white f7 fw6 tc pa3',
+    childNodes: [
+        { title: 'Home', href: '/' },
+        { title: 'Favorite Artists', href: '/favorites/artists' },
+        { title: 'Favorite Albums', href: '/favorites/albums' },
+        { title: 'Recommended Artists', href: '/recommended/artists' },
+        { title: 'Recommended Albums', href: '/recommended/albums' },
+        { title: 'Latest Albums', href: '/latest/albums' }
+    ].map(
+        (item) => ({
             tagName: 'a',
-            textContent: text + ' ',
-            attributes: { href },
-            on: { click: link }
-        }
+            className: 'dib mr3',
+            textContent: item.title,
+            attributes: { href: item.href },
+            on: { click: actions.link }
+        })
+    )
 
-    }
-
-
-
-    return {
-        tagName: 'div',
-        childNodes: [
-            _item('Home', '/'),
-            _item('Favorite Artists', '/favorites/artists'),
-            _item('Favorite Albums', '/favorites/albums'),
-            _item('Recommended Artists', '/recommended/artists'),
-            _item('Recommended Albums', '/recommended/albums'),
-            _item('Latest Albums', '/latest/albums')
-        ]
-    }
-
-
-
-}
+})
 
 
 

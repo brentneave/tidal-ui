@@ -1,9 +1,10 @@
 const
     api = require('../api/api'),
-    nav = require('../components/nav'),
+    page = require('../components/page'),
     loading = require('../components/loading'),
     albumList = require('../components/albumList'),
-    loginCheck = require('../components/loginCheck');
+    loginCheck = require('../components/loginCheck'),
+    pageHeader = require('../components/pageHeader');
 
 
 
@@ -22,15 +23,12 @@ const component = function({ state, props, actions }) {
         tagName: 'div',
         childNodes: [
 
-            nav({
-                state: state,
-                actions: actions
+            pageHeader({
+                props: {
+                    title: 'Favorite Albums'
+                },
+                actions
             }),
-
-            {
-                tagName: 'h1',
-                textContent: 'Favorite Albums'
-            },
 
             state.route.data.albums ? albumList({
                 state: state,
@@ -42,11 +40,23 @@ const component = function({ state, props, actions }) {
 
     }
 
-    return loginCheck({
+
+
+    const login = loginCheck({
         state,
         props: { content },
         actions
     });
+
+
+
+    return page({
+        state,
+        props: {
+            content: login
+        },
+        actions
+    })
 
 }
 

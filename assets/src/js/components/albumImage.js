@@ -32,13 +32,18 @@ const albumImage = function({ state, props, actions }) {
     const { album, width } = props;
 
     return {
-        tagName: 'img',
-        attributes: {
-            src: _src({
-                cover: album.cover,
-                width: width
-            }),
-            alt: album.title
+        tagName: 'div',
+        className: 'aspect-ratio aspect-ratio--1x1 overflow-hidden',
+        childNodes: {
+            tagName: 'img',
+            className: 'db absolute w-100 h-auto',
+            attributes: {
+                src: _src({
+                    cover: album.cover,
+                    width: width
+                }),
+                alt: album.title
+            }
         }
     }
 }

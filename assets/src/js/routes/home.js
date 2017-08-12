@@ -14,11 +14,6 @@ const component = function({ state, props, actions }) {
         textContent: 'Homepage',
         childNodes: [
 
-            nav({
-                state: state,
-                actions: actions
-            }),
-
             {
                 tagName: 'p',
                 childNodes: {
