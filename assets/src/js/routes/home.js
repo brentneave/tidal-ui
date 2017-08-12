@@ -3,7 +3,8 @@ const
     page = require('../components/page'),
     albumList = require('../components/albumList'),
     artistList = require('../components/artistList'),
-    sectionHeader = require('../components/sectionHeader');
+    sectionHeader = require('../components/sectionHeader'),
+    buttonMinimal = require('../components/buttonMinimal');
 
 
 
@@ -12,6 +13,7 @@ const load = ({ state, subpath }) => ({
     favoriteAlbums: api.loadFavoriteAlbums(state.session),
     recommendedArtists: api.loadRecommendedArtists(state.session, 1, 8),
     favoriteArtists: api.loadFavoriteArtists(state.session),
+    latestAlbums: api.loadLatestAlbums(state.session)
 });
 
 
@@ -89,6 +91,28 @@ const component = ({ state, props, actions }) => (
                         props: { artists: state.route.data.favoriteArtists.slice(0, 4) },
                         actions: actions
                     }) : null,
+
+                    state.route.data.latestAlbums ? sectionHeader({
+                        props: {
+                            title: 'Recent Releases',
+                            linkText: 'See All',
+                            link: '/latest/albums'
+                        },
+                        actions
+                    }) : null,
+
+                    state.route.data.latestAlbums ? albumList({
+                        state: state,
+                        props: { albums: state.route.data.latestAlbums.slice(0, 4) },
+                        actions: actions
+                    }) : null,
+
+                    buttonMinimal({
+                        props: {
+                            label: 'Log Out',
+                            on: { click: actions.logout }
+                        }
+                    }),
 
                     {
                         tagName: 'button',

@@ -4,11 +4,9 @@ const nav = ({ props, actions }) => ({
     className: 'fixed bottom-0 left-0 right-0 bg-near-black near-white f6 tc pa3 shadow-1',
     childNodes: [
         { title: 'Home', href: '/' },
-        { title: 'Favorite Artists', href: '/favorites/artists' },
-        { title: 'Favorite Albums', href: '/favorites/albums' },
-        { title: 'Recommended Artists', href: '/recommended/artists' },
-        { title: 'Recommended Albums', href: '/recommended/albums' },
-        { title: 'Latest Albums', href: '/latest/albums' }
+        { title: 'Albums', href: '/favorites/albums' },
+        { title: 'Artists', href: '/favorites/artists' },
+        { title: 'Recommended', href: '/recommended' }
     ].map(
         (item) => ({
             tagName: 'a',

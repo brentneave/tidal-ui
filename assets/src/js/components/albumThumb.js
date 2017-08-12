@@ -52,12 +52,18 @@ const albumThumb = function({ props, actions }) {
         attributes: { href: '/album/' + album.id },
         on: { click: actions.link },
         childNodes: [
-            albumImage({
-                props: {
-                    album,
-                    width: 640
-                }
-            }),
+
+            {
+                tagName: 'div',
+                className: 'grow',
+                childNodes: albumImage({
+                    props: {
+                        album,
+                        width: 640
+                    }
+                })
+            },
+
             {
                 tagName: 'p',
                 className: 'ma0 pt3 pb4 f6 bg-near-black',

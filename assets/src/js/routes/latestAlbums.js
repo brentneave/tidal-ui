@@ -17,7 +17,7 @@ const component = ({ state, props, actions }) => (
     page({
         state,
         props: {
-            title: 'New Albums',
+            title: 'Recent Releases',
             content: state.route.data ? albumList({
                 state: state,
                 props: state.route.data,

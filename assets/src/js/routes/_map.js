@@ -74,7 +74,15 @@ module.exports = {
         },
 
         'recommended': {
+            component: recommended.component,
+            load: recommended.load,
+
             routes: {
+
+                'default': {
+                    component: recommended.component,
+                    load: recommended.load
+                },
 
                 'artists': {
                     component: recommendedArtists.component,
