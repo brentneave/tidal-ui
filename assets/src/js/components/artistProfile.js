@@ -26,13 +26,30 @@ const artistProfile = function({ state, props, actions }) {
     return {
         tagName: 'div',
         className: 'mw9 center',
-        childNodes: [
-            pageHeader({
-                props: {
-                    title: details && details.name ? details.name : '—'
-                },
-                actions
-            }),
+        childNodes: [{
+                tagName: 'div',
+                className: 'flex flex-wrap flex-row pv4 pv5-l ph3 ph4-l',
+                childNodes: [{
+                        /* album image */
+                        tagName: 'div',
+                        className: 'w-100 w-50-l ph3 ph4-l',
+                        childNodes: artistImage({
+                            props: { artist: details },
+                            actions
+                        })
+                    },
+                    {
+                        tagName: 'div',
+                        className: 'w-100 w-50-l ph3 ph4-l',
+                        childNodes: {
+                            /* album title */
+                            tagName: 'h1',
+                            className: 'f2 f1-m lh-title antialiased legibility',
+                            textContent: details && details.name ? details.name : '—'
+                        }
+                    }
+                ]
+            },
             albums && albums.length ? {
                 tagName: 'div',
                 className: 'pt0 pb4 ph4 ph5-l',

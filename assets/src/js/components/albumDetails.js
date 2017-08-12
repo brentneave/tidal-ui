@@ -51,7 +51,8 @@ const albumDetails = function({ props, actions }) {
                         }) : null,
                     ]
                 }]
-            }, similar && similar.length ? {
+            },
+            similar && similar.length ? {
                 tagName: 'div',
                 className: 'pt5 pb4 ph4 ph5-l',
                 childNodes: {
