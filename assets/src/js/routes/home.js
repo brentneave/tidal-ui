@@ -107,19 +107,15 @@ const component = ({ state, props, actions }) => (
                         actions: actions
                     }) : null,
 
-                    buttonMinimal({
-                        props: {
-                            label: 'Log Out',
-                            on: { click: actions.logout }
-                        }
-                    }),
-
                     {
-                        tagName: 'button',
-                        textContent: 'Log Out',
-                        on: {
-                            click: actions.logout
-                        }
+                        tagName: 'div',
+                        className: 'mw9 center tc pv5',
+                        childNodes: buttonMinimal({
+                            props: {
+                                label: 'Log Out',
+                                on: { click: actions.logout }
+                            }
+                        })
                     }
 
                 ]
