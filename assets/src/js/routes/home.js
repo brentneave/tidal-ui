@@ -9,7 +9,9 @@ const
 
 const load = ({ state, subpath }) => ({
     recommendedAlbums: api.loadRecommendedAlbums(state.session, 2, 1, 2),
-    recommendedArtists: api.loadRecommendedArtists(state.session, 1, 8)
+    favoriteAlbums: api.loadFavoriteAlbums(state.session),
+    recommendedArtists: api.loadRecommendedArtists(state.session, 1, 8),
+    favoriteArtists: api.loadFavoriteArtists(state.session),
 });
 
 
@@ -31,7 +33,7 @@ const component = ({ state, props, actions }) => (
                     state.route.data.recommendedAlbums ? sectionHeader({
                         props: {
                             title: 'Recommended Albums',
-                            linkText: 'See More',
+                            linkText: 'See All',
                             link: '/recommended/albums'
                         },
                         actions
@@ -43,10 +45,25 @@ const component = ({ state, props, actions }) => (
                         actions: actions
                     }) : null,
 
+                    state.route.data.favoriteAlbums ? sectionHeader({
+                        props: {
+                            title: 'Favorite Albums',
+                            linkText: 'See All',
+                            link: '/favorites/albums'
+                        },
+                        actions
+                    }) : null,
+
+                    state.route.data.favoriteAlbums ? albumList({
+                        state: state,
+                        props: { albums: state.route.data.favoriteAlbums.slice(0, 4) },
+                        actions: actions
+                    }) : null,
+
                     state.route.data.recommendedArtists ? sectionHeader({
                         props: {
                             title: 'Recommended Artists',
-                            linkText: 'See More',
+                            linkText: 'See All',
                             link: '/recommended/artists'
                         },
                         actions
@@ -55,6 +72,21 @@ const component = ({ state, props, actions }) => (
                     state.route.data.recommendedArtists ? artistList({
                         state: state,
                         props: { artists: state.route.data.recommendedArtists.slice(0, 4) },
+                        actions: actions
+                    }) : null,
+
+                    state.route.data.favoriteArtists ? sectionHeader({
+                        props: {
+                            title: 'Favorite Artists',
+                            linkText: 'See All',
+                            link: '/favorites/artists'
+                        },
+                        actions
+                    }) : null,
+
+                    state.route.data.favoriteArtists ? artistList({
+                        state: state,
+                        props: { artists: state.route.data.favoriteArtists.slice(0, 4) },
                         actions: actions
                     }) : null,
 

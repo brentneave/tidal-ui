@@ -6,13 +6,13 @@ const sectionHeader = ({ props, actions }) => ({
 
         {
             tagName: 'h2',
-            className: 'f3 antialiased legibility',
+            className: 'f4 f3-ns antialiased legibility',
             textContent: props.title || ''
         },
 
         props.linkText && props.link ? {
             tagName: 'a',
-            className: 'db f6 no-underline near-white',
+            className: 'db f6 f5-ns no-underline light-silver',
             textContent: props.linkText,
             attributes: { href: props.link },
             on: { click: actions.link }
