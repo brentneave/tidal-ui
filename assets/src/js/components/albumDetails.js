@@ -40,7 +40,8 @@ const albumDetails = function({ props, actions }) {
                                 tagName: 'a',
                                 className: 'db gray no-underline dim',
                                 textContent: details.artist.name,
-                                attributes: { href: '/artist/' + details.artist.id }
+                                attributes: { href: '/artist/' + details.artist.id },
+                                on: { click: actions.link }
                             } : null]
                         },
                         /* tracklist */
