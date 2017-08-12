@@ -6,7 +6,7 @@ const trackList = function({ state, props, actions }) {
 
     return {
         tagName: 'ol',
-        className: 'pl0',
+        className: 'pl0 list',
         childNodes: props.tracks.map(track => ({
             tagName: 'li',
             className: 'f6 pv2 bb b--dark-gray',
