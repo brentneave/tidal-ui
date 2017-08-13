@@ -15,7 +15,7 @@ module.exports = {
         errors: null,
         route: {
             fresh: false,
-            data: null
+            data: {}
         },
         cache: {},
         favorites: {
