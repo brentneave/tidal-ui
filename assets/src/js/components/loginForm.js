@@ -41,7 +41,7 @@ const loginForm = function({ state, props, actions }) {
     return {
 
         tagName: 'form',
-        className: 'js-login-form dt min-vh-100 pv5 ph4 ph5-ns tc center w-100 mw6',
+        className: 'js-login-form dt min-vh-75 pv5 ph4 ph5-ns tc center w-100 mw6',
         attributes: { action: state.path.str, },
         on: { submit: _submit },
         childNodes: {
