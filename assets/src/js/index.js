@@ -4,5 +4,5 @@ const
 
 update({
     action: 'INIT',
-    payload: { localState: local.read() }
+    payload: { localState: local.read(), path: location.pathname }
 });
