@@ -17,7 +17,7 @@ const albumDetails = function({ props, actions }) {
         className: 'mw9 center',
         childNodes: [{
                 tagName: 'div',
-                className: 'fixed left-0 top-0 right-0 o-30 z0',
+                className: 'fixed left-0 top-0 mt7 right-0 o-30 z0',
                 attributes: {
                     style: 'filter: blur(96px); pointer-events: none;'
                 },
