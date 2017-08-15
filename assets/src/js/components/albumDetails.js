@@ -15,11 +15,23 @@ const albumDetails = function({ props, actions }) {
     return {
         tagName: 'div',
         className: 'mw9 center',
-        childNodes: [
+        childNodes: [{
+                tagName: 'div',
+                className: 'absolute left-0 top-0 right-0 o-30 z0',
+                attributes: {
+                    style: 'filter: blur(128px); pointer-events: none;'
+                },
+                childNodes: albumImage({
+                    props: {
+                        album: details,
+                        width: 1280
+                    }
+                })
 
+            },
             {
                 tagName: 'div',
-                className: 'flex flex-wrap flex-row pv4 pv5-l ph3 ph4-l',
+                className: 'flex flex-wrap flex-row pv4 pv5-l ph3 ph4-l z1 relative',
                 childNodes: [
 
                     {
@@ -45,7 +57,7 @@ const albumDetails = function({ props, actions }) {
                                     textContent: details && details.title ? details.title : '_'
                                 }, details && details.artist ? {
                                     tagName: 'a',
-                                    className: 'db gray no-underline dim',
+                                    className: 'db gray no-underline',
                                     textContent: details.artist.name,
                                     attributes: { href: '/artist/' + details.artist.id },
                                     on: { click: actions.link }
