@@ -1,7 +1,7 @@
 const sectionHeader = ({ props, actions }) => ({
 
     tagName: 'div',
-    className: 'pt5 pb4 ph4 ph5-l center mw9 flex justify-between items-center',
+    className: 'p4 ph5-l center mw9 flex justify-between items-center',
     childNodes: [
 
         {
