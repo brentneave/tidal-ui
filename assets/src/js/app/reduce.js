@@ -27,6 +27,7 @@ const _mutate = {
 
     LOGIN: function(state, { session }) {
         state.session = clone(session);
+        state.route.fresh = false;
         return state;
     },
 

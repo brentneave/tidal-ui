@@ -9,7 +9,7 @@ const load = function(state) {
 
     console.log('load', state);
 
-    if (state.route.fresh) return;
+    if (state.route.fresh || !state.session.id) return;
 
     const route = router.get(state);
 
