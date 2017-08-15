@@ -25,16 +25,9 @@ const _mutate = {
 
 
 
-    INIT: function(state, { localState }) {
-        state = localState || state;
-        if (state.route.data) state.route.fresh = false;
-        return state;
-    },
-
-
-
     LOGIN: function(state, { session }) {
         state.session = clone(session);
+        state.route.fresh = false;
         return state;
     },
 
@@ -79,6 +72,21 @@ const _mutate = {
 
     SET_FAVORITE_ARTISTS: function(state, { artists }) {
         state.favorites.artists = clone(artists);
+        return state;
+    },
+
+
+
+    INIT: function(state, { localState, path }) {
+        state = localState ? localState : state;
+        if (path) {
+            state.path.str = path.replace(/^.*\/\/[^\/]+/, '');
+            state.path.arr = state.path.str.split('/').filter(isNotEmptyString);
+            state.route.fresh = false;
+            state.route.data = state.cache[state.path.str] ?
+                clone(state.cache[state.path.str]) : {};
+        }
+        if (state.route.data) state.route.fresh = false;
         return state;
     }
 
