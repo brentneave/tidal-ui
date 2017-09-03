@@ -18,16 +18,21 @@ module.exports = {
             data: {}
         },
         cache: {},
-        favorites: {
-            artists: null,
-            albums: null
-        },
-        latest: {
-            albums: null
-        },
-        recommended: {
-            artists: null,
-            albums: null
+        data: {
+            fresh: false,
+            artists: {},
+            albums: {},
+            favorites: {
+                artists: [],
+                albums: []
+            },
+            latest: {
+                albums: []
+            },
+            recommended: {
+                artists: [],
+                albums: []
+            }
         }
     }
 };

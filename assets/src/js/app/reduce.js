@@ -50,28 +50,7 @@ const _mutate = {
     ROUTE: function(state, { path }) {
         state.path.str = path.replace(/^.*\/\/[^\/]+/, '');
         state.path.arr = state.path.str.split('/').filter(isNotEmptyString);
-        state.route.fresh = false;
-        state.route.data = state.cache[state.path.str] ?
-            clone(state.cache[state.path.str]) : {};
-        return state;
-    },
-
-
-
-    APPEND_ROUTE_DATA: function(state, { path, key, value }) {
-        state.cache[path] = state.cache[path] || {};
-        state.cache[path][key] = clone(value);
-        if (path === state.path.str) {
-            state.route.fresh = true;
-            state.route.data = clone(state.cache[path]);
-        }
-        return state;
-    },
-
-
-
-    SET_FAVORITE_ARTISTS: function(state, { artists }) {
-        state.favorites.artists = clone(artists);
+        state.data.fresh = false;
         return state;
     },
 
@@ -82,11 +61,96 @@ const _mutate = {
         if (path) {
             state.path.str = path.replace(/^.*\/\/[^\/]+/, '');
             state.path.arr = state.path.str.split('/').filter(isNotEmptyString);
-            state.route.fresh = false;
-            state.route.data = state.cache[state.path.str] ?
-                clone(state.cache[state.path.str]) : {};
         }
-        if (state.route.data) state.route.fresh = false;
+        state.data.fresh = false;
+        return state;
+    },
+
+
+
+    SET_FAVORITE_ALBUMS: function(state, { albums }) {
+        state.data.favorites.albums = clone(albums);
+        state.data.fresh = true;
+        return state;
+    },
+
+
+
+    SET_RECOMMENDED_ALBUMS: function(state, { albums }) {
+        state.data.recommended.albums = clone(albums);
+        state.data.fresh = true;
+        return state;
+    },
+
+
+
+    SET_LATEST_ALBUMS: function(state, { albums }) {
+        state.data.latest.albums = clone(albums);
+        state.data.fresh = true;
+        return state;
+    },
+
+
+
+    SET_FAVORITE_ARTISTS: function(state, { artists }) {
+        state.data.favorites.artists = clone(artists);
+        state.data.fresh = true;
+        return state;
+    },
+
+
+
+    SET_RECOMMENDED_ARTISTS: function(state, { artists }) {
+        state.data.recommended.artists = clone(artists);
+        state.data.fresh = true;
+        return state;
+    },
+
+
+    ADD_ALBUM_DETAILS: function(state, { albums }) {
+        (albums instanceof Array ? albums : [albums]).map(
+            album => {
+                state.data.albums[album.id] = state.data.albums[album.id] || {};
+                state.data.albums[album.id].details = album;
+            }
+        )
+        state.data.fresh = true;
+        return state;
+    },
+
+
+    ADD_ALBUM_TRACKS: function(state, { tracks }) {
+        state.data.albums[album.id] = state.data.albums[album.id] || {};
+        state.data.albums[album.id].tracks = tracks;
+        state.data.fresh = true;
+        return state;
+    },
+
+
+    ADD_ALBUM_TRACKS: function(state, { album, tracks }) {
+        state.data.albums[album.id] = state.data.albums[album.id] || {};
+        state.data.albums[album.id].tracks = tracks;
+        state.data.fresh = true;
+        return state;
+    },
+
+
+    ADD_SIMILAR_ALBUMS: function(state, { album, similarAlbums }) {
+        state.data.albums[album.id] = state.data.albums[album.id] || {};
+        state.data.albums[album.id].similar = similarAlbums;
+        state.data.fresh = true;
+        return state;
+    },
+
+
+    ADD_ARTIST_DETAILS: function(state, { artists }) {
+        (artists instanceof Array ? artists : [artists]).map(
+            artist => {
+                state.data.artists[artist.id] = state.data.artists[artist.id] || {};
+                state.data.artists[artist.id].details = artist;
+            }
+        )
+        state.data.fresh = true;
         return state;
     }
 

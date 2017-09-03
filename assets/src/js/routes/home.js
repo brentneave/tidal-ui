@@ -1,5 +1,5 @@
 const
-    api = require('../api/api'),
+    actions = require('../app/actions'),
     page = require('../components/page'),
     albumList = require('../components/albumList'),
     artistList = require('../components/artistList'),
@@ -8,13 +8,11 @@ const
 
 
 
-const load = ({ state, subpath }) => ({
-    recommendedAlbums: api.loadRecommendedAlbums(state.session, 2, 1, 2),
-    favoriteAlbums: api.loadFavoriteAlbums(state.session),
-    recommendedArtists: api.loadRecommendedArtists(state.session, 1, 8),
-    favoriteArtists: api.loadFavoriteArtists(state.session),
-    latestAlbums: api.loadLatestAlbums(state.session)
-});
+const load = function({ state, subpath }) {
+    actions.loadRecommendedAlbums(state.session);
+    actions.loadRecommendedArtists(state.session);
+    actions.loadLatestAlbums(state.session);
+};
 
 
 
@@ -32,7 +30,9 @@ const component = ({ state, props, actions }) => (
                 tagName: 'div',
                 childNodes: [
 
-                    state.route.data.recommendedAlbums ? sectionHeader({
+
+                    state.data.recommended.albums.length ?
+                    sectionHeader({
                         props: {
                             title: 'Recommended Albums',
                             linkText: 'See All',
@@ -41,28 +41,14 @@ const component = ({ state, props, actions }) => (
                         actions
                     }) : null,
 
-                    state.route.data.recommendedAlbums ? albumList({
+                    state.data.recommended.albums.length ?
+                    albumList({
                         state: state,
-                        props: { albums: state.route.data.recommendedAlbums.slice(0, 4) },
+                        props: { albums: state.data.recommended.albums.slice(0, 4) },
                         actions: actions
                     }) : null,
 
-                    state.route.data.favoriteAlbums ? sectionHeader({
-                        props: {
-                            title: 'Favorite Albums',
-                            linkText: 'See All',
-                            link: '/favorites/albums'
-                        },
-                        actions
-                    }) : null,
-
-                    state.route.data.favoriteAlbums ? albumList({
-                        state: state,
-                        props: { albums: state.route.data.favoriteAlbums.slice(0, 4) },
-                        actions: actions
-                    }) : null,
-
-                    state.route.data.recommendedArtists ? sectionHeader({
+                    state.data.recommended.artists.length ? sectionHeader({
                         props: {
                             title: 'Recommended Artists',
                             linkText: 'See All',
@@ -71,28 +57,13 @@ const component = ({ state, props, actions }) => (
                         actions
                     }) : null,
 
-                    state.route.data.recommendedArtists ? artistList({
+                    state.data.recommended.artists.length ? artistList({
                         state: state,
-                        props: { artists: state.route.data.recommendedArtists.slice(0, 4) },
+                        props: { artists: state.data.recommended.artists.slice(0, 4) },
                         actions: actions
                     }) : null,
 
-                    state.route.data.favoriteArtists ? sectionHeader({
-                        props: {
-                            title: 'Favorite Artists',
-                            linkText: 'See All',
-                            link: '/favorites/artists'
-                        },
-                        actions
-                    }) : null,
-
-                    state.route.data.favoriteArtists ? artistList({
-                        state: state,
-                        props: { artists: state.route.data.favoriteArtists.slice(0, 4) },
-                        actions: actions
-                    }) : null,
-
-                    state.route.data.latestAlbums ? sectionHeader({
+                    state.data.latest.albums ? sectionHeader({
                         props: {
                             title: 'Recent Releases',
                             linkText: 'See All',
@@ -101,33 +72,19 @@ const component = ({ state, props, actions }) => (
                         actions
                     }) : null,
 
-                    state.route.data.latestAlbums ? albumList({
+                    state.data.latest.albums ? albumList({
                         state: state,
-                        props: { albums: state.route.data.latestAlbums.slice(0, 4) },
+                        props: { albums: state.data.latest.albums.slice(0, 4) },
                         actions: actions
-                    }) : null,
-
-                    {
-                        tagName: 'div',
-                        className: 'mw9 center tc pv5',
-                        childNodes: buttonMinimal({
-                            props: {
-                                label: 'Log Out',
-                                on: { click: actions.logout }
-                            }
-                        })
-                    }
+                    }) : null
 
                 ]
-
             }
-
         },
 
         actions
 
     })
-
 )
 
 

@@ -27,8 +27,7 @@ const nav = ({ props, actions }) => ({
 
                 ...[
                     { title: 'Albums', href: '/favorites/albums' },
-                    { title: 'Artists', href: '/favorites/artists' },
-                    { title: 'Recommended', href: '/recommended' }
+                    { title: 'Artists', href: '/favorites/artists' }
                 ].map(
                     (item) => ({
                         tagName: 'a',

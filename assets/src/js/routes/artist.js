@@ -1,4 +1,5 @@
 const
+    actions = require('../app/actions'),
     api = require('../api/api'),
     page = require('../components/page'),
     artistProfile = require('../components/artistProfile');

@@ -24,7 +24,7 @@ const albumDetails = function({ props, actions }) {
                 childNodes: albumImage({
                     props: {
                         album: details,
-                        width: 1280
+                        width: 640
                     }
                 })
 
