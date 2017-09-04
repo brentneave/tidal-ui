@@ -1,7 +1,7 @@
 const nav = ({ props, actions }) => ({
 
     tagName: 'div',
-    className: 'fixed top-0 left-0 right-0 bg-near-black',
+    className: 'fixed top-0 left-0 right-0',
     childNodes: [
 
         {
@@ -27,8 +27,7 @@ const nav = ({ props, actions }) => ({
 
                 ...[
                     { title: 'Albums', href: '/favorites/albums' },
-                    { title: 'Artists', href: '/favorites/artists' },
-                    { title: 'Recommended', href: '/recommended' }
+                    { title: 'Artists', href: '/favorites/artists' }
                 ].map(
                     (item) => ({
                         tagName: 'a',

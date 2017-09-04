@@ -1,4 +1,5 @@
 const
+    actions = require('../app/actions'),
     api = require('../api/api'),
     loading = require('../components/loading'),
     albumList = require('../components/albumList'),
@@ -6,9 +7,9 @@ const
 
 
 
-const load = ({ state, subpath }) => ({
-    albums: api.loadLatestAlbums(state.session)
-});
+const load = function({ state, subpath }) {
+    actions.loadLatestAlbums(state.session);
+};
 
 
 
@@ -18,9 +19,9 @@ const component = ({ state, props, actions }) => (
         state,
         props: {
             title: 'Recent Releases',
-            content: state.route.data ? albumList({
+            content: state.data.latest.albums ? albumList({
                 state: state,
-                props: state.route.data,
+                props: { albums: state.data.latest.albums },
                 actions: actions
             }) : null
         },

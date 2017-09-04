@@ -9,7 +9,12 @@ const
 
 
 
-const loadRecommendedAlbums = function(session, artistsLimit, albumsLimit, numAlbums) {
+const loadRecommendedAlbums = function(
+    session,
+    artistsLimit,
+    albumsLimit,
+    numAlbums
+) {
 
     artistsLimit = artistsLimit || 1;
     albumsLimit = albumsLimit || 1;

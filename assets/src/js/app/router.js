@@ -1,8 +1,3 @@
-const
-    api = require('../api/api'),
-    reduce = require('./reduce'),
-    clone = require('../utils/clone'),
-    routes = require('../routes/_map');
 
 
 
@@ -40,3 +35,11 @@ const get = function(state) {
 
 
 module.exports = { get }
+
+
+
+const
+    api = require('../api/api'),
+    reduce = require('./reduce'),
+    clone = require('../utils/clone'),
+    routes = require('../routes/_map');

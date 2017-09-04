@@ -1,4 +1,5 @@
 const
+    actions = require('../app/actions'),
     api = require('../api/api'),
     loading = require('../components/loading'),
     artistList = require('../components/artistList'),
@@ -6,11 +7,9 @@ const
 
 
 
-const load = ({ state, subpath }) => ({
-
-    artists: api.loadFavoriteArtists(state.session)
-
-});
+const load = function({ state, subpath }) {
+    actions.loadFavoriteArtists(state.session);
+};
 
 
 
@@ -20,10 +19,10 @@ const component = ({ state, props, actions }) => (
         state,
         props: {
             title: 'Favorite Artists',
-            content: state.route.data ? artistList({
+            content: state.data.favorites.artists ? artistList({
                 state: state,
                 props: {
-                    artists: state.route.data.artists || []
+                    artists: state.data.favorites.artists || []
                 },
                 actions: actions
             }) : null

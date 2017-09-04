@@ -1,4 +1,6 @@
 const
+    actions = require('../app/actions'),
+    router = require('../app/router'),
     api = require('../api/api'),
     page = require('../components/page'),
     albumDetails = require('../components/albumDetails');
@@ -7,31 +9,29 @@ const
 
 const load = function({ state, subpath }) {
 
-    const
-        session = state.session,
-        id = subpath[0];
+    const id = router.get(state).subpath[0];
 
-    return {
-        details: api.loadAlbumDetails(session, { id }),
-        tracks: api.loadAlbumTracks(session, { id }),
-        similar: api.loadSimilarAlbums(session, { id })
-    }
+    actions.loadAlbumDetails(state.session, { id });
+    actions.loadAlbumTracks(state.session, { id });
+    actions.loadSimilarAlbums(state.session, { id });
 
 }
 
 
 
-const component = ({ state, props, actions }) => (
+const component = ({ state, props, actions }) => {
 
-    page({
+    const id = router.get(state).subpath[0];
+
+    return page({
         state,
         props: {
-            content: state.route.data ? albumDetails({
+            content: state.data.albums[id] ? albumDetails({
                 state: state,
                 props: {
-                    details: state.route.data.details,
-                    tracks: state.route.data.tracks,
-                    similar: state.route.data.similar
+                    details: state.data.albums[id].details,
+                    tracks: state.data.albums[id].tracks,
+                    similar: state.data.albums[id].similar
                 },
                 actions: actions
             }) : null
@@ -39,7 +39,7 @@ const component = ({ state, props, actions }) => (
         actions
     })
 
-)
+}
 
 
 

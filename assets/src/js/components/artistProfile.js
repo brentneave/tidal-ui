@@ -29,16 +29,16 @@ const artistProfile = function({ state, props, actions }) {
         className: 'mw9 center',
         childNodes: [
 
-            {
+            details && details.picture ? {
                 tagName: 'div',
-                className: 'fixed left-0 top-0 mt7 right-0 o-30 z0',
+                className: 'fixed left-0 top-0 right-0 o-20 z0',
                 attributes: {
                     style: 'filter: blur(96px); pointer-events: none;'
                 },
                 childNodes: artistImage({
                     props: { artist: details }
                 })
-            },
+            } : null,
             {
                 tagName: 'div',
                 className: 'flex flex-wrap flex-row pv4 pv5-l ph3 ph4-l',
@@ -48,10 +48,10 @@ const artistProfile = function({ state, props, actions }) {
                         /* album image */
                         tagName: 'div',
                         className: 'w-100 w-50-l ph3 ph4-l',
-                        childNodes: artistImage({
+                        childNodes: details && details.picture ? artistImage({
                             props: { artist: details },
                             actions
-                        })
+                        }) : null
                     },
 
                     {
