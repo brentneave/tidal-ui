@@ -63,7 +63,7 @@ const component = ({ state, props, actions }) => (
                         actions: actions
                     }) : null,
 
-                    state.data.latest.albums ? sectionHeader({
+                    state.data.latest.albums.length ? sectionHeader({
                         props: {
                             title: 'Recent Releases',
                             linkText: 'See All',
@@ -72,7 +72,7 @@ const component = ({ state, props, actions }) => (
                         actions
                     }) : null,
 
-                    state.data.latest.albums ? albumList({
+                    state.data.latest.albums.length ? albumList({
                         state: state,
                         props: { albums: state.data.latest.albums.slice(0, 4) },
                         actions: actions
