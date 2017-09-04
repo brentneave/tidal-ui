@@ -10,11 +10,11 @@ const albumList = function({ props, actions }) {
 
     return albums && albums.length ? {
         tagName: 'div',
-        className: 'flex flex-wrap flex-row ph3 ph4-l mw9 center',
+        className: 'flex flex-wrap flex-row ph3 ph4-l pt-2 pt3-l mw9 center',
         childNodes: albums.map(
             (album) => ({
                 tagName: 'div',
-                className: 'w-50 w-25-l ph3 ph4-l',
+                className: 'w-50 w-third-l ph3 ph4-l',
                 childNodes: albumThumb({
                     props: { album },
                     actions

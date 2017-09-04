@@ -6,7 +6,7 @@ const sectionHeader = ({ props, actions }) => ({
 
         {
             tagName: 'h2',
-            className: 'f4 f3-ns antialiased legibility',
+            className: 'f4 f3-ns mv0 antialiased legibility',
             textContent: props.title || ''
         },
 
