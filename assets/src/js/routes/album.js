@@ -21,7 +21,6 @@ const load = function({ state, subpath }) {
 
 const component = ({ state, props, actions }) => {
 
-    console.log('ROUTER', router)
     const id = router.get(state).subpath[0];
 
     return page({

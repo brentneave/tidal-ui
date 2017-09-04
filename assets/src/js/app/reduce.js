@@ -68,6 +68,13 @@ const _mutate = {
 
 
 
+    ADD_DATA: function(state, { key, data }) {
+        state.data[key] = clone(data);
+        state.data.fresh = true;
+        return state;
+    },
+
+
     SET_FAVORITE_ALBUMS: function(state, { albums }) {
         state.data.favorites.albums = clone(albums);
         state.data.fresh = true;
@@ -107,11 +114,12 @@ const _mutate = {
     },
 
 
+
     ADD_ALBUM_DETAILS: function(state, { albums }) {
         (albums instanceof Array ? albums : [albums]).map(
             album => {
                 state.data.albums[album.id] = state.data.albums[album.id] || {};
-                state.data.albums[album.id].details = album;
+                state.data.albums[album.id].details = clone(album);
             }
         )
         state.data.fresh = true;
@@ -119,37 +127,47 @@ const _mutate = {
     },
 
 
-    ADD_ALBUM_TRACKS: function(state, { tracks }) {
-        state.data.albums[album.id] = state.data.albums[album.id] || {};
-        state.data.albums[album.id].tracks = tracks;
-        state.data.fresh = true;
-        return state;
-    },
-
 
     ADD_ALBUM_TRACKS: function(state, { album, tracks }) {
+        console.log('ADD_ALBUM_TRACKS', album, tracks);
         state.data.albums[album.id] = state.data.albums[album.id] || {};
-        state.data.albums[album.id].tracks = tracks;
+        state.data.albums[album.id].tracks = clone(tracks);
         state.data.fresh = true;
         return state;
     },
+
 
 
     ADD_SIMILAR_ALBUMS: function(state, { album, similarAlbums }) {
         state.data.albums[album.id] = state.data.albums[album.id] || {};
-        state.data.albums[album.id].similar = similarAlbums;
+        state.data.albums[album.id].similar = clone(similarAlbums);
         state.data.fresh = true;
         return state;
     },
 
 
-    ADD_ARTIST_DETAILS: function(state, { artists }) {
-        (artists instanceof Array ? artists : [artists]).map(
-            artist => {
-                state.data.artists[artist.id] = state.data.artists[artist.id] || {};
-                state.data.artists[artist.id].details = artist;
-            }
-        )
+
+    ADD_ARTIST_DETAILS: function(state, { artist }) {
+        state.data.artists[artist.id] = state.data.artists[artist.id] || {};
+        state.data.artists[artist.id].details = clone(artist);
+        state.data.fresh = true;
+        return state;
+    },
+
+
+
+    ADD_ARTIST_ALBUMS: function(state, { artist, albums }) {
+        state.data.artists[artist.id] = state.data.artists[artist.id] || {};
+        state.data.artists[artist.id].albums = clone(albums);
+        state.data.fresh = true;
+        return state;
+    },
+
+
+
+    ADD_SIMILAR_ARTISTS: function(state, { artist, similar }) {
+        state.data.artists[artist.id] = state.data.artists[artist.id] || {};
+        state.data.artists[artist.id].similar = clone(similar);
         state.data.fresh = true;
         return state;
     }

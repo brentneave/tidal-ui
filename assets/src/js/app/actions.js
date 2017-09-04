@@ -144,16 +144,41 @@ const actions = Object.freeze({
         )
     },
 
-
-    loadSimilarAlbums: function(loadSimilarAlbums, album) {
-        console.log('Actions.loadAlbumTracks', session, album);
+    loadSimilarAlbums: function(session, album) {
         api.loadSimilarAlbums(session, album).then(
-            (similiarAlbums) => update({
+            (similarAlbums) => update({
                 action: 'ADD_SIMILAR_ALBUMS',
-                payload: { album, similiarAlbums }
+                payload: { album, similarAlbums }
             })
         )
     },
+
+    loadArtistDetails: function(session, artist) {
+        api.loadArtistDetails(session, artist).then(
+            (artist) => update({
+                action: 'ADD_ARTIST_DETAILS',
+                payload: { artist }
+            })
+        )
+    },
+
+    loadArtistAlbums: function(session, artist) {
+        api.loadArtistAlbums(session, artist).then(
+            (albums) => update({
+                action: 'ADD_ARTIST_ALBUMS',
+                payload: { artist, albums }
+            })
+        )
+    },
+
+    loadSimilarArtists: function(session, artist) {
+        api.loadSimilarArtists(session, artist).then(
+            (similar) => update({
+                action: 'ADD_SIMILAR_ARTISTS',
+                payload: { artist, similar }
+            })
+        )
+    }
 
 });
 

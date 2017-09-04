@@ -1,7 +1,7 @@
 const nav = ({ props, actions }) => ({
 
     tagName: 'div',
-    className: 'fixed top-0 left-0 right-0 bg-near-black',
+    className: 'fixed top-0 left-0 right-0',
     childNodes: [
 
         {
