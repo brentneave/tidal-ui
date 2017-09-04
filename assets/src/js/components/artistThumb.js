@@ -27,7 +27,7 @@ const artistThumb = function({ props, actions }) {
 
             {
                 tagName: 'p',
-                className: 'ma0 pt3 pb4 f6 bg-near-black',
+                className: 'ma0 pt4 pb5 f6 bg-near-black',
                 childNodes: [{
                     tagName: 'span',
                     className: 'db white',

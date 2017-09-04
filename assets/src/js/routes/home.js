@@ -76,10 +76,28 @@ const component = ({ state, props, actions }) => (
                         state: state,
                         props: { albums: state.data.latest.albums.slice(0, 4) },
                         actions: actions
-                    }) : null
+                    }) : null,
+
+                    {
+                        tagName: 'div',
+                        className: 'mw9 center pa5 tc',
+                        childNodes: buttonMinimal({
+                            props: {
+                                label: 'Log Out',
+                                attributes: {
+                                    type: 'submit'
+                                },
+                                on: {
+                                    click: actions.logout
+                                }
+                            }
+                        })
+                    }
 
                 ]
+
             }
+
         },
 
         actions
