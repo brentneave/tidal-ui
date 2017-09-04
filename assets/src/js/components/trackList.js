@@ -9,7 +9,7 @@ const trackList = function({ state, props, actions }) {
         className: 'pl0 list',
         childNodes: props.tracks.map(track => ({
             tagName: 'li',
-            className: 'f5 pv2 bb b--dark-gray',
+            className: 'f6 f5-ns pv2 bb b--moon-gray',
             textContent: track.item.title
         }))
     }

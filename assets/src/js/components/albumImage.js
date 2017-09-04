@@ -33,7 +33,7 @@ const albumImage = function({ state, props, actions }) {
 
     return {
         tagName: 'div',
-        className: 'aspect-ratio aspect-ratio--1x1 overflow-hidden bg-dark-gray br1',
+        className: 'aspect-ratio aspect-ratio--1x1 overflow-hidden bg-light-gray br1',
         childNodes: album && album.cover ? {
             tagName: 'img',
             className: 'db absolute w-100 h-auto',

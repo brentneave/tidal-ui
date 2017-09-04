@@ -14,7 +14,7 @@ const albumList = function({ props, actions }) {
         childNodes: albums.map(
             (album) => ({
                 tagName: 'div',
-                className: 'w-50 w-25-l ph3 ph4-l',
+                className: 'w-50 w-third-l ph3 ph4-l',
                 childNodes: albumThumb({
                     props: { album },
                     actions

@@ -66,10 +66,10 @@ const albumThumb = function({ props, actions }) {
 
             {
                 tagName: 'p',
-                className: 'ma0 pt4 pb5 f6 bg-near-black',
+                className: 'ma0 pt3 pt4-ns pb4 pb5-ns f6 f5-ns',
                 childNodes: [{
                         tagName: 'span',
-                        className: 'db white',
+                        className: 'db near-black bold',
                         textContent: album.title
                     },
                     album.artists ? {
