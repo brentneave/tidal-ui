@@ -52,8 +52,8 @@ const loginForm = function({ state, props, actions }) {
                     className: 'mb3',
                     attributes: {
                         src: '/assets/dist/svg/tidal-mark.svg',
-                        width: 66,
-                        height: 44
+                        width: 36,
+                        height: 24
                     }
                 },
                 state.errors ? {

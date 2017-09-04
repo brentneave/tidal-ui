@@ -28,25 +28,13 @@ const artistProfile = function({ state, props, actions }) {
         tagName: 'div',
         className: 'mw9 center',
         childNodes: [
-            {
-                tagName: 'div',
-                className: 'flex flex-wrap flex-row pv4 pv5-l ph3 ph4-l',
-                childNodes: [
 
-                    {
-                        tagName: 'div',
-                        className: 'w-100 w-50-l ph3 ph4-l',
-                        childNodes: {
-                            /* album title */
-                            tagName: 'h1',
-                            className: 'f2 f1-ns lh-title antialiased legibility',
-                            textContent: details && details.name ? details.name : '—'
-                        }
-                    }
-
-                ]
-
-            },
+            details && details.name ? pageHeader({
+                props: {
+                    title: details.name
+                },
+                actions
+            }) : null,
 
             albums && albums.length ? sectionHeader({
                 props: { title: 'Albums' }
