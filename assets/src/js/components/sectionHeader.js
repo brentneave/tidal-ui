@@ -5,9 +5,12 @@ const sectionHeader = ({ props, actions }) => ({
     childNodes: [
 
         {
-            tagName: 'h2',
-            className: 'f5 f4-ns f3-l mv0 antialiased legibility',
-            textContent: props.title || ''
+            tagName: 'a',
+            className: 'f5 f4-ns f3-l mv0 antialiased legibility b near-black no-underline',
+            textContent: props.title || '',
+            attributes: props.link ? {
+                href: props.link
+            } : null
         },
 
         props.linkText && props.link ? {
