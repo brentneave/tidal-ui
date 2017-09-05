@@ -3,7 +3,7 @@ const pageHeader = ({ props, actions }) => ({
     className: 'pa4 pa5-l pb6-l mw9 center',
     childNodes: {
         tagName: 'h1',
-        className: 'f2 f1-ns lh-title antialiased legibility',
+        className: 'f2 f1-ns w-third-l lh-title antialiased legibility',
         textContent: props.title
     }
 });
