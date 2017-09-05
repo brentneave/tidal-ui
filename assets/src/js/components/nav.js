@@ -6,7 +6,7 @@ const nav = ({ props, actions }) => ({
 
         {
             tagName: 'div',
-            className: 'pv3 ph4 ph5-l mw9 center tl f7 f6-ns near-black flex justify-start items-center',
+            className: 'flex justify-start items-center mw9 h3 pv3 ph4 ph5-l center tl f7 f6-ns near-black',
             childNodes: [
 
                 {

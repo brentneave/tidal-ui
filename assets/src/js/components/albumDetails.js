@@ -37,7 +37,7 @@ const albumDetails = function({ props, actions }) {
                         childNodes: [{
                                 /* album title */
                                 tagName: 'h1',
-                                className: 'f3 f2-ns mt0-l lh-title antialiased legibility',
+                                className: 'w-two-thirds-m mt0-l f3 f2-ns lh-title antialiased legibility',
                                 childNodes: [{
                                     tagName: 'span',
                                     className: 'db bold',

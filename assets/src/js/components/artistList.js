@@ -5,7 +5,7 @@ const artistThumb = require('./artistThumb');
 const artistList = ({ props, actions }) => (
     props.artists ? {
         tagName: 'div',
-        className: 'flex flex-wrap flex-row ph3 ph4-l mw9 center',
+        className: 'flex flex-wrap flex-row ph3 ph4-l mb4 mb5-l mw9 center',
         childNodes: props.artists.map(
             (artist) => ({
                 tagName: 'div',

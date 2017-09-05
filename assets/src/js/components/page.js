@@ -8,7 +8,7 @@ const
 const page = ({ state, props, actions }) => ({
 
     tagName: 'div',
-    className: 'min-vh-100 overflow-x-hidden ma0 near-black bg-near-white f5 lh-copy sans-serif pt5 pb5',
+    className: 'overflow-x-hidden min-vh-100 pv5 ma0 near-black bg-near-white f5 lh-copy sans-serif',
     childNodes: loginCheck({
 
         state,
