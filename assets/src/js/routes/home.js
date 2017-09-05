@@ -44,7 +44,7 @@ const component = ({ state, props, actions }) => (
                     state.data.recommended.albums.length ?
                     albumList({
                         state: state,
-                        props: { albums: state.data.recommended.albums.slice(0, 4) },
+                        props: { albums: state.data.recommended.albums.slice(0, 6) },
                         actions: actions
                     }) : null,
 
@@ -59,7 +59,7 @@ const component = ({ state, props, actions }) => (
 
                     state.data.recommended.artists.length ? artistList({
                         state: state,
-                        props: { artists: state.data.recommended.artists.slice(0, 4) },
+                        props: { artists: state.data.recommended.artists.slice(0, 6) },
                         actions: actions
                     }) : null,
 
@@ -74,7 +74,7 @@ const component = ({ state, props, actions }) => (
 
                     state.data.latest.albums.length ? albumList({
                         state: state,
-                        props: { albums: state.data.latest.albums.slice(0, 4) },
+                        props: { albums: state.data.latest.albums.slice(0, 6) },
                         actions: actions
                     }) : null,
 
