@@ -1,9 +1,9 @@
 const pageHeader = ({ props, actions }) => ({
     tagName: 'div',
-    className: 'pa4 pa5-l pb6-l mw9 center',
+    className: 'ph4 ph5-l mv5 mv6-l mw9 center',
     childNodes: {
         tagName: 'h1',
-        className: 'f2 f1-ns w-third-l lh-title antialiased legibility',
+        className: 'f3 f2-ns f1-l mv0 lh-title antialiased legibility',
         textContent: props.title
     }
 });
