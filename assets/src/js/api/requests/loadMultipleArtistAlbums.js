@@ -19,11 +19,11 @@ const reducePromiseResolutions = function(arrays) {
         ),
         'id'
     ).filter(
-        album => album.releaseDate != null
+        album => album.streamStartDate != null
     ).sort(
         (a, b) => (
-            Date.parse(a.releaseDate.slice(0, 10)) >
-            Date.parse(b.releaseDate.slice(0, 10)) ?
+            Date.parse(a.streamStartDate.slice(0, 10)) >
+            Date.parse(b.streamStartDate.slice(0, 10)) ?
             -1 : 1
         )
     )
