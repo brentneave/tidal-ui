@@ -15,7 +15,7 @@ const sectionHeader = ({ props, actions }) => ({
 
         props.linkText && props.link ? {
             tagName: 'a',
-            className: 'db f6 f5-ns no-underline light-silver',
+            className: 'db f6 f5-ns tr no-underline light-silver',
             textContent: props.linkText,
             attributes: { href: props.link },
             on: { click: actions.link }
