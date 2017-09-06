@@ -18,6 +18,7 @@ const update = function({ action, payload }) {
         .then(render)
         .then(write)
         .then(load)
+        .then(audio)
 }
 
 
@@ -31,4 +32,5 @@ const
     hist = require('./hist'),
     render = require('./render'),
     load = require('./load'),
-    write = require('./local').write;
+    write = require('./local').write,
+    audio = require('./audio');

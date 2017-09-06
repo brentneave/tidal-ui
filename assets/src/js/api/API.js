@@ -19,5 +19,7 @@ module.exports = Object.freeze({
 
     loadLatestAlbums: require('./requests/loadLatestAlbums'),
     loadRecommendedAlbums: require('./requests/loadRecommendedAlbums'),
-    loadRecommendedArtists: require('./requests/loadRecommendedArtists')
+    loadRecommendedArtists: require('./requests/loadRecommendedArtists'),
+
+    getStreamingURL: require('./requests/getStreamingURL')
 });

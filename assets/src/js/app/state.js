@@ -17,6 +17,10 @@ module.exports = {
             fresh: false,
             data: {}
         },
+        audio: {
+            quality: 'LOSSLESS',
+            streamingDetails: {}
+        },
         cache: {},
         data: {
             fresh: false,

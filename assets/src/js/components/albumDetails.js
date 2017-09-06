@@ -6,7 +6,7 @@ const
 
 
 
-const albumDetails = function({ props, actions }) {
+const albumDetails = function({ state, props, actions }) {
 
     console.log('albumDetails', ...arguments);
 
@@ -52,6 +52,7 @@ const albumDetails = function({ props, actions }) {
                             },
                             /* tracklist */
                             tracks && tracks.length ? trackList({
+                                state,
                                 props: { tracks },
                                 actions
                             }) : null,

@@ -170,6 +170,13 @@ const _mutate = {
         state.data.artists[artist.id].similar = clone(similar);
         state.data.fresh = true;
         return state;
+    },
+
+
+
+    PLAY_TRACK: function(state, { streamingDetails }) {
+        state.audio.streamingDetails = clone(streamingDetails);
+        return state;
     }
 
 

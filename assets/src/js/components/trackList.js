@@ -10,7 +10,14 @@ const trackList = function({ state, props, actions }) {
         childNodes: props.tracks.map(track => ({
             tagName: 'li',
             className: 'f6 f5-ns pv2 bb b--moon-gray',
-            textContent: track.item.title
+            textContent: track.item.title,
+            on: {
+                click: () => actions.playTrack({
+                    session: state.session,
+                    track: track.item,
+                    quality: state.audio.quality
+                })
+            }
         }))
     }
 

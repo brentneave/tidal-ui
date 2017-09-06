@@ -36,6 +36,10 @@ const urls = {
 
     tracks: function(sessionId) {
         return base + '/users/' + sessionId + '/favorites/tracks';
+    },
+
+    streamingURL: function(trackId) {
+        return base + '/tracks/' + trackId + '/streamUrl'
     }
 }
 

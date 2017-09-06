@@ -178,6 +178,20 @@ const actions = Object.freeze({
                 payload: { artist, similar }
             })
         )
+    },
+
+    playTrack: function({ session, track, quality }) {
+        console.log('actions.playTrack', ...arguments);
+        api.getStreamingURL(
+            session,
+            track,
+            quality
+        ).then(
+            (response) => update({
+                action: 'PLAY_TRACK',
+                payload: { streamingDetails: response }
+            })
+        )
     }
 
 });

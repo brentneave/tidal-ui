@@ -20,6 +20,8 @@ const load = function(state) {
 
     }
 
+    return state;
+
 }
 
 

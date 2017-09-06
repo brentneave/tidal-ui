@@ -1,21 +1,33 @@
 const
-    av = require('av'),
+    AV = require('av'),
     flac = require('flac.js');
 
 
+
 var
-    _currentTrack
+    _currentURL,
     _player;
 
 
-const _playTrack = function(track) {
-    _player = AV.Player.fromURL('http://mysite.com/audio.wav');
+
+const _playTrack = function(url) {
+    console.log('audio._playTrack', url);
+    _player = AV.Player.fromURL(url);
+    _player.play();
+    console.log('audio._playTrack', url, _player);
 }
 
+
+
 const audio = function(state) {
-    if(_currentTrack.id != state.audio.track.id) {
-        _playTrack(track);
+    console.log('audio', state);
+    if(_currentURL != state.audio.streamingDetails.url) {
+        _playTrack(state.audio.streamingDetails.url);
     }
-    _currentTrack = clone(state.audio.track);
+    _currentURL = state.audio.streamingDetails.url;
     return state;
 }
+
+
+
+module.exports = audio;
